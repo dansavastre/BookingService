@@ -1,4 +1,4 @@
-# CSE2115 - Project
+# CSE2115 - Project - Group 08B
 
 ### Running 
 `gradle bootRun`
