@@ -1,0 +1,1 @@
+Upload all agendas here, preferably as a .md, and with the name formatted as [TA/Group] meeting agenda [date]
