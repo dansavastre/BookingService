@@ -14,4 +14,20 @@ public class HelloController {
         String result = template.getForObject(uri, String.class);
         return result;
     }
+
+    @RequestMapping("/hello-rooms")
+    public String helloRooms(){
+        String uri = "http://localhost:8082/sayHi";
+        RestTemplate template = new RestTemplate();
+        String result = template.getForObject(uri, String.class);
+        return result;
+    }
+
+    @RequestMapping("/hello-bookings")
+    public String helloBookings(){
+        String uri = "http://localhost:8083/sayHi";
+        RestTemplate template = new RestTemplate();
+        String result = template.getForObject(uri, String.class);
+        return result;
+    }
 }
