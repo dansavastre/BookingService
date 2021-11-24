@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class HelloController {
 
-    @RequestMapping("/hello-user")
+    @RequestMapping("/helloUser")
     public String helloUser(){
         String uri = "http://localhost:8081/sayHi";
         RestTemplate template = new RestTemplate();
@@ -15,7 +15,7 @@ public class HelloController {
         return result;
     }
 
-    @RequestMapping("/hello-rooms")
+    @RequestMapping("/helloRooms")
     public String helloRooms(){
         String uri = "http://localhost:8082/sayHi";
         RestTemplate template = new RestTemplate();
@@ -23,9 +23,17 @@ public class HelloController {
         return result;
     }
 
-    @RequestMapping("/hello-bookings")
+    @RequestMapping("/helloBookings")
     public String helloBookings(){
         String uri = "http://localhost:8083/sayHi";
+        RestTemplate template = new RestTemplate();
+        String result = template.getForObject(uri, String.class);
+        return result;
+    }
+
+    @RequestMapping("/checkBookingsConnectionToRoom")
+    public String checkConnectionBookingsRooms(){
+        String uri = "http://localhost:8083/confirmRoomsConnection";
         RestTemplate template = new RestTemplate();
         String result = template.getForObject(uri, String.class);
         return result;

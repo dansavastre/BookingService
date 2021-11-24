@@ -10,4 +10,9 @@ public class RoomController {
     public String sayHi(){
         return "Hello from the rooms microservice!";
     }
+
+    @RequestMapping("/getConnectionStatus")
+    public String connectionStatus(){
+        return "Rooms is connected!";
+    }
 }
