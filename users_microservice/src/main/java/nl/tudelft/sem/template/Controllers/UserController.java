@@ -2,11 +2,14 @@ package nl.tudelft.sem.template.Controllers;
 
 import nl.tudelft.sem.template.Objects.User;
 import nl.tudelft.sem.template.Services.IUserService;
+import nl.tudelft.sem.template.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 public class UserController {

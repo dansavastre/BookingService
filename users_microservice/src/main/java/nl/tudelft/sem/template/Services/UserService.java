@@ -15,7 +15,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> findAll() {
-        List<User> users = (List<User>) repository.findAll();
+        var users = (List<User>) repository.findAll();
         return users;
     }
 

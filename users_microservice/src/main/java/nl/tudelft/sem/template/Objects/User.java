@@ -12,14 +12,19 @@ public class User {
 
     @Id
     private String id;
+
     @Column(nullable = false, length = 255)
     private String password;
+
     @Column(nullable = true, length = 50)
     private String firstName;
+
     @Column(nullable = true, length = 50)
     private String lastName;
+
     @Column(nullable = false, length = 50)
     private String userType;
+
 
     public User(String id, String password, String firstName, String lastName, String userType) {
         this.id = id;
@@ -30,7 +35,6 @@ public class User {
     }
 
     public User() {
-
     }
 
     @Override
