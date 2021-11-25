@@ -38,12 +38,18 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+    //implementation 'android.arch.persistence.room:runtime:1.1.1'
+	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+	implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+	implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.6.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
 	testImplementation('org.assertj:assertj-core:3.14.0')
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 }
 
 test {
