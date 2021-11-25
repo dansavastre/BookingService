@@ -10,12 +10,11 @@ import java.util.List;
 @Service
 public class UserService implements IUserService {
 
-    @Autowired
-    private UserRepository repository;
 
     @Override
     public List<User> findAll() {
-        List<User> users = (List<User>) repository.findAll();
+        UserRepository repository = new UserRepository();
+        var users = (List<User>) repository.findAll();
         return users;
     }
 }
