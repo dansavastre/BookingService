@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 import java.util.Scanner;
 
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@SpringBootApplication
 public class Application implements CommandLineRunner {
 
 	public static void main(String[] args) {
@@ -30,12 +30,13 @@ public class Application implements CommandLineRunner {
 		System.out.println("Enter password:");
 		String password = in.next();
 		System.out.println("Enter first name and last name");
-		String fullName = in.next();
-		String fName = fullName.split(" ")[0];
-		String lName = fullName.split(" ")[1];
+		String fName = in.next();
+		String lName = in.next();
 		System.out.println("Enter designation");
 		String userType = in.next();
-		userController.addUser(new User(name, password, fName, lName, userType));
+		User u = new User(name, password, fName, lName, userType);
+		System.out.println(u.toString());
+		userController.addUser(u);
 	}
 
 }
