@@ -7,14 +7,6 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class HelloController {
 
-    @RequestMapping("/helloUser")
-    public String helloUser(){
-        String uri = "http://localhost:8081/sayHi";
-        RestTemplate template = new RestTemplate();
-        String result = template.getForObject(uri, String.class);
-        return result;
-    }
-
     @RequestMapping("/helloRooms")
     public String helloRooms(){
         String uri = "http://localhost:8082/sayHi";
