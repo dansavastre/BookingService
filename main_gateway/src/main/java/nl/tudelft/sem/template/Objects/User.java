@@ -5,12 +5,14 @@ import java.util.Objects;
 public class User {
 
     private final String id;
+    private String password;
     private final String firstName;
     private final String lastName;
     private final String userType;
 
-    public User(String id, String firstName, String lastName, String userType) {
+    public User(String id, String password, String firstName, String lastName, String userType) {
         this.id = id;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;

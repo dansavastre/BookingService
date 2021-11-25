@@ -1,25 +1,36 @@
 package nl.tudelft.sem.template.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
+@Table(name = "User")
 public class User {
 
     @Id
     private String id;
+    @Column(nullable = false, length = 255)
+    private String password;
+    @Column(nullable = true, length = 50)
     private String firstName;
+    @Column(nullable = true, length = 50)
     private String lastName;
+    @Column(nullable = false, length = 50)
     private String userType;
 
-    public User(String id, String firstName, String lastName, String userType) {
+    public User(String id, String password, String firstName, String lastName, String userType) {
         this.id = id;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;
+    }
+
+    public User() {
+
     }
 
     @Override

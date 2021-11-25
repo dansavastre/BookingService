@@ -18,4 +18,9 @@ public class UserService implements IUserService {
         List<User> users = (List<User>) repository.findAll();
         return users;
     }
+
+    @Override
+    public void save(User user) {
+        repository.save(user);
+    }
 }
