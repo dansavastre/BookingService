@@ -5,6 +5,7 @@ import nl.tudelft.sem.template.Services.IUserService;
 import nl.tudelft.sem.template.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,12 +24,16 @@ public class UserController {
     }
 
     @RequestMapping("/addUser")
-    public String addUser(){
-        String uri = "http://localhost:8080/addUser";
+    public String addUser(String id, String password, String fName, String lName, String userType){
+        String uri = "http://localhost:8080/addUser?id=" + id +
+                      "?password=" + password +
+                      "?fName=" + fName +
+                      "?lName=" + lName +
+                      "?userType=" + userType;
         RestTemplate template = new RestTemplate();
         User result = template.getForObject(uri, User.class);
         userService.save(result);
-        return result.toString();
+        return "User added";
     }
 
     @RequestMapping("/getUsers")

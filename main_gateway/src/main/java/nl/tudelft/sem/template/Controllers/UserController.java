@@ -3,6 +3,7 @@ package nl.tudelft.sem.template.Controllers;
 import nl.tudelft.sem.template.Objects.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,21 +13,17 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @RequestMapping("/helloUser")
-    public String helloUser(){
-        String uri = "http://localhost:8081/sayHi";
-        RestTemplate template = new RestTemplate();
-        String result = template.getForObject(uri, String.class);
-        return result;
-    }
-
     @GetMapping("/addUser")
-    public String addUser(User user){
-        return user.toString();
+    public User addUser(@RequestParam(value = "id") String id,
+                        @RequestParam(value = "password") String password,
+                        @RequestParam(value = "fName") String fName,
+                        @RequestParam(value = "lName") String lName,
+                        @RequestParam(value = "userType") String userType){
+        return new User(id, password, fName, lName, userType);
     }
 
 
-    @RequestMapping("/getUser")
+    @GetMapping("/getUser")
     public String getUser(){
         String uri = "http://localhost:8081/getUser";
         RestTemplate template = new RestTemplate();

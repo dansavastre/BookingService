@@ -15,8 +15,9 @@ import java.util.Scanner;
 public class Application implements CommandLineRunner {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(Application.class);
-		app.run(args);
+//		SpringApplication app = new SpringApplication(Application.class);
+//		app.run(args);
+		SpringApplication.run(Application.class, args);
 	}
 
 	@Override
@@ -34,9 +35,7 @@ public class Application implements CommandLineRunner {
 		String lName = in.next();
 		System.out.println("Enter designation");
 		String userType = in.next();
-		User u = new User(name, password, fName, lName, userType);
-		System.out.println(u.toString());
-		userController.addUser(u);
+		//userController.addUser(name, password, fName, lName, userType);
 	}
 
 }
