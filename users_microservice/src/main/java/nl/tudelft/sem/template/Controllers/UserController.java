@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @RestController
 public class UserController {
 
-    @Autowired
-    private IUserService userService;
 
     @RequestMapping("/sayHi")
     public String sayHi(){
@@ -32,12 +31,14 @@ public class UserController {
                       "?userType=" + userType;
         RestTemplate template = new RestTemplate();
         User result = template.getForObject(uri, User.class);
+        IUserService userService = new UserService();
         userService.save(result);
         return "User added";
     }
 
     @RequestMapping("/getUsers")
-    public Collection<User> getUsers() {
-        return userService.findAll();
+    public String getUsers() {
+        IUserService userService = new UserService();
+        return (new User("id", "password", "firstName", "lastName", "employee")).toString();
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 @RestController
 public class UserController {
@@ -25,11 +25,10 @@ public class UserController {
 
     @GetMapping("/getUser")
     public String getUser(){
-        String uri = "http://localhost:8081/getUser";
+        String uri = "http://localhost:8081/getUsers";
         RestTemplate template = new RestTemplate();
-        User[] result = ((template.getForObject(uri, User[].class)));
-        assert result != null;
-        return Arrays.toString(result);
+        String result = template.getForObject(uri, String.class);
+        return result;
     }
 
 }
