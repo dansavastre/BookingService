@@ -17,6 +17,13 @@ import java.util.List;
 public class UserController {
 
 
+    @Autowired
+    private IUserService userService;
+
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
+
     @RequestMapping("/sayHi")
     public String sayHi(){
         return "Hello from the user microservice!";
@@ -31,14 +38,12 @@ public class UserController {
                       "?userType=" + userType;
         RestTemplate template = new RestTemplate();
         User result = template.getForObject(uri, User.class);
-        IUserService userService = new UserService();
         userService.save(result);
         return "User added";
     }
 
     @RequestMapping("/getUsers")
     public String getUsers() {
-        IUserService userService = new UserService();
         return (new User("id", "password", "firstName", "lastName", "employee")).toString();
     }
 }
