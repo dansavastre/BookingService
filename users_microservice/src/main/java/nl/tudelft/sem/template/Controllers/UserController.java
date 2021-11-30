@@ -1,49 +1,45 @@
 package nl.tudelft.sem.template.Controllers;
 
 import nl.tudelft.sem.template.Objects.User;
-import nl.tudelft.sem.template.Services.IUserService;
 import nl.tudelft.sem.template.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
 public class UserController {
 
-
     @Autowired
-    private IUserService userService;
-
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @RequestMapping("/sayHi")
     public String sayHi(){
         return "Hello from the user microservice!";
     }
 
-    @RequestMapping("/addUser")
-    public String addUser(String id, String password, String fName, String lName, String userType){
-        String uri = "http://localhost:8080/addUser?id=" + id +
-                      "?password=" + password +
-                      "?fName=" + fName +
-                      "?lName=" + lName +
-                      "?userType=" + userType;
-        RestTemplate template = new RestTemplate();
-        User result = template.getForObject(uri, User.class);
-        userService.save(result);
-        return "User added";
+    @RequestMapping("/users")
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
     }
 
-    @RequestMapping("/getUsers")
-    public String getUsers() {
-        return (new User("id", "password", "firstName", "lastName", "employee")).toString();
+    @RequestMapping("/getUser/{id}")
+    public User getUser(@PathVariable("id") String id){
+        return userService.getUser(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/users")
+    public void addUser(@RequestBody User user){
+        userService.addUser(user);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
+    public void updateUser(@RequestBody User user, @PathVariable("id") String id){
+        userService.updateUser(id, user);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
+    public void deleteUser(@PathVariable("id") String id){
+        userService.deleteUser(id);
     }
 }

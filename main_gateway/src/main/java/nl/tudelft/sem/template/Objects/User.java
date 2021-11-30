@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.Objects;
 
 import java.util.Objects;
 
+
 public class User {
 
     private final String id;
@@ -16,6 +17,15 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;
+    }
+
+    public User(){
+        super();
+        this.id = "NOTINSTANTIATED";
+        this.password = "NOTINSTANTIATED";
+        this.firstName = "NOTINSTANTIATED";
+        this.lastName = "NOTINSTANTIATED";
+        this.userType = "NOTINSTANTIATED";
     }
 
     public String getId() {

@@ -1,138 +1,54 @@
 package nl.tudelft.sem.template.Services;
 
 import nl.tudelft.sem.template.Objects.User;
-import nl.tudelft.sem.template.Repositories.UserRepository;
+import nl.tudelft.sem.template.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class UserService implements IUserService {
+public class UserService {
+    
+    @Autowired
+    private final UserRepository userRepository;
 
+    private List<User> users = new ArrayList<>(Arrays.asList(new User("ltwubben", "password", "Luuk", "Wubben", "employee"),
+            new User("andy", "I_<3_JavaDoc_xoxoxo123", "Andy", "Zaidman", "god")));
 
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    @Override
-    public List<User> findAll() {
-        UserRepository repository = new UserRepository() {
-            @Override
-            public <S extends User> S save(S entity) {
-                return null;
-            }
-
-            @Override
-            public <S extends User> Iterable<S> saveAll(Iterable<S> entities) {
-                return null;
-            }
-
-            @Override
-            public Optional<User> findById(String s) {
-                return Optional.empty();
-            }
-
-            @Override
-            public boolean existsById(String s) {
-                return false;
-            }
-
-            @Override
-            public Iterable<User> findAll() {
-                return null;
-            }
-
-            @Override
-            public Iterable<User> findAllById(Iterable<String> strings) {
-                return null;
-            }
-
-            @Override
-            public long count() {
-                return 0;
-            }
-
-            @Override
-            public void deleteById(String s) {
-
-            }
-
-            @Override
-            public void delete(User entity) {
-
-            }
-
-            @Override
-            public void deleteAll(Iterable<? extends User> entities) {
-
-            }
-
-            @Override
-            public void deleteAll() {
-
-            }
-        };
-        var users = (List<User>) repository.findAll();
+    public List<User> getAllUsers(){
         return users;
     }
 
-    @Override
-    public void save(User user) {
-        UserRepository repository = new UserRepository() {
-            @Override
-            public <S extends User> S save(S entity) {
-                return null;
+    public User getUser(String id){
+        return users.stream().filter(x -> x.getId().equals(id)).findFirst().get();
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void updateUser(String id, User user) {
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getId().equals(id)){
+                users.set(i, user);
+                return;
             }
+        }
+    }
 
-            @Override
-            public <S extends User> Iterable<S> saveAll(Iterable<S> entities) {
-                return null;
+    public void deleteUser(String id) {
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getId().equals(id)){
+                users.remove(i);
+                return;
             }
-
-            @Override
-            public Optional<User> findById(String s) {
-                return Optional.empty();
-            }
-
-            @Override
-            public boolean existsById(String s) {
-                return false;
-            }
-
-            @Override
-            public Iterable<User> findAll() {
-                return null;
-            }
-
-            @Override
-            public Iterable<User> findAllById(Iterable<String> strings) {
-                return null;
-            }
-
-            @Override
-            public long count() {
-                return 0;
-            }
-
-            @Override
-            public void deleteById(String s) {
-
-            }
-
-            @Override
-            public void delete(User entity) {
-
-            }
-
-            @Override
-            public void deleteAll(Iterable<? extends User> entities) {
-
-            }
-
-            @Override
-            public void deleteAll() {
-
-            }
-        };
-        repository.save(user);
+        }
     }
 }
