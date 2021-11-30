@@ -21,7 +21,6 @@ public class UserService {
 
     public List<User> getAllUsers(){
         List<User> u = new ArrayList<>();
-        List<User> u1 = userRepository.findAllByFirstNameContains("");
         userRepository.findAll().forEach(u::add);
         return u;
     }
