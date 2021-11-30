@@ -11,14 +11,6 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @RequestMapping("/helloUser")
-    public String helloUser(){
-        String uri = "http://localhost:8081/sayHi";
-        RestTemplate template = new RestTemplate();
-        String result = template.getForObject(uri, String.class);
-        return result;
-    }
-
     @RequestMapping("/getUsers")
     public List<User> getUsers(){
         String uri = "http://localhost:8081/users";

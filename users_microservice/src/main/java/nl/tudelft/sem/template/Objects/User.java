@@ -10,19 +10,19 @@ import static javax.persistence.GenerationType.SEQUENCE;
 public class User {
 
     @Id
-    @Column(name = "id", nullable = false, length = 50)
+    @Column(name = "ID", nullable = true, length = 50)
     private String id;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "PASSWORD", nullable = true, length = 255)
     private String password;
 
-    @Column(name = "firstName", nullable = true, length = 50)
+    @Column(name = "FIRST_NAME", nullable = true, length = 50)
     private String firstName;
 
-    @Column(name = "lastName", nullable = true, length = 50)
+    @Column(name = "LAST_NAME", nullable = true, length = 50)
     private String lastName;
 
-    @Column(name = "userType", nullable = false, length = 50)
+    @Column(name = "USER_TYPE", nullable = true, length = 50)
     private String userType;
 
 

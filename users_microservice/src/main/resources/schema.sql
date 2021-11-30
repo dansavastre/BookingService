@@ -1,8 +1,10 @@
+DROP TABLE IF EXISTS user;
+
 CREATE TABLE user (
-                      id varchar NOT NULL,
-                      password varchar NOT NULL,
-                      firstName varchar,
-                      lastName varchar,
-                      userType varchar,
-                      PRIMARY KEY (id)
+                      ID varchar NOT NULL,
+                      PASSWORD varchar NOT NULL,
+                      FIRST_NAME varchar,
+                      LAST_NAME varchar,
+                      USER_TYPE varchar,
+                      PRIMARY KEY (ID)
 );

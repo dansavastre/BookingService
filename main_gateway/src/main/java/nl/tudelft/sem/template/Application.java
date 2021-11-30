@@ -20,22 +20,4 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-//	@Override
-//	public void run(String... args) throws Exception {
-//		Scanner in = new Scanner(System.in);
-//
-//		UserController userController = new UserController();
-//
-//		System.out.println("Enter username:");
-//		String name = in.next();
-//		System.out.println("Enter password:");
-//		String password = in.next();
-//		System.out.println("Enter first name and last name");
-//		String fName = in.next();
-//		String lName = in.next();
-//		System.out.println("Enter designation");
-//		String userType = in.next();
-//		//userController.addUser(name, password, fName, lName, userType);
-//	}
-
 }
