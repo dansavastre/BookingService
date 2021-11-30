@@ -58,4 +58,16 @@ public class UserController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser/{id}")
+    public boolean deleteUser(@PathVariable("id") String id){
+        try {
+            String uri = "http://localhost:8081/users/".concat(id);
+            RestTemplate template = new RestTemplate();
+            template.delete(uri);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
 }
