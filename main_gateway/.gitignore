@@ -29,3 +29,7 @@ gradle-app.setting
 #Ignore IntelliJ IDEA folder
 .idea/
 .idea
+
+#Ignore database data
+data
+data/
