@@ -1,0 +1,2 @@
+INSERT INTO booking (BOOKING_OWNER, ROOM, DATE, START_TIME, END_TIME, PURPOSE)
+ VALUES('vmadhu', '1234', '2022-04-01', '09:00', '10:00', 'sem op');
