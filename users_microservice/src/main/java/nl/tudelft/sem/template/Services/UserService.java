@@ -24,4 +24,13 @@ public class UserService {
     public void addUser(User user) {
         users.add(user);
     }
+
+    public void updateUser(String id, User user) {
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getId().equals(id)){
+                users.set(i, user);
+                return;
+            }
+        }
+    }
 }

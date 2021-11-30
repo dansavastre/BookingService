@@ -46,4 +46,16 @@ public class UserController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/putUser/{id}")
+    public boolean updateUser(@RequestBody User user, @PathVariable("id") String id){
+        try {
+            String uri = "http://localhost:8081/users/".concat(id);
+            RestTemplate template = new RestTemplate();
+            template.put(uri, user);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
 }
