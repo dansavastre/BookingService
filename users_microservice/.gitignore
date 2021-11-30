@@ -1,7 +1,5 @@
 ### Gradle ###
 
-data/
-
 .gradle
 build/
 gradle-app.setting
@@ -31,3 +29,7 @@ gradle-app.setting
 #Ignore IntelliJ IDEA folder
 .idea/
 .idea
+
+#Ignore database data
+data
+data/
