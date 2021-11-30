@@ -1,5 +1,6 @@
 ### Gradle ###
 
+data/
 .gradle
 build/
 gradle-app.setting
