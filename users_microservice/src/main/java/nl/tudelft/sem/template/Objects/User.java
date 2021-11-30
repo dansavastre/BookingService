@@ -3,7 +3,6 @@ package nl.tudelft.sem.template.Objects;
 import javax.persistence.*;
 import java.util.Objects;
 
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "User")
 @Table(name = "user")

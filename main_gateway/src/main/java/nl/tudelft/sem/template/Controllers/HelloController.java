@@ -16,8 +16,16 @@ public class HelloController {
     }
 
     @RequestMapping("/helloRooms")
-    public String helloRooms(){
-        String uri = "http://localhost:8082/sayHi";
+    public String helloRoom(){
+        String uri = "http://localhost:8082/sayHiToRoom";
+        RestTemplate template = new RestTemplate();
+        String result = template.getForObject(uri, String.class);
+        return result;
+    }
+
+    @RequestMapping("/helloBuildings")
+    public String helloBuilding(){
+        String uri = "http://localhost:8082/sayHiToBuilding";
         RestTemplate template = new RestTemplate();
         String result = template.getForObject(uri, String.class);
         return result;
