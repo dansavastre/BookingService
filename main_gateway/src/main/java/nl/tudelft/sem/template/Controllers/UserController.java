@@ -1,11 +1,11 @@
 package nl.tudelft.sem.template.Controllers;
 
 import nl.tudelft.sem.template.Objects.User;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,12 +19,31 @@ public class UserController {
         return result;
     }
 
-//    @RequestMapping("/getUser")
-//    public String getUser(){
-//        String uri = "http://localhost:8081/getUser";
-//        RestTemplate template = new RestTemplate();
-//        User[] result = ((template.getForObject(uri, User[].class)));
-//        assert result != null;
-//        return Arrays.toString(result);
-//    }
+    @RequestMapping("/getUsers")
+    public List<User> getUsers(){
+        String uri = "http://localhost:8081/users";
+        RestTemplate template = new RestTemplate();
+        return template.getForObject(uri, List.class);
+    }
+
+
+    @RequestMapping("/getUser/{id}")
+    public User getUser(@PathVariable("id") String id){
+        String uri = "http://localhost:8081/getUser/".concat(id);
+        RestTemplate template = new RestTemplate();
+        return template.getForObject(uri, User.class);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/postUser")
+    public boolean postUser(@RequestBody User user){
+        try {
+            String uri = "http://localhost:8081/users";
+            RestTemplate template = new RestTemplate();
+            template.postForObject(uri, user, void.class);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
 }

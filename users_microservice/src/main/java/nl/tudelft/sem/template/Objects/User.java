@@ -26,7 +26,12 @@ public class User {
     private String userType;
 
 
-        public User(String id, String password, String firstName, String lastName, String userType) {
+    public User() {
+
+    }
+
+    public User(String id, String password, String firstName, String lastName, String userType) {
+        super();
         this.id = id;
         this.password = password;
         this.firstName = firstName;
@@ -34,38 +39,12 @@ public class User {
         this.userType = userType;
     }
 
-    public User() {
-        
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(userType, user.userType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, userType);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userType='" + userType + '\'' +
-                '}';
-    }
-
     public String getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getFirstName() {
@@ -78,5 +57,29 @@ public class User {
 
     public String getUserType() {
         return userType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id.equals(user.id) && password.equals(user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && userType.equals(user.userType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, password, firstName, lastName, userType);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userType='" + userType + '\'' +
+                '}';
     }
 }
