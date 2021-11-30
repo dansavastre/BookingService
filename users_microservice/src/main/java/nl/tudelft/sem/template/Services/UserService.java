@@ -14,9 +14,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private List<User> users = new ArrayList<>(Arrays.asList(new User("ltwubben", "password", "Luuk", "Wubben", "employee"),
-            new User("andy", "I_<3_JavaDoc_xoxoxo123", "Andy", "Zaidman", "god")));
-
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
