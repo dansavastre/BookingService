@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BuildingController {
 
+    private final BuildingService buildingService;
+
     @Autowired
-    private BuildingService buildingService;
+    public BuildingController(BuildingService buildingService) {
+        this.buildingService = buildingService;
+    }
 
     @RequestMapping("/sayHiToBuilding")
     public String sayHi() {
