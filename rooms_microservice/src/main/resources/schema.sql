@@ -13,8 +13,8 @@ CREATE TABLE room (
 
 CREATE TABLE building (
                       ID int NOT NULL,
-                      OPENING_TIME varchar,
-                      CLOSING_TIME varchar,
+                      OPENING_TIME TIME,
+                      CLOSING_TIME TIME,
                       NAME varchar,
                       PRIMARY KEY (ID)
 );
