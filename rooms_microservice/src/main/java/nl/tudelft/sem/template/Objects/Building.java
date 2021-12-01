@@ -1,6 +1,7 @@
 package nl.tudelft.sem.template.Objects;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity(name = "Building")
@@ -12,10 +13,10 @@ public class Building {
     private int id;
 
     @Column(name = "OPENING_TIME")
-    private String openingTime;
+    private LocalTime openingTime;
 
     @Column(name = "CLOSING_TIME")
-    private String closingTime;
+    private LocalTime closingTime;
 
     @Column(name = "NAME", length = 255)
     private String name;
@@ -25,7 +26,7 @@ public class Building {
 
     }
 
-    public Building(int id, String openingTime, String closingTime, String name) {
+    public Building(int id, LocalTime openingTime, LocalTime closingTime, String name) {
         super();
         this.id = id;
         this.openingTime = openingTime;
@@ -41,19 +42,19 @@ public class Building {
         this.id = id;
     }
 
-    public String getOpeningTime() {
+    public LocalTime getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(String openingTime) {
+    public void setOpeningTime(LocalTime openingTime) {
         this.openingTime = openingTime;
     }
 
-    public String getClosingTime() {
+    public LocalTime getClosingTime() {
         return closingTime;
     }
 
-    public void setClosingTime(String closingTime) {
+    public void setClosingTime(LocalTime closingTime) {
         this.closingTime = closingTime;
     }
 
@@ -68,9 +69,9 @@ public class Building {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Building)) return false;
         Building building = (Building) o;
-        return id == building.id && this.openingTime.equals(building.openingTime) && this.closingTime.equals(building.closingTime) && Objects.equals(name, building.name);
+        return id == building.id && Objects.equals(openingTime, building.openingTime) && Objects.equals(closingTime, building.closingTime) && Objects.equals(name, building.name);
     }
 
     @Override
