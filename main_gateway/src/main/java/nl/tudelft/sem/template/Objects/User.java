@@ -1,4 +1,4 @@
-package nl.tudelft.sem.template.Objects;
+package nl.tudelft.sem.template.objects;
 
 import java.util.Objects;
 

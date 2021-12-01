@@ -1,4 +1,4 @@
-package nl.tudelft.sem.template.Objects;
+package nl.tudelft.sem.template.objects;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,7 +15,18 @@ public class Booking {
     private LocalTime endTime;
     private String purpose;
 
-    public Booking(Long id, List<String> participants, String bookingOwner, String room, LocalDate date, LocalTime startTime, LocalTime endTime, String purpose) {
+    /** Constructor for Booking.
+     *
+     * @param id the id
+     * @param bookingOwner netId of person who made booking.
+     * @param room the id of the room & building that is booked
+     * @param date the date of the booking.
+     * @param startTime the start time of the booking.
+     * @param endTime the end time of the booking.
+     * @param purpose the purpose of the meeting.
+     */
+    public Booking(Long id, String bookingOwner, String room, LocalDate date,
+                   LocalTime startTime, LocalTime endTime, String purpose) {
         this.id = id;
         this.bookingOwner = bookingOwner;
         this.room = room;
@@ -25,7 +36,10 @@ public class Booking {
         this.purpose = purpose;
     }
 
-    public Booking(){
+    /** Empty constructor.
+     *
+     */
+    public Booking() {
         super();
         this.id = null;
         this.bookingOwner = "NOTINSTANTIATED";
@@ -35,82 +49,150 @@ public class Booking {
         this.purpose = "NOTINSTANTIATED";
     }
 
+    /** Get the id of the booking.
+     *
+     * @return id of the booking.
+     */
     public Long getId() {
         return id;
     }
 
+    /** Get the booking owner.
+     *
+     * @return the booking owner.
+     */
     public String getBookingOwner() {
         return bookingOwner;
     }
 
+    /** Get the room of the booking.
+     *
+     * @return the room of the booking.
+     */
     public String getRoom() {
         return room;
     }
 
+    /** Get the start time of the booking.
+     *
+     * @return the start time of the booking.
+     */
     public LocalTime getStartTime() {
         return startTime;
     }
 
+    /** Get the end time of the booking.
+     *
+     * @return the end time of the booking.
+     */
     public LocalTime getEndTime() {
         return endTime;
     }
 
+    /** Get the purpose of the booking.
+     *
+     * @return the purpose of the booking.
+     */
     public String getPurpose() {
         return purpose;
     }
 
+    /** Get the date of the booking.
+     *
+     * @return the date of the booking.
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /** Set the date of the booking.
+     *
+     * @param date the new date.
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /** Set the booking owner of the booking.
+     *
+     * @param bookingOwner the new booking owner.
+     */
     public void setBookingOwner(String bookingOwner) {
         this.bookingOwner = bookingOwner;
     }
 
+    /** Set the room of the booking.
+     *
+     * @param room the new room.
+     */
     public void setRoom(String room) {
         this.room = room;
     }
 
+    /** Set the start time of the booking.
+     *
+     * @param startTime the new start time.
+     */
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
+    /** Set the end time of the booking.
+     *
+     * @param endTime the new end time.
+     */
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
+    /** Set the purpose of the booking.
+     *
+     * @param purpose the new purpose.
+     */
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
 
+    /** Checks if the object is equal to this booking.
+     *
+     * @param o the object to compare to.
+     * @return true if they are the same, else false.
+     */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Booking booking = (Booking) o;
-        return id == booking.id && Objects.equals(bookingOwner, booking.bookingOwner) && Objects.equals(room, booking.room) && Objects.equals(date, booking.date) && Objects.equals(startTime, booking.startTime) && Objects.equals(endTime, booking.endTime) && Objects.equals(purpose, booking.purpose);
+        return id == booking.id && Objects.equals(bookingOwner, booking.bookingOwner)
+            && Objects.equals(room, booking.room) && Objects.equals(date, booking.date)
+            && Objects.equals(startTime, booking.startTime)
+            && Objects.equals(endTime, booking.endTime) && Objects.equals(purpose, booking.purpose);
     }
 
+    /** Generates a hash for the booking.
+     *
+     * @return the hash code for the booking.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, bookingOwner, room, date, startTime, endTime, purpose);
     }
 
+    /** A String version of the booking.
+     *
+     * @return the booking in form of a String.
+     */
     @Override
     public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", bookingOwner='" + bookingOwner + '\'' +
-                ", room='" + room + '\'' +
-                ", date=" + date +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", purpose='" + purpose + '\'' +
-                '}';
+        return new StringBuilder().append("Booking{").append("id=").append(id)
+            .append(", bookingOwner='").append(bookingOwner).append('\'').append(", room='")
+            .append(room).append('\'').append(", date=").append(date).append(", startTime=")
+            .append(startTime).append(", endTime=").append(endTime).append(", purpose='")
+            .append(purpose).append('\'').append('}').toString();
     }
 }
 
