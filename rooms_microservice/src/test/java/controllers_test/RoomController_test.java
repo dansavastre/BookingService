@@ -30,7 +30,7 @@ public class RoomController_test {
         MockitoAnnotations.initMocks(this);
         r0 = new Room(12, "Europe", 12, "projector, whiteboard", "yes", 36);
         r1 = new Room(11, "Australia", 6, "projector", "no", 36);
-        r1 = new Room(11, "Australia", 6, "projector", "yes", 36);
+        r2 = new Room(11, "Australia", 6, "projector", "yes", 36);
         roomController = new RoomController(roomService);
     }
 

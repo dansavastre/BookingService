@@ -38,6 +38,11 @@ public class Building_test {
     }
 
     @Test
+    void equals_null_test() {
+        assertFalse(b0.equals(null));
+    }
+
+    @Test
     void equals_same_test() {
         assertTrue(b0.equals(b2));
     }
