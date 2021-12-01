@@ -1,7 +1,6 @@
 package nl.tudelft.sem.template.Controllers;
 
 import nl.tudelft.sem.template.Objects.Booking;
-import nl.tudelft.sem.template.Objects.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
