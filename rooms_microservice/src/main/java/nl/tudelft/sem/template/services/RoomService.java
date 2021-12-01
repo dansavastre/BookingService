@@ -1,12 +1,11 @@
-package nl.tudelft.sem.template.Services;
-
-import nl.tudelft.sem.template.Objects.Room;
-import nl.tudelft.sem.template.Repositories.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package nl.tudelft.sem.template.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.sem.template.objects.Room;
+import nl.tudelft.sem.template.repositories.RoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
@@ -18,13 +17,18 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room> getAllRooms(){
+    /**
+     * Gets all rooms from the database and returns them in a List of Room.
+     *
+     * @return A List of Room Objects
+     */
+    public List<Room> getAllRooms() {
         List<Room> r = new ArrayList<>();
         roomRepository.findAll().forEach(r::add);
         return r;
     }
 
-    public Room getRoom(int id){
+    public Room getRoom(int id) {
         return roomRepository.findById(id).get();
     }
 

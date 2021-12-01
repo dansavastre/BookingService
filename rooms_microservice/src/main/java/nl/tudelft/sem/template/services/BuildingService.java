@@ -1,12 +1,11 @@
-package nl.tudelft.sem.template.Services;
-
-import nl.tudelft.sem.template.Objects.Building;
-import nl.tudelft.sem.template.Repositories.BuildingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package nl.tudelft.sem.template.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.sem.template.objects.Building;
+import nl.tudelft.sem.template.repositories.BuildingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BuildingService {
@@ -18,13 +17,18 @@ public class BuildingService {
         this.buildingRepository = buildingRepository;
     }
 
-    public List<Building> getAllBuildings(){
+    /**
+     * Method that requests all buildings from the database and returns them as a List of Building.
+     *
+     * @return List of Building Objects
+     */
+    public List<Building> getAllBuildings() {
         List<Building> b = new ArrayList<>();
         buildingRepository.findAll().forEach(b::add);
         return b;
     }
 
-    public Building getBuilding(int id){
+    public Building getBuilding(int id) {
         return buildingRepository.findById(id).get();
     }
 

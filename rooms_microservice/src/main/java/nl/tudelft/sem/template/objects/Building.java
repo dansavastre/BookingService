@@ -1,8 +1,12 @@
-package nl.tudelft.sem.template.Objects;
+package nl.tudelft.sem.template.objects;
 
-import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 @Entity(name = "Building")
 @Table(name = "building")
@@ -22,10 +26,18 @@ public class Building {
     private String name;
 
 
-    public Building(){
+    public Building() {
 
     }
 
+    /**
+     * Parameterised constructor for the Building class.
+     *
+     * @param id          The building ID number
+     * @param openingTime The building's opening time
+     * @param closingTime The Building's closing time
+     * @param name        The name of the building
+     */
     public Building(int id, LocalTime openingTime, LocalTime closingTime, String name) {
         super();
         this.id = id;
@@ -68,10 +80,17 @@ public class Building {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Building)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Building)) {
+            return false;
+        }
         Building building = (Building) o;
-        return id == building.id && Objects.equals(openingTime, building.openingTime) && Objects.equals(closingTime, building.closingTime) && Objects.equals(name, building.name);
+        return id == building.id
+                && Objects.equals(openingTime, building.openingTime)
+                && Objects.equals(closingTime, building.closingTime)
+                && Objects.equals(name, building.name);
     }
 
     @Override
@@ -81,11 +100,16 @@ public class Building {
 
     @Override
     public String toString() {
-        return "Building{" +
-                "id=" + id +
-                ", openingTime=" + openingTime +
-                ", closingTime=" + closingTime +
-                ", name='" + name + '\'' +
-                '}';
+        return "Building{"
+                + "id="
+                + id
+                + ", openingTime="
+                + openingTime
+                + ", closingTime="
+                + closingTime
+                + ", name='"
+                + name
+                + '\''
+                + '}';
     }
 }

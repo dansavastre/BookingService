@@ -1,8 +1,10 @@
-package nl.tudelft.sem.template.Objects;
+package nl.tudelft.sem.template.objects;
 
-import javax.persistence.*;
-import java.util.Map;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity(name = "Room")
 @Table(name = "room")
@@ -27,11 +29,26 @@ public class Room {
     @Column(name = "BUILDING_NUMBER", nullable = true)
     private int buildingNumber;
 
-    public Room(){
+    public Room() {
 
     }
 
-    public Room(int id, String name, int capacity, String equipment, String available, int buildingNumber) {
+    /**
+     * Parameterised constructor for the Room class.
+     *
+     * @param id             Id of the room
+     * @param name           Name of the room
+     * @param capacity       Capacity of the room
+     * @param equipment      Equipment present in the room
+     * @param available      Availability of the room (whether it is under maintenance or not)
+     * @param buildingNumber The building Id of the building this room is in
+     */
+    public Room(int id,
+                String name,
+                int capacity,
+                String equipment,
+                String available,
+                int buildingNumber) {
         super();
         this.id = id;
         this.name = name;
@@ -91,10 +108,19 @@ public class Room {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Room room = (Room) o;
-        return id == room.id && capacity == room.capacity && buildingNumber == room.buildingNumber && Objects.equals(name, room.name) && Objects.equals(equipment, room.equipment) && this.available.equals(room.available);
+        return id == room.id
+                && capacity == room.capacity
+                && buildingNumber == room.buildingNumber
+                && Objects.equals(name, room.name)
+                && Objects.equals(equipment, room.equipment)
+                && this.available.equals(room.available);
     }
 
     @Override
@@ -104,13 +130,21 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", capacity=" + capacity +
-                ", equipment=" + equipment +
-                ", available='" + available + '\'' +
-                ", buildingNumber=" + buildingNumber +
-                '}';
+        return "Room{"
+                + "id="
+                + id
+                + ", name='"
+                + name
+                + '\''
+                + ", capacity="
+                + capacity
+                + ", equipment="
+                + equipment
+                + ", available='"
+                + available
+                + '\''
+                + ", buildingNumber="
+                + buildingNumber
+                + '}';
     }
 }
