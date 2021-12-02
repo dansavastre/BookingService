@@ -1,24 +1,32 @@
-package controllers_test;
+package controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import nl.tudelft.sem.template.Application;
 import nl.tudelft.sem.template.controllers.RoomController;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.services.RoomService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
-public class RoomController_test {
+@AutoConfigureMockMvc
+@SpringBootTest(classes = Application.class)
+public class RoomControllerTest {
 
     @Mock
     private RoomService roomService;
 
+    @InjectMocks
     private RoomController roomController;
 
     Room r0;
@@ -27,19 +35,18 @@ public class RoomController_test {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
         r0 = new Room(12, "Europe", 12, "projector, whiteboard", "yes", 36);
         r1 = new Room(11, "Australia", 6, "projector", "no", 36);
         r2 = new Room(11, "Australia", 6, "projector", "yes", 36);
-        roomController = new RoomController(roomService);
     }
 
     @Test
-    void sayHi_test(){
+    void sayHi_test() {
         assertEquals("Hello from the room!", roomController.sayHi());
     }
+
     @Test
-    void connectionStatus_test(){
+    void connectionStatus_test() {
         assertEquals("Rooms is connected!", roomController.connectionStatus());
     }
 

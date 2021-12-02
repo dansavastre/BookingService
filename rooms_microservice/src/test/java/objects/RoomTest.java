@@ -1,12 +1,16 @@
-package objects_test;
+package objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nl.tudelft.sem.template.objects.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-public class Room_test {
+
+public class RoomTest {
 
     Room r0;
     Room r1;
@@ -46,8 +50,8 @@ public class Room_test {
 
     @Test
     void toString_test() {
-        String expected = "Room{id=11, name='Australia', capacity=6, " +
-                "equipment=projector, available='no', buildingNumber=36}";
+        String expected = "Room{id=11, name='Australia', capacity=6, "
+                + "equipment=projector, available='no', buildingNumber=36}";
         assertEquals(expected, r1.toString());
 
     }

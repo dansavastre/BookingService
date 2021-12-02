@@ -10,12 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoomService {
 
-    private final RoomRepository roomRepository;
-
     @Autowired
-    public RoomService(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
-    }
+    private RoomRepository roomRepository;
 
     /**
      * Gets all rooms from the database and returns them in a List of Room.

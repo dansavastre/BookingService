@@ -1,26 +1,33 @@
-package services_test;
+package services;
 
-import nl.tudelft.sem.template.controllers.BuildingController;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import nl.tudelft.sem.template.Application;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.repositories.BuildingRepository;
 import nl.tudelft.sem.template.services.BuildingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
-public class BuildingService_test {
+@AutoConfigureMockMvc
+@SpringBootTest(classes = Application.class)
+public class BuildingServiceTest {
 
     @Mock
     private BuildingRepository buildingRepository;
 
+    @InjectMocks
     private BuildingService buildingService;
 
 
@@ -30,12 +37,9 @@ public class BuildingService_test {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
-        b0 = new Building(36, LocalTime.of(8,0), LocalTime.of(20,0), "EEMCS");
-        b1 = new Building(25, LocalTime.of(8,0), LocalTime.of(20,0), "Library");
-        b2 = new Building(36, LocalTime.of(8,0), LocalTime.of(20,0), "EEMCS");
-
-        buildingService = new BuildingService(buildingRepository);
+        b0 = new Building(36, LocalTime.of(8, 0), LocalTime.of(20, 0), "EEMCS");
+        b1 = new Building(25, LocalTime.of(8, 0), LocalTime.of(20, 0), "Library");
+        b2 = new Building(36, LocalTime.of(8, 0), LocalTime.of(20, 0), "EEMCS");
     }
 
 

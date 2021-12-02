@@ -1,15 +1,16 @@
-package objects_test;
+package objects;
 
-import nl.tudelft.sem.template.controllers.BuildingController;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalTime;
 import nl.tudelft.sem.template.objects.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class Building_test {
+public class BuildingTest {
 
     Building b0;
     Building b1;
@@ -17,9 +18,9 @@ public class Building_test {
 
     @BeforeEach
     void setUp() {
-        b0 = new Building(36, LocalTime.of(8,0), LocalTime.of(20,0), "EEMCS");
-        b1 = new Building(25, LocalTime.of(8,0), LocalTime.of(20,0), "Library");
-        b2 = new Building(36, LocalTime.of(8,0), LocalTime.of(20,0), "EEMCS");
+        b0 = new Building(36, LocalTime.of(8, 0), LocalTime.of(20, 0), "EEMCS");
+        b1 = new Building(25, LocalTime.of(8, 0), LocalTime.of(20, 0), "Library");
+        b2 = new Building(36, LocalTime.of(8, 0), LocalTime.of(20, 0), "EEMCS");
     }
 
     @Test

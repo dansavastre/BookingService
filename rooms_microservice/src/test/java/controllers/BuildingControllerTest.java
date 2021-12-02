@@ -1,27 +1,33 @@
-package controllers_test;
+package controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import nl.tudelft.sem.template.Application;
 import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.services.BuildingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
-
-public class BuildingController_test {
+@AutoConfigureMockMvc
+@SpringBootTest(classes = Application.class)
+public class BuildingControllerTest {
 
     @Mock
     private BuildingService buildingService;
 
+    @InjectMocks
     private BuildingController buildingController;
 
     List<Building> buildings;
@@ -30,17 +36,15 @@ public class BuildingController_test {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
-        b0 = new Building(36, LocalTime.of(8,0), LocalTime.of(20,0), "EEMCS");
-        b1 = new Building(25, LocalTime.of(8,0), LocalTime.of(20,0), "Library");
+        b0 = new Building(36, LocalTime.of(8, 0), LocalTime.of(20, 0), "EEMCS");
+        b1 = new Building(25, LocalTime.of(8, 0), LocalTime.of(20, 0), "Library");
         buildings = new ArrayList<>();
         buildings.add(b0);
         buildings.add(b1);
-        buildingController = new BuildingController(buildingService);
     }
 
     @Test
-    void sayHi_test(){
+    void sayHi_test() {
         assertEquals("Hello from the building!", buildingController.sayHi());
     }
 
@@ -58,14 +62,14 @@ public class BuildingController_test {
 
     @Test
     void addBuilding_test() {
-        Building b2 = new Building(23, LocalTime.of(8,0), LocalTime.of(20,0), "CEG");
+        Building b2 = new Building(23, LocalTime.of(8, 0), LocalTime.of(20, 0), "CEG");
         buildingController.addBuilding(b2);
         verify(buildingService, times(1)).addBuilding(b2);
     }
 
     @Test
     void updateBuilding_test() {
-        Building b2 = new Building(36, LocalTime.of(8,0), LocalTime.of(21,0), "EWI");
+        Building b2 = new Building(36, LocalTime.of(8, 0), LocalTime.of(21, 0), "EWI");
         buildingController.updateBuilding(b2, 36);
         verify(buildingService, times(1)).updateBuilding(36, b2);
     }
@@ -75,7 +79,6 @@ public class BuildingController_test {
         buildingController.deleteBuilding(36);
         verify(buildingService, times(1)).deleteBuilding(36);
     }
-
 
 
 }

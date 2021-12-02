@@ -4,21 +4,18 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.services.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+
+@Controller
 public class BuildingController {
 
-    private final BuildingService buildingService;
-
     @Autowired
-    public BuildingController(BuildingService buildingService) {
-        this.buildingService = buildingService;
-    }
+    private BuildingService buildingService;
 
     @RequestMapping("/sayHiToBuilding")
     public String sayHi() {
