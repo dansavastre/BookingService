@@ -10,6 +10,7 @@ buildscript {
 }
 
 plugins {
+	id 'application'
 	id 'org.springframework.boot' version '2.3.5.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
@@ -26,10 +27,14 @@ plugins {
 	id 'info.solidsoft.pitest' version '1.5.2'
 }
 
-group = 'nl.tudelft.cse.sem.template'
+application {
+	mainClass = 'nl.tudelft.sem.template.Application'
+}
+
+group = 'nl.tudelft.sem.template'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
 	mavenCentral()

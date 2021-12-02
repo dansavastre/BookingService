@@ -26,10 +26,10 @@ plugins {
 	id 'info.solidsoft.pitest' version '1.5.2'
 }
 
-group = 'nl.tudelft.cse.sem.template'
+group = 'nl.tudelft.sem.template'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
 	mavenCentral()
@@ -76,10 +76,6 @@ jacocoTestCoverageVerification() {
 	}
 }
 
-checkstyle {
-	toolVersion "8.37"
-	configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
-}
 
 pmd {
 	incrementalAnalysis = true
