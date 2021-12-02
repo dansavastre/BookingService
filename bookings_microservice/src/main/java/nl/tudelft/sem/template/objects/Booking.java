@@ -1,18 +1,17 @@
-package nl.tudelft.sem.template.Objects;
+package nl.tudelft.sem.template.objects;
 
-import jdk.jfr.Timestamp;
+import static javax.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.*;
-
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
-
-import static javax.persistence.GenerationType.IDENTITY;
-import static javax.persistence.GenerationType.SEQUENCE;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity(name = "Booking")
 @Table(name = "booking")
@@ -29,7 +28,7 @@ public class Booking {
             generator = "user_sequence"
     )
     @Column(name = "ID")
-    private Long id;
+    private transient Long id;
 
     @Column(name = "BOOKING_OWNER")
     private String bookingOwner;
@@ -49,7 +48,20 @@ public class Booking {
     @Column(name = "PURPOSE")
     private String purpose;
 
-    public Booking(List<String> participants, String bookingOwner, String room, LocalDate date, LocalTime startTime, LocalTime endTime, String purpose) {
+    /**
+     * Parameterised constructor for the Booking class.
+     *
+     * @param participants List of NetIDs of participant users
+     * @param bookingOwner NetID of the user who made the booking
+     * @param room         Building number and room number of room
+     * @param date         Date of the booking
+     * @param startTime    Start time of booking
+     * @param endTime      End time of booking
+     * @param purpose      Purpose of booking
+     */
+    public Booking(List<String> participants, String bookingOwner,
+                   String room, LocalDate date, LocalTime startTime,
+                   LocalTime endTime, String purpose) {
         this.bookingOwner = bookingOwner;
         this.room = room;
         this.date = date;
@@ -58,6 +70,9 @@ public class Booking {
         this.purpose = purpose;
     }
 
+    /**
+     * Parameterless constructor of booking class. Necessary for database and error handling.
+     */
     public Booking() {
 
     }
@@ -116,10 +131,20 @@ public class Booking {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Booking booking = (Booking) o;
-        return id == booking.id && Objects.equals(bookingOwner, booking.bookingOwner) && Objects.equals(room, booking.room) && Objects.equals(date, booking.date) && Objects.equals(startTime, booking.startTime) && Objects.equals(endTime, booking.endTime) && Objects.equals(purpose, booking.purpose);
+        return Objects.equals(id, booking.id)
+                && Objects.equals(bookingOwner, booking.bookingOwner)
+                && Objects.equals(room, booking.room)
+                && Objects.equals(date, booking.date)
+                && Objects.equals(startTime, booking.startTime)
+                && Objects.equals(endTime, booking.endTime)
+                && Objects.equals(purpose, booking.purpose);
     }
 
     @Override
@@ -129,14 +154,14 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", bookingOwner='" + bookingOwner + '\'' +
-                ", room='" + room + '\'' +
-                ", date=" + date +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", purpose='" + purpose + '\'' +
-                '}';
+        return "Booking{"
+                + "id=" + id
+                + ", bookingOwner='" + bookingOwner + '\''
+                + ", room='" + room + '\''
+                + ", date=" + date
+                + ", startTime=" + startTime
+                + ", endTime=" + endTime
+                + ", purpose='" + purpose + '\''
+                + '}';
     }
 }

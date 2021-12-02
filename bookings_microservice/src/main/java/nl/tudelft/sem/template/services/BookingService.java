@@ -1,30 +1,34 @@
-package nl.tudelft.sem.template.Services;
+package nl.tudelft.sem.template.services;
 
-import nl.tudelft.sem.template.Objects.Booking;
+import java.util.ArrayList;
+import java.util.List;
+import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class BookingService {
 
-    private final BookingRepository bookingRepository;
+    private final transient BookingRepository bookingRepository;
 
     @Autowired
     public BookingService(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
 
-    public List<Booking> getAllBookings(){
+    /**
+     * Gets a List of all Bookings from the database.
+     *
+     * @return A List of Booking objects.
+     */
+    public List<Booking> getAllBookings() {
         List<Booking> b = new ArrayList<>();
         bookingRepository.findAll().forEach(b::add);
         return b;
     }
 
-    public Booking getBooking(Long id){
+    public Booking getBooking(Long id) {
         return bookingRepository.findById(id).get();
     }
 

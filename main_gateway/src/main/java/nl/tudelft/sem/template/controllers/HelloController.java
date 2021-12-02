@@ -1,17 +1,18 @@
 package nl.tudelft.sem.template.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-@RestController
+@Controller
 public class HelloController {
 
     /** Receives a message from the user microservice.
      *
      * @return a string.
      */
-    @RequestMapping("/helloUser")
+    @GetMapping("/helloUser")
+    @ResponseBody
     public String helloUser() {
         String uri = "http://localhost:8081/sayHi";
         RestTemplate template = new RestTemplate();
@@ -22,7 +23,8 @@ public class HelloController {
      *
      * @return a string.
      */
-    @RequestMapping("/helloRooms")
+    @GetMapping("/helloRooms")
+    @ResponseBody
     public String helloRoom() {
         String uri = "http://localhost:8082/sayHiToRoom";
         RestTemplate template = new RestTemplate();
@@ -33,7 +35,8 @@ public class HelloController {
      *
      * @return a string.
      */
-    @RequestMapping("/helloBuildings")
+    @GetMapping("/helloBuildings")
+    @ResponseBody
     public String helloBuilding() {
         String uri = "http://localhost:8082/sayHiToBuilding";
         RestTemplate template = new RestTemplate();
@@ -44,7 +47,8 @@ public class HelloController {
      *
      * @return a string.
      */
-    @RequestMapping("/helloBookings")
+    @GetMapping("/helloBookings")
+    @ResponseBody
     public String helloBookings() {
         String uri = "http://localhost:8083/sayHi";
         RestTemplate template = new RestTemplate();
@@ -55,7 +59,8 @@ public class HelloController {
      *
      * @return a string.
      */
-    @RequestMapping("/checkBookingsConnectionToRoom")
+    @GetMapping("/checkBookingsConnectionToRoom")
+    @ResponseBody
     public String checkConnectionBookingsRooms() {
         String uri = "http://localhost:8083/confirmRoomsConnection";
         RestTemplate template = new RestTemplate();
