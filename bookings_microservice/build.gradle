@@ -10,7 +10,6 @@ buildscript {
 }
 
 plugins {
-	id 'application'
 	id 'org.springframework.boot' version '2.3.5.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
@@ -25,10 +24,6 @@ plugins {
 
 	// PITest
 	id 'info.solidsoft.pitest' version '1.5.2'
-}
-
-application {
-	mainClass = 'nl.tudelft.sem.template.Application'
 }
 
 group = 'nl.tudelft.sem.template'
@@ -51,6 +46,7 @@ dependencies {
 	testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
 	testImplementation('org.assertj:assertj-core:3.14.0')
+	//annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 }
 
 test {

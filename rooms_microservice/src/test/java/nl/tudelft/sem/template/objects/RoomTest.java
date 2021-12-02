@@ -1,4 +1,4 @@
-package objects;
+package nl.tudelft.sem.template.objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
