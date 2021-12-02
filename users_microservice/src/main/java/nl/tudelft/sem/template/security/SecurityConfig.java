@@ -18,5 +18,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-    
+
 }

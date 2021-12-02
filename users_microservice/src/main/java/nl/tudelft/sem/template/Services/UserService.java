@@ -3,11 +3,14 @@ package nl.tudelft.sem.template.Services;
 import nl.tudelft.sem.template.Objects.User;
 import nl.tudelft.sem.template.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+<<<<<<< HEAD
 public class UserService {
 
     private final UserRepository userRepository;
@@ -38,5 +41,29 @@ public class UserService {
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
+=======
+@EnableAutoConfiguration
+public class UserService {
+
+
+    @Autowired
+    private UserRepository repository;
+
+    public void setRepository(UserRepository repository) {
+        this.repository = repository;
+    }
+
+
+    public List<User> findAll() {
+
+        var users = (List<User>) repository.findAll();
+        return users;
+    }
+
+
+    public void save(User user) {
+
+        repository.save(user);
+>>>>>>> eb7baabddc49031655f42754d2fc7d6924b01132
     }
 }
