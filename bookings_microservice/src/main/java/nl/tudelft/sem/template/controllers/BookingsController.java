@@ -14,12 +14,8 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class BookingsController {
 
-    private final transient BookingService bookingService;
-
     @Autowired
-    public BookingsController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    private transient BookingService bookingService;
 
     @RequestMapping("/sayHi")
     public String sayHi() {

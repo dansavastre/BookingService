@@ -10,12 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookingService {
 
-    private final transient BookingRepository bookingRepository;
-
     @Autowired
-    public BookingService(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
+    private transient BookingRepository bookingRepository;
 
     /**
      * Gets a List of all Bookings from the database.
