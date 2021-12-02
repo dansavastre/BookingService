@@ -31,25 +31,28 @@ public class UserTest {
     public void passwordTest() {
         User user = new User();
         user.setPassword("password");
-        Assertions.assertEquals("password",user.getPassword());
+        Assertions.assertEquals("password", user.getPassword());
     }
+
     @Test
     public void userTypeTest() {
         User user = new User();
         user.setUserType("admin");
-        Assertions.assertEquals("admin",user.getUserType());
+        Assertions.assertEquals("admin", user.getUserType());
     }
 
     @Test
     public void equalsTest() {
-        User user1 = new User("123","pwd","Joe","B","student");
-        User user2 = new User("123","pwd","Joe","B","student");
+        User user1 = new User("123", "pwd", "Joe", "B", "student");
+        User user2 = new User("123", "pwd", "Joe", "B", "student");
         Assertions.assertTrue(user1.equals(user2));
     }
 
     @Test
     public void toStringTest() {
-        User user = new User("123","pwd","Joe","B","student");
-        Assertions.assertEquals("User{id='123', password='pwd', firstName='Joe', lastName='B', userType='student'}",user.toString());
+        User user = new User("123", "pwd", "Joe", "B", "student");
+        Assertions.assertEquals("User{id='123', password='pwd', "
+                + "firstName='Joe', lastName='B', userType='student'}", user.toString());
+
     }
 }

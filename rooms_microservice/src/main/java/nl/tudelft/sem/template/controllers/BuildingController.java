@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class BuildingController {
 
     @Autowired
-    private BuildingService buildingService;
+    private transient BuildingService buildingService;
 
     @RequestMapping("/sayHiToBuilding")
     public String sayHi() {

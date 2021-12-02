@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RoomController {
 
     @Autowired
-    private RoomService roomService;
+    private transient RoomService roomService;
 
     @RequestMapping("/sayHiToRoom")
     public String sayHi() {

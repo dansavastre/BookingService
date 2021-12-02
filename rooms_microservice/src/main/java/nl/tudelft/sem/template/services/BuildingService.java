@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class BuildingService {
 
     @Autowired
-    private BuildingRepository buildingRepository;
+    private transient BuildingRepository buildingRepository;
 
 
     /**

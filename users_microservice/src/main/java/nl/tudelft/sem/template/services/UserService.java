@@ -10,12 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final transient UserRepository userRepository;
-
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private transient UserRepository userRepository;
 
     /**
      * Returns a list of users which contains all users on the database.
