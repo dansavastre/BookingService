@@ -1,4 +1,4 @@
-package nl.tudelft.sem.template;
+package nl.tudelft.sem.template.objects;
 
 import nl.tudelft.sem.template.objects.User;
 import org.junit.jupiter.api.Assertions;
