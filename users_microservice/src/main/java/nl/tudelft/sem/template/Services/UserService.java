@@ -1,5 +1,10 @@
 package nl.tudelft.sem.template.services;
 
+
+import nl.tudelft.sem.template.objects.User;
+import nl.tudelft.sem.template.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.User;
