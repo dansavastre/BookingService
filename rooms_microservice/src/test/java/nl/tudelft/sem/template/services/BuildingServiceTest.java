@@ -11,7 +11,6 @@ import java.util.List;
 import nl.tudelft.sem.template.RoomApplication;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.repositories.BuildingRepository;
-import nl.tudelft.sem.template.services.BuildingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

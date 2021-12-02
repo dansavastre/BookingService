@@ -10,7 +10,6 @@ import java.util.List;
 import nl.tudelft.sem.template.RoomApplication;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.repositories.RoomRepository;
-import nl.tudelft.sem.template.services.RoomService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
