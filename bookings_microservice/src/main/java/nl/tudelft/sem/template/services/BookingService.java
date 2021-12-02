@@ -5,7 +5,6 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,9 +19,7 @@ public class BookingService {
      * @return A List of Booking objects.
      */
     public List<Booking> getAllBookings() {
-        List<Booking> b = new ArrayList<>();
-        bookingRepository.findAll().forEach(b::add);
-        return b;
+        return new ArrayList<>(bookingRepository.findAll());
     }
 
     public Booking getBooking(Long id) {

@@ -28,7 +28,7 @@ public class Booking {
             generator = "user_sequence"
     )
     @Column(name = "ID")
-    private transient Long id;
+    private Long id;
 
     @Column(name = "BOOKING_OWNER")
     private String bookingOwner;
@@ -51,7 +51,6 @@ public class Booking {
     /**
      * Parameterised constructor for the Booking class.
      *
-     * @param participants List of NetIDs of participant users
      * @param bookingOwner NetID of the user who made the booking
      * @param room         Building number and room number of room
      * @param date         Date of the booking
@@ -59,7 +58,7 @@ public class Booking {
      * @param endTime      End time of booking
      * @param purpose      Purpose of booking
      */
-    public Booking(List<String> participants, String bookingOwner,
+    public Booking(String bookingOwner,
                    String room, LocalDate date, LocalTime startTime,
                    LocalTime endTime, String purpose) {
         this.bookingOwner = bookingOwner;
@@ -79,6 +78,10 @@ public class Booking {
 
     public Long getId() {
         return id;
+    }
+
+    private void setId(Long id) {
+        this.id = id;
     }
 
     public String getBookingOwner() {
