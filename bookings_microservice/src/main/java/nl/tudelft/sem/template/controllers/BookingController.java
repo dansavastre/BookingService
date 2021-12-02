@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
-public class BookingsController {
+public class BookingController {
 
     @Autowired
     private transient BookingService bookingService;

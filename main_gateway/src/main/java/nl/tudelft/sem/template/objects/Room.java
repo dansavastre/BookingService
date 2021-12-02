@@ -4,24 +4,18 @@ import java.util.Objects;
 
 public class Room {
 
-    private final int id;
-    private final String name;
-    private final int capacity;
-    private final String equipment;
-    private final String available;
-    private final int buildingNumber;
+    private transient int id;
+    private transient String name;
+    private transient int capacity;
+    private transient String equipment;
+    private transient String available;
+    private transient int buildingNumber;
 
     /**
      * Parameterless constructor with placeholder values.
      */
     public Room() {
         super();
-        this.id = -1;
-        this.name = "PLACEHOLDER";
-        this.capacity = -1;
-        this.equipment = "PLACEHOLDER";
-        this.available = "PLACEHOLDER";
-        this.buildingNumber = -1;
     }
 
     /**

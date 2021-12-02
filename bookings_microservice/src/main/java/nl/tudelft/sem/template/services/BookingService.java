@@ -5,9 +5,11 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
+@Component
 public class BookingService {
 
     @Autowired

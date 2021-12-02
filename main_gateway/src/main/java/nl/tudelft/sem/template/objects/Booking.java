@@ -7,13 +7,13 @@ import java.util.Objects;
 
 public class Booking {
 
-    private Long id;
-    private String bookingOwner;
-    private String room;
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private String purpose;
+    private transient Long id;
+    private transient String bookingOwner;
+    private transient String room;
+    private transient LocalDate date;
+    private transient LocalTime startTime;
+    private transient LocalTime endTime;
+    private transient String purpose;
 
     /** Constructor for Booking.
      *
@@ -41,12 +41,6 @@ public class Booking {
      */
     public Booking() {
         super();
-        this.id = null;
-        this.bookingOwner = "NOTINSTANTIATED";
-        this.date = null;
-        this.startTime = null;
-        this.endTime = null;
-        this.purpose = "NOTINSTANTIATED";
     }
 
     /** Get the id of the booking.
