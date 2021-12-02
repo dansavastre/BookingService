@@ -4,20 +4,24 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-@RestController
+@Controller
 public class BookingsController {
 
     @Autowired
     private transient BookingService bookingService;
 
-    @RequestMapping("/sayHi")
+    @GetMapping("/sayHi")
+    @ResponseBody
     public String sayHi() {
         return "Hello from the bookings microservice!";
     }
@@ -28,7 +32,8 @@ public class BookingsController {
      * @return A string telling the user that a connection has been made,
      *         or not and for what reason.
      */
-    @RequestMapping("/confirmRoomsConnection")
+    @GetMapping("/confirmRoomsConnection")
+    @ResponseBody
     public String checkIfRoomsConnected() {
         String uri = "http://localhost:8082/getConnectionStatus";
         RestTemplate template = new RestTemplate();
@@ -39,28 +44,33 @@ public class BookingsController {
         }
     }
 
-    @RequestMapping("/bookings")
+    @GetMapping("/bookings")
+    @ResponseBody
     public List<Booking> getAllBookings() {
         return bookingService.getAllBookings();
     }
 
-    @RequestMapping("/getBooking/{id}")
+    @GetMapping("/getBooking/{id}")
+    @ResponseBody
     public Booking getBooking(@PathVariable("id") String id) {
         Long i = Long.parseLong(id);
         return bookingService.getBooking(i);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/bookings")
+    @PostMapping("/bookings")
+    @ResponseBody
     public void addBooking(@RequestBody Booking booking) {
         bookingService.addBooking(booking);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
+    @PutMapping("/users/{id}")
+    @ResponseBody
     public void updateBooking(@RequestBody Booking booking, @PathVariable("id") String id) {
         bookingService.updateBooking(Long.parseLong(id), booking);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
+    @DeleteMapping("/users/{id}")
+    @ResponseBody
     public void deleteBooking(@PathVariable("id") String id) {
         bookingService.deleteBooking(Long.parseLong(id));
     }
