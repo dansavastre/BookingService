@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private transient UserRepository userRepository;
+    private final transient UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {

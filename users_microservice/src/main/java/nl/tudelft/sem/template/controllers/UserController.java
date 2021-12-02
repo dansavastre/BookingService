@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    private transient UserService userService;
+    private final transient UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
