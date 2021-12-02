@@ -52,9 +52,8 @@ public class BookingController {
 
     @GetMapping("/getBooking/{id}")
     @ResponseBody
-    public Booking getBooking(@PathVariable("id") String id) {
-        Long i = Long.parseLong(id);
-        return bookingService.getBooking(i);
+    public Booking getBooking(@PathVariable("id") Long id) {
+        return bookingService.getBooking(id);
     }
 
     @PostMapping("/bookings")
@@ -65,13 +64,13 @@ public class BookingController {
 
     @PutMapping("/users/{id}")
     @ResponseBody
-    public void updateBooking(@RequestBody Booking booking, @PathVariable("id") String id) {
-        bookingService.updateBooking(Long.parseLong(id), booking);
+    public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id) {
+        bookingService.updateBooking(id, booking);
     }
 
     @DeleteMapping("/users/{id}")
     @ResponseBody
-    public void deleteBooking(@PathVariable("id") String id) {
-        bookingService.deleteBooking(Long.parseLong(id));
+    public void deleteBooking(@PathVariable("id") Long id) {
+        bookingService.deleteBooking(id);
     }
 }

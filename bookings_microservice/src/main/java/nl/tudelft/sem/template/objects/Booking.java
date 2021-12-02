@@ -79,6 +79,10 @@ public class Booking {
         return id;
     }
 
+    private void setId(Long id) {
+        this.id = id;
+    }
+
     public String getBookingOwner() {
         return bookingOwner;
     }
