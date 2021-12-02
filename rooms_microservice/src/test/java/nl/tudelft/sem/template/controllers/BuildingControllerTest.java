@@ -1,4 +1,4 @@
-package controllers;
+package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.RoomApplication;
-import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.services.BuildingService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,14 +24,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class BuildingControllerTest {
 
     @Mock
-    private BuildingService buildingService;
+    private transient BuildingService buildingService;
 
     @InjectMocks
-    private BuildingController buildingController;
+    private transient BuildingController buildingController;
 
-    List<Building> buildings;
-    Building b0;
-    Building b1;
+    transient List<Building> buildings;
+    transient Building b0;
+    transient Building b1;
 
     @BeforeEach
     void setUp() {

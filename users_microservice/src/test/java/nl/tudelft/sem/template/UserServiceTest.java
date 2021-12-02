@@ -23,18 +23,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class UserServiceTest {
 
     @Mock
-    private UserRepository userRepository;
+    private transient UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private transient UserService userService;
 
-    User user1;
-    User user2;
-    User user3;
+    transient User user1;
+    transient User user2;
+    transient User user3;
+    transient String s = "6363";
 
     @BeforeEach
     void setup() {
-        user1 = new User("6363", "123", "Bob", "Benson", "Student");
+        user1 = new User(s, "123", "Bob", "Benson", "Student");
         user2 = new User("4832", "pwd", "Andy", "Joe", "Admin");
         user3 = new User("2839", "ok", "Joe", "Bob", "Secretary");
     }
@@ -50,8 +51,8 @@ public class UserServiceTest {
 
     @Test
     void getUser_test() {
-        when(userRepository.findById("123")).thenReturn(java.util.Optional.ofNullable(user1));
-        Assertions.assertEquals(user1, userService.getUser("123"));
+        when(userRepository.findById(s)).thenReturn(java.util.Optional.ofNullable(user1));
+        Assertions.assertEquals(user1, userService.getUser(s));
     }
 
     @Test
@@ -62,14 +63,14 @@ public class UserServiceTest {
 
     @Test
     void updateUser_test() {
-        userService.updateUser("123", user1);
-        verify(userRepository, times(1)).deleteById("123");
+        userService.updateUser(s, user1);
+        verify(userRepository, times(1)).deleteById(s);
         verify(userRepository, times(1)).save(user1);
     }
 
     @Test
     void deleteUser_test() {
-        userService.deleteUser("123");
-        verify(userRepository, times(1)).deleteById("123");
+        userService.deleteUser(s);
+        verify(userRepository, times(1)).deleteById(s);
     }
 }

@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 public class RoomTest {
 
-    Room r0;
-    Room r1;
-    Room r2;
+    transient Room r0;
+    transient Room r1;
+    transient Room r2;
 
     @BeforeEach
     void setup() {
@@ -31,11 +31,6 @@ public class RoomTest {
     @Test
     void equals_not_building_test() {
         assertFalse(r0.equals("definitely not a room object"));
-    }
-
-    @Test
-    void equals_null_test() {
-        assertFalse(r0.equals(null));
     }
 
     @Test

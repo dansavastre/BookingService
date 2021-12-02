@@ -1,4 +1,4 @@
-package controllers;
+package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.RoomApplication;
-import nl.tudelft.sem.template.controllers.RoomController;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.services.RoomService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,14 +23,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class RoomControllerTest {
 
     @Mock
-    private RoomService roomService;
+    private transient RoomService roomService;
 
     @InjectMocks
-    private RoomController roomController;
+    private transient RoomController roomController;
 
-    Room r0;
-    Room r1;
-    Room r2;
+    transient Room r0;
+    transient Room r1;
+    transient Room r2;
 
     @BeforeEach
     void setup() {

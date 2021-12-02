@@ -25,15 +25,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class BuildingServiceTest {
 
     @Mock
-    private BuildingRepository buildingRepository;
+    private transient BuildingRepository buildingRepository;
 
     @InjectMocks
-    private BuildingService buildingService;
+    private transient BuildingService buildingService;
 
 
-    Building b0;
-    Building b1;
-    Building b2;
+    transient Building b0;
+    transient Building b1;
+    transient Building b2;
 
     @BeforeEach
     void setUp() {

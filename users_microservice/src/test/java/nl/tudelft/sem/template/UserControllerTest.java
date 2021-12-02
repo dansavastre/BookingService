@@ -24,20 +24,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class UserControllerTest {
 
     @Mock
-    private UserService userService;
+    private transient UserService userService;
 
     @InjectMocks
-    private UserController userController;
+    private transient UserController userController;
 
-    User user1;
+    transient User user1;
 
-    User user2;
+    transient User user2;
 
-    User user3;
+    transient User user3;
+
+    transient String s = "6363";
 
     @BeforeEach
     void setup() {
-        user1 = new User("6363", "123", "Bob", "Benson", "Student");
+        user1 = new User(s, "123", "Bob", "Benson", "Student");
         user2 = new User("4832", "pwd", "Andy", "Joe", "Admin");
         user3 = new User("2839", "ok", "Joe", "Bob", "Secretary");
     }
@@ -57,12 +59,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUserById_test() {
-        when(userService.getUser("123")).thenReturn(user1);
-        Assertions.assertEquals(user1, userService.getUser("123"));
-    }
-
-    @Test
     void addUser_test() {
         userController.addUser(user1);
         verify(userService, times(1)).addUser(user1);
@@ -70,13 +66,13 @@ public class UserControllerTest {
 
     @Test
     void updateUser_Test() {
-        userController.updateUser(user1, "123");
-        verify(userService, times(1)).updateUser("123", user1);
+        userController.updateUser(user1, s);
+        verify(userService, times(1)).updateUser(s, user1);
     }
 
     @Test
     void deleteUser_test() {
-        userController.deleteUser("123");
-        verify(userService, times(1)).deleteUser("123");
+        userController.deleteUser(s);
+        verify(userService, times(1)).deleteUser(s);
     }
 }

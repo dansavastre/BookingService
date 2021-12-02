@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 public class BuildingTest {
 
-    Building b0;
-    Building b1;
-    Building b2;
+    transient Building b0;
+    transient Building b1;
+    transient Building b2;
 
     @BeforeEach
     void setUp() {
@@ -36,11 +36,6 @@ public class BuildingTest {
     @Test
     void equals_different_test() {
         assertFalse(b0.equals(b1));
-    }
-
-    @Test
-    void equals_null_test() {
-        assertFalse(b0.equals(null));
     }
 
     @Test

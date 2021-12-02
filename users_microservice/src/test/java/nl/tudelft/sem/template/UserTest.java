@@ -6,18 +6,20 @@ import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
+    transient String s = "Random";
+
     @Test
     public void firstNameTest() {
         User user = new User();
-        user.setFirstName("Random");
-        Assertions.assertEquals("Random", user.getFirstName());
+        user.setFirstName(s);
+        Assertions.assertEquals(s, user.getFirstName());
     }
 
     @Test
     public void lastNameTest() {
         User user = new User();
-        user.setLastName("Random");
-        Assertions.assertEquals("Random", user.getLastName());
+        user.setLastName(s);
+        Assertions.assertEquals(s, user.getLastName());
     }
 
     @Test

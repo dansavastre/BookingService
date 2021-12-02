@@ -26,14 +26,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class RoomServiceTest {
 
     @Mock
-    private RoomRepository roomRepository;
+    private transient RoomRepository roomRepository;
 
     @InjectMocks
-    private RoomService roomService;
+    private transient RoomService roomService;
 
-    Room r0;
-    Room r1;
-    Room r2;
+    transient Room r0;
+    transient Room r1;
+    transient Room r2;
 
     @BeforeEach
     void setup() {
