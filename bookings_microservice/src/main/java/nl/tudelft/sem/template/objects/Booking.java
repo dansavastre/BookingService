@@ -6,12 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "Booking")
 @Table(name = "booking")
@@ -19,16 +14,16 @@ public class Booking {
 
     @Id
     @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
+            name = "booking_sequence",
+            sequenceName = "booking_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = IDENTITY,
-            generator = "user_sequence"
+            generator = "booking_sequence"
     )
     @Column(name = "ID")
-    private transient Long id;
+    private Long id;
 
     @Column(name = "BOOKING_OWNER")
     private String bookingOwner;
@@ -51,7 +46,6 @@ public class Booking {
     /**
      * Parameterised constructor for the Booking class.
      *
-     * @param participants List of NetIDs of participant users
      * @param bookingOwner NetID of the user who made the booking
      * @param room         Building number and room number of room
      * @param date         Date of the booking
@@ -59,7 +53,7 @@ public class Booking {
      * @param endTime      End time of booking
      * @param purpose      Purpose of booking
      */
-    public Booking(List<String> participants, String bookingOwner,
+    public Booking(String bookingOwner,
                    String room, LocalDate date, LocalTime startTime,
                    LocalTime endTime, String purpose) {
         this.bookingOwner = bookingOwner;
@@ -75,6 +69,10 @@ public class Booking {
      */
     public Booking() {
 
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
