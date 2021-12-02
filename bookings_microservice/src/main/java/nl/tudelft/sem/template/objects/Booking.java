@@ -28,7 +28,7 @@ public class Booking {
             generator = "user_sequence"
     )
     @Column(name = "ID")
-    private Long id;
+    private transient Long id;
 
     @Column(name = "BOOKING_OWNER")
     private String bookingOwner;

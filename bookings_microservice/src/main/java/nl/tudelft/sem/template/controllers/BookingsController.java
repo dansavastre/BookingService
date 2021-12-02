@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class BookingsController {
 
-    private final BookingService bookingService;
+    private final transient BookingService bookingService;
 
     @Autowired
     public BookingsController(BookingService bookingService) {
@@ -36,13 +36,11 @@ public class BookingsController {
     public String checkIfRoomsConnected() {
         String uri = "http://localhost:8082/getConnectionStatus";
         RestTemplate template = new RestTemplate();
-        String result = "Not connected :(";
         try {
-            result = template.getForObject(uri, String.class);
+            return template.getForObject(uri, String.class);
         } catch (Exception e) {
-            result = "Not connected due to Error: " + e.toString();
+            return "Not connected :(Not connected due to Error: " + e + ")";
         }
-        return result;
     }
 
     @RequestMapping("/bookings")
