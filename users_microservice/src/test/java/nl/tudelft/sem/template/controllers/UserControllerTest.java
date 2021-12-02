@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.tudelft.sem.template.UserApplication;
-import nl.tudelft.sem.template.controllers.UserController;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.services.UserService;
 import org.junit.jupiter.api.Assertions;
