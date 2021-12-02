@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = UserApplication.class)
 public class UserServiceTest {
 
     @Mock
