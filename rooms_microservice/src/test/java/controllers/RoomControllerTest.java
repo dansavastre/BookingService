@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.sem.template.Application;
+import nl.tudelft.sem.template.RoomApplication;
 import nl.tudelft.sem.template.controllers.RoomController;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.services.RoomService;
@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = RoomApplication.class)
 public class RoomControllerTest {
 
     @Mock
