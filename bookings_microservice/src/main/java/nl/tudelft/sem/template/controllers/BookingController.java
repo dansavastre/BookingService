@@ -40,7 +40,7 @@ public class BookingController {
         try {
             return template.getForObject(uri, String.class);
         } catch (Exception e) {
-            return "Not connected :(Not connected due to Error: " + e + ")";
+            return "Not connected due to Error: " + e + ")";
         }
     }
 

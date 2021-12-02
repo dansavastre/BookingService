@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.template.UserApplication;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.services.UserService;
@@ -36,11 +35,11 @@ public class UserControllerTest {
 
     transient User user3;
 
-    transient String s = "6363";
+    transient String string = "6363";
 
     @BeforeEach
     void setup() {
-        user1 = new User(s, "123", "Bob", "Benson", "Student");
+        user1 = new User(string, "123", "Bob", "Benson", "Student");
         user2 = new User("4832", "pwd", "Andy", "Joe", "Admin");
         user3 = new User("2839", "ok", "Joe", "Bob", "Secretary");
     }
@@ -67,13 +66,13 @@ public class UserControllerTest {
 
     @Test
     void updateUser_Test() {
-        userController.updateUser(user1, s);
-        verify(userService, times(1)).updateUser(s, user1);
+        userController.updateUser(user1, string);
+        verify(userService, times(1)).updateUser(string, user1);
     }
 
     @Test
     void deleteUser_test() {
-        userController.deleteUser(s);
-        verify(userService, times(1)).deleteUser(s);
+        userController.deleteUser(string);
+        verify(userService, times(1)).deleteUser(string);
     }
 }

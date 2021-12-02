@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.template.UserApplication;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.repositories.UserRepository;
@@ -33,11 +32,11 @@ public class UserServiceTest {
     transient User user1;
     transient User user2;
     transient User user3;
-    transient String s = "6363";
+    transient String string = "6363";
 
     @BeforeEach
     void setup() {
-        user1 = new User(s, "123", "Bob", "Benson", "Student");
+        user1 = new User(string, "123", "Bob", "Benson", "Student");
         user2 = new User("4832", "pwd", "Andy", "Joe", "Admin");
         user3 = new User("2839", "ok", "Joe", "Bob", "Secretary");
     }
@@ -53,8 +52,8 @@ public class UserServiceTest {
 
     @Test
     void getUser_test() {
-        when(userRepository.findById(s)).thenReturn(java.util.Optional.ofNullable(user1));
-        Assertions.assertEquals(user1, userService.getUser(s));
+        when(userRepository.findById(string)).thenReturn(java.util.Optional.ofNullable(user1));
+        Assertions.assertEquals(user1, userService.getUser(string));
     }
 
     @Test
@@ -65,14 +64,14 @@ public class UserServiceTest {
 
     @Test
     void updateUser_test() {
-        userService.updateUser(s, user1);
-        verify(userRepository, times(1)).deleteById(s);
+        userService.updateUser(string, user1);
+        verify(userRepository, times(1)).deleteById(string);
         verify(userRepository, times(1)).save(user1);
     }
 
     @Test
     void deleteUser_test() {
-        userService.deleteUser(s);
-        verify(userRepository, times(1)).deleteById(s);
+        userService.deleteUser(string);
+        verify(userRepository, times(1)).deleteById(string);
     }
 }
