@@ -5,10 +5,13 @@ import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
@@ -18,32 +21,37 @@ public class UserController {
     @Autowired
     private transient UserService userService;
 
-    @RequestMapping("/sayHi")
+    @GetMapping("/sayHi")
+    @ResponseBody
     public String sayHi() {
         return "Hello from the user microservice!";
     }
 
-    @RequestMapping("/users")
+    @GetMapping("/users")
+    @ResponseBody
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @RequestMapping("/getUser/{id}")
+    @GetMapping("/getUser/{id}")
+    @ResponseBody
     public User getUser(@PathVariable("id") String id) {
         return userService.getUser(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/users")
+    @PostMapping("/users")
+    @ResponseBody
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
+    @PutMapping("/users/{id}")
+    @ResponseBody
     public void updateUser(@RequestBody User user, @PathVariable("id") String id) {
         userService.updateUser(id, user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
+    @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable("id") String id) {
         userService.deleteUser(id);
     }
