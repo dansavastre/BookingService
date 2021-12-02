@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-<<<<<<< HEAD
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,13 +19,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         List<User> u = new ArrayList<>();
         userRepository.findAll().forEach(u::add);
         return u;
     }
 
-    public User getUser(String id){
+    public User getUser(String id) {
         return userRepository.findById(id).get();
     }
 
@@ -41,29 +40,5 @@ public class UserService {
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
-=======
-@EnableAutoConfiguration
-public class UserService {
-
-
-    @Autowired
-    private UserRepository repository;
-
-    public void setRepository(UserRepository repository) {
-        this.repository = repository;
-    }
-
-
-    public List<User> findAll() {
-
-        var users = (List<User>) repository.findAll();
-        return users;
-    }
-
-
-    public void save(User user) {
-
-        repository.save(user);
->>>>>>> eb7baabddc49031655f42754d2fc7d6924b01132
     }
 }
