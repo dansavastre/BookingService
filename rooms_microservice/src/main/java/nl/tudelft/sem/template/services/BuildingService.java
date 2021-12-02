@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BuildingService {
 
-    private final BuildingRepository buildingRepository;
+    private final transient BuildingRepository buildingRepository;
 
     @Autowired
     public BuildingService(BuildingRepository buildingRepository) {

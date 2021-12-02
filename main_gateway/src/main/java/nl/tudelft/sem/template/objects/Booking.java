@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Booking {
 
-    private Long id;
+    private transient Long id;
     private String bookingOwner;
     private String room;
     private LocalDate date;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BuildingController {
 
-    private final BuildingService buildingService;
+    private final transient BuildingService buildingService;
 
     @Autowired
     public BuildingController(BuildingService buildingService) {
