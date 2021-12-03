@@ -34,7 +34,7 @@ public class BookingTest {
 
     @Test
     void getRoom_test() {
-        Assertions.assertThat(booking.getRoom()).isEqualTo("Steve Jobs Room");
+        Assertions.assertThat(booking.getRoom()).isEqualTo(1);
     }
 
     @Test

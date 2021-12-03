@@ -53,7 +53,7 @@ public class BookingTest {
     @Test
     void toString_test() {
         b1.setId(1L);
-        String expected = "Booking{id=1, bookingOwner='A', room='R1', "
+        String expected = "Booking{id=1, bookingOwner='A', room='1', building='36', "
             + "date=2020-01-08, startTime=10:45, endTime=12:45, purpose='Studying', "
                 + "participants=[user0, user1]}";
         assertEquals(expected, b1.toString());
