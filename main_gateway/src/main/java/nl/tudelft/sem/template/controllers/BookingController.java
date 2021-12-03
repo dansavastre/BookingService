@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class BookingController {
 
+    private transient RestTemplate restTemplate = new RestTemplate();
+
     /** Returns list of all bookings in system.
      *
      * @return list of all bookings.
@@ -23,8 +25,7 @@ public class BookingController {
     @ResponseBody
     public List getBookings() {
         String uri = "http://localhost:8083/bookings";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, List.class);
+        return restTemplate.getForObject(uri, List.class);
     }
 
     /** Returns a specific booking with respect to its id.
@@ -36,8 +37,7 @@ public class BookingController {
     @ResponseBody
     public Booking getBooking(@PathVariable("id") String id) {
         String uri = "http://localhost:8083/getBooking/".concat(id);
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, Booking.class);
+        return restTemplate.getForObject(uri, Booking.class);
     }
 
     /** Adds a booking to the system.
@@ -50,8 +50,7 @@ public class BookingController {
     public boolean postBooking(@RequestBody Booking booking) {
         try {
             String uri = "http://localhost:8083/bookings";
-            RestTemplate template = new RestTemplate();
-            template.postForObject(uri, booking, void.class);
+            restTemplate.postForObject(uri, booking, void.class);
             return true;
         } catch (Exception e) {
             return false;
@@ -69,8 +68,7 @@ public class BookingController {
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") String id) {
         try {
             String uri = "http://localhost:8081/bookings/".concat(id);
-            RestTemplate template = new RestTemplate();
-            template.put(uri, booking);
+            restTemplate.put(uri, booking);
             return true;
         } catch (Exception e) {
             return false;
@@ -87,8 +85,7 @@ public class BookingController {
     public boolean deleteBooking(@PathVariable("id") String id) {
         try {
             String uri = "http://localhost:8081/bookings/".concat(id);
-            RestTemplate template = new RestTemplate();
-            template.delete(uri);
+            restTemplate.delete(uri);
             return true;
         } catch (Exception e) {
             return false;

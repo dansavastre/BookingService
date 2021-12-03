@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class HelloController {
 
+    private transient RestTemplate restTemplate = new RestTemplate();
+
     /** Receives a message from the user microservice.
      *
      * @return a string.
@@ -16,8 +18,8 @@ public class HelloController {
     @ResponseBody
     public String helloUser() {
         String uri = "http://localhost:8081/sayHi";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, String.class);
+
+        return restTemplate.getForObject(uri, String.class);
     }
 
     /** Receives a message from the room microservice.
@@ -28,8 +30,7 @@ public class HelloController {
     @ResponseBody
     public String helloRoom() {
         String uri = "http://localhost:8082/sayHiToRoom";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, String.class);
+        return restTemplate.getForObject(uri, String.class);
     }
 
     /** Receives a message from the room microservice.
@@ -40,8 +41,7 @@ public class HelloController {
     @ResponseBody
     public String helloBuilding() {
         String uri = "http://localhost:8082/sayHiToBuilding";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, String.class);
+        return restTemplate.getForObject(uri, String.class);
     }
 
     /** Receives a message from the booking microservice.
@@ -52,8 +52,7 @@ public class HelloController {
     @ResponseBody
     public String helloBookings() {
         String uri = "http://localhost:8083/sayHi";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, String.class);
+        return restTemplate.getForObject(uri, String.class);
     }
 
     /** Receives a message from the booking microservice.
@@ -64,7 +63,6 @@ public class HelloController {
     @ResponseBody
     public String checkConnectionBookingsRooms() {
         String uri = "http://localhost:8083/confirmRoomsConnection";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, String.class);
+        return restTemplate.getForObject(uri, String.class);
     }
 }
