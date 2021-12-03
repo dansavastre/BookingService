@@ -9,11 +9,13 @@ public class Booking {
 
     private transient Long id;
     private transient String bookingOwner;
-    private transient String room;
+    private transient int room;
+    private transient int building;
     private transient LocalDate date;
     private transient LocalTime startTime;
     private transient LocalTime endTime;
     private transient String purpose;
+    private transient List<String> participants;
 
     /** Constructor for Booking.
      *
@@ -25,15 +27,18 @@ public class Booking {
      * @param endTime the end time of the booking.
      * @param purpose the purpose of the meeting.
      */
-    public Booking(Long id, String bookingOwner, String room, LocalDate date,
-                   LocalTime startTime, LocalTime endTime, String purpose) {
+    public Booking(Long id, String bookingOwner, int room, int building, LocalDate date,
+                   LocalTime startTime, LocalTime endTime, String purpose,
+                   List<String> participants) {
         this.id = id;
         this.bookingOwner = bookingOwner;
         this.room = room;
+        this.building = building;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.purpose = purpose;
+        this.participants = participants;
     }
 
     /** Empty constructor.
@@ -63,7 +68,7 @@ public class Booking {
      *
      * @return the room of the booking.
      */
-    public String getRoom() {
+    public int getRoom() {
         return room;
     }
 
@@ -99,6 +104,22 @@ public class Booking {
         return date;
     }
 
+    /** Get the participants of the booking.
+     *
+     * @return the date of the booking.
+     */
+    public List<String> getParticipants() {
+        return participants;
+    }
+
+    public int getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(int building) {
+        this.building = building;
+    }
+
     /** Set the date of the booking.
      *
      * @param date the new date.
@@ -119,7 +140,7 @@ public class Booking {
      *
      * @param room the new room.
      */
-    public void setRoom(String room) {
+    public void setRoom(int room) {
         this.room = room;
     }
 
@@ -145,6 +166,14 @@ public class Booking {
      */
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    /** Set the participants of the booking.
+     *
+     * @param participants the new purpose.
+     */
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
     }
 
     /** Checks if the object is equal to this booking.

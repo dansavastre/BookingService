@@ -20,6 +20,8 @@ public class BookingController {
     @Autowired
     private transient BookingService bookingService;
 
+    private transient RestTemplate template = new RestTemplate();
+
     @GetMapping("/sayHi")
     @ResponseBody
     public String sayHi() {
@@ -36,7 +38,6 @@ public class BookingController {
     @ResponseBody
     public String checkIfRoomsConnected() {
         String uri = "http://localhost:8082/getConnectionStatus";
-        RestTemplate template = new RestTemplate();
         try {
             return template.getForObject(uri, String.class);
         } catch (Exception e) {

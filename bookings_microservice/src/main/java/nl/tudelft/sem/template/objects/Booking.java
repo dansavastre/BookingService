@@ -4,8 +4,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,7 +35,10 @@ public class Booking {
     private String bookingOwner;
 
     @Column(name = "ROOM")
-    private String room;
+    private int room;
+
+    @Column(name = "BUILDING")
+    private int building;
 
     @Column(name = "DATE")
     private LocalDate date;
@@ -47,25 +52,33 @@ public class Booking {
     @Column(name = "PURPOSE")
     private String purpose;
 
+    @Column(name = "PARTICIPANTS")
+    @ElementCollection(targetClass = String.class)
+    private List<String> participants;
+
     /**
      * Parameterised constructor for the Booking class.
      *
      * @param bookingOwner NetID of the user who made the booking
-     * @param room         Building number and room number of room
+     * @param room         Room number of room
+     * @param building     Building number
      * @param date         Date of the booking
      * @param startTime    Start time of booking
      * @param endTime      End time of booking
      * @param purpose      Purpose of booking
+     * @param participants Ids of the participants of the meeting
      */
     public Booking(String bookingOwner,
-                   String room, LocalDate date, LocalTime startTime,
-                   LocalTime endTime, String purpose) {
+                   int room, int building, LocalDate date, LocalTime startTime,
+                   LocalTime endTime, String purpose, List<String> participants) {
         this.bookingOwner = bookingOwner;
         this.room = room;
+        this.building = building;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.purpose = purpose;
+        this.participants = participants;
     }
 
     /**
@@ -87,8 +100,12 @@ public class Booking {
         return bookingOwner;
     }
 
-    public String getRoom() {
+    public int getRoom() {
         return room;
+    }
+
+    public int getBuilding() {
+        return building;
     }
 
     public LocalTime getStartTime() {
@@ -115,8 +132,12 @@ public class Booking {
         this.bookingOwner = bookingOwner;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(int room) {
         this.room = room;
+    }
+
+    public void setBuilding(int building) {
+        this.building = building;
     }
 
     public void setStartTime(LocalTime startTime) {
@@ -131,6 +152,14 @@ public class Booking {
         this.purpose = purpose;
     }
 
+    public List<String> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -143,15 +172,18 @@ public class Booking {
         return Objects.equals(id, booking.id)
                 && Objects.equals(bookingOwner, booking.bookingOwner)
                 && Objects.equals(room, booking.room)
+                && Objects.equals(building, booking.building)
                 && Objects.equals(date, booking.date)
                 && Objects.equals(startTime, booking.startTime)
                 && Objects.equals(endTime, booking.endTime)
-                && Objects.equals(purpose, booking.purpose);
+                && Objects.equals(purpose, booking.purpose)
+                && participants.equals(booking.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookingOwner, room, date, startTime, endTime, purpose);
+        return Objects.hash(id, bookingOwner, room, building, date, startTime,
+                endTime, purpose, participants);
     }
 
     @Override
@@ -160,10 +192,12 @@ public class Booking {
                 + "id=" + id
                 + ", bookingOwner='" + bookingOwner + '\''
                 + ", room='" + room + '\''
+                + ", building='" + building + '\''
                 + ", date=" + date
                 + ", startTime=" + startTime
                 + ", endTime=" + endTime
                 + ", purpose='" + purpose + '\''
+                + ", participants=" + participants.toString()
                 + '}';
     }
 }
