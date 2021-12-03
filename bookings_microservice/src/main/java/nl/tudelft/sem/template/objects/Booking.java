@@ -4,8 +4,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -47,6 +49,10 @@ public class Booking {
     @Column(name = "PURPOSE")
     private String purpose;
 
+    @Column(name = "PARTICIPANTS")
+    @ElementCollection(targetClass = String.class)
+    private List<String> participants;
+
     /**
      * Parameterised constructor for the Booking class.
      *
@@ -59,13 +65,14 @@ public class Booking {
      */
     public Booking(String bookingOwner,
                    String room, LocalDate date, LocalTime startTime,
-                   LocalTime endTime, String purpose) {
+                   LocalTime endTime, String purpose, List<String> participants) {
         this.bookingOwner = bookingOwner;
         this.room = room;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.purpose = purpose;
+        this.participants = participants;
     }
 
     /**
@@ -131,6 +138,14 @@ public class Booking {
         this.purpose = purpose;
     }
 
+    public List<String> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -146,12 +161,14 @@ public class Booking {
                 && Objects.equals(date, booking.date)
                 && Objects.equals(startTime, booking.startTime)
                 && Objects.equals(endTime, booking.endTime)
-                && Objects.equals(purpose, booking.purpose);
+                && Objects.equals(purpose, booking.purpose)
+                && participants.equals(booking.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookingOwner, room, date, startTime, endTime, purpose);
+        return Objects.hash(id, bookingOwner, room, date, startTime,
+                endTime, purpose, participants);
     }
 
     @Override
@@ -164,6 +181,7 @@ public class Booking {
                 + ", startTime=" + startTime
                 + ", endTime=" + endTime
                 + ", purpose='" + purpose + '\''
+                + ", participants=" + participants.toString()
                 + '}';
     }
 }

@@ -17,12 +17,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 
 public class BookingControllerTest {
 
     @Mock
     private transient BookingService bookingService;
+    @Mock
+    private transient RestTemplate restTemplate;
 
     @InjectMocks
     private transient BookingController bookingController;
@@ -32,12 +37,17 @@ public class BookingControllerTest {
 
     @BeforeEach
     void setup() {
+        List<String> p = new ArrayList<>();
+        p.add("user0");
+        p.add("user1");
         MockitoAnnotations.initMocks(this);
         b1 = new Booking("A", "R1", LocalDate.of(2020, 1, 8),
-            LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0), "Studying");
+            LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
+                "Studying", p);
         b1.setId(1L);
         b2 = new Booking("A", "R1", LocalDate.of(2020, 1, 5),
-            LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0), "Project meeting");
+            LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
+                "Project meeting", p);
     }
 
     @Test
@@ -50,6 +60,13 @@ public class BookingControllerTest {
     void roomNotConnected_test() {
         String message = bookingController.checkIfRoomsConnected().substring(0, 26);
         Assertions.assertEquals("Not connected due to Error", message);
+    }
+
+    @Test
+    void roomConnected_test() {
+        when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
+            .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
+        Assertions.assertEquals("<200 OK OK,[]>", restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class));
     }
 
     @Test

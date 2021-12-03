@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-<<<<<<< HEAD
-    private final transient BuildingService buildingService;
-=======
 @Controller
 public class BuildingController {
->>>>>>> 451bb2b069839bf166d5afb80d2409f856deeddd
 
     @Autowired
     private transient BuildingService buildingService;
