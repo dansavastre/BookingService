@@ -10,12 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookingService {
 
-    private final BookingRepository bookingRepository;
-
     @Autowired
-    public BookingService(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
+    private transient BookingRepository bookingRepository;
 
     /**
      * Gets a List of all Bookings from the database.
@@ -23,9 +19,7 @@ public class BookingService {
      * @return A List of Booking objects.
      */
     public List<Booking> getAllBookings() {
-        List<Booking> b = new ArrayList<>();
-        bookingRepository.findAll().forEach(b::add);
-        return b;
+        return new ArrayList<>(bookingRepository.findAll());
     }
 
     public Booking getBooking(Long id) {

@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class BuildingService {
 
-    private final transient BuildingRepository buildingRepository;
-
     @Autowired
-    public BuildingService(BuildingRepository buildingRepository) {
-        this.buildingRepository = buildingRepository;
-    }
+    private transient BuildingRepository buildingRepository;
+
 
     /**
      * Method that requests all buildings from the database and returns them as a List of Building.

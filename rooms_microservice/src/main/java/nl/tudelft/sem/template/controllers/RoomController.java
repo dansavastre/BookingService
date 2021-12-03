@@ -4,53 +4,59 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
-public class RoomController {
-
-    private final transient RoomService roomService;
+@Controller
+public Class RoomController {
 
     @Autowired
-    public RoomController(RoomService roomService) {
-        this.roomService = roomService;
-    }
+    private transient RoomService roomService;
 
-    @RequestMapping("/sayHiToRoom")
+    @GetMapping("/sayHiToRoom")
+    @ResponseBody
     public String sayHi() {
         return "Hello from the room!";
     }
 
-    @RequestMapping("/getConnectionStatus")
+    @GetMapping("/getConnectionStatus")
+    @ResponseBody
     public String connectionStatus() {
         return "Rooms is connected!";
     }
 
-    @RequestMapping("/rooms")
+    @GetMapping("/rooms")
+    @ResponseBody
     public List<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 
-    @RequestMapping("/getRoom/{id}")
+    @GetMapping("/getRoom/{id}")
+    @ResponseBody
     public Room getRoom(@PathVariable("id") int id) {
         return roomService.getRoom(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/rooms")
+    @PostMapping("/rooms")
+    @ResponseBody
     public void addRoom(@RequestBody Room room) {
         roomService.addRoom(room);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{id}")
+    @PutMapping("/rooms/{id}")
+    @ResponseBody
     public void updateRoom(@RequestBody Room room, @PathVariable("id") int id) {
         roomService.updateRoom(id, room);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/rooms/{id}")
+    @DeleteMapping("/rooms/{id}")
+    @ResponseBody
     public void deleteRoom(@PathVariable("id") int id) {
         roomService.deleteRoom(id);
     }

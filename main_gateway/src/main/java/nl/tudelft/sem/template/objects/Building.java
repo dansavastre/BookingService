@@ -5,20 +5,16 @@ import java.util.Objects;
 
 public class Building {
 
-    private final int id;
-    private final LocalTime openingTime;
-    private final LocalTime closingTime;
-    private final String name;
+    private transient int id;
+    private transient LocalTime openingTime;
+    private transient LocalTime closingTime;
+    private transient String name;
 
     /** Empty constructor.
      *
      */
     public Building() {
         super();
-        this.id = -1;
-        this.openingTime = null;
-        this.closingTime = null;
-        this.name = "PLACEHOLDER";
     }
 
     /** Constructor for Building.

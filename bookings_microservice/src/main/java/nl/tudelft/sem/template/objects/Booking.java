@@ -4,7 +4,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,13 +18,13 @@ public class Booking {
 
     @Id
     @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
+            name = "booking_sequence",
+            sequenceName = "booking_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = IDENTITY,
-            generator = "user_sequence"
+            generator = "booking_sequence"
     )
     @Column(name = "ID")
     private Long id;
@@ -51,7 +50,6 @@ public class Booking {
     /**
      * Parameterised constructor for the Booking class.
      *
-     * @param participants List of NetIDs of participant users
      * @param bookingOwner NetID of the user who made the booking
      * @param room         Building number and room number of room
      * @param date         Date of the booking
@@ -59,7 +57,7 @@ public class Booking {
      * @param endTime      End time of booking
      * @param purpose      Purpose of booking
      */
-    public Booking(List<String> participants, String bookingOwner,
+    public Booking(String bookingOwner,
                    String room, LocalDate date, LocalTime startTime,
                    LocalTime endTime, String purpose) {
         this.bookingOwner = bookingOwner;
@@ -79,6 +77,10 @@ public class Booking {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getBookingOwner() {

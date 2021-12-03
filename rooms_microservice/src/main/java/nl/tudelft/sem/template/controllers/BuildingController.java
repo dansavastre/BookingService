@@ -4,48 +4,58 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.services.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
-public class BuildingController {
 
+<<<<<<< HEAD
     private final transient BuildingService buildingService;
+=======
+@Controller
+public class BuildingController {
+>>>>>>> 451bb2b069839bf166d5afb80d2409f856deeddd
 
     @Autowired
-    public BuildingController(BuildingService buildingService) {
-        this.buildingService = buildingService;
-    }
+    private transient BuildingService buildingService;
 
-    @RequestMapping("/sayHiToBuilding")
+    @GetMapping("/sayHiToBuilding")
+    @ResponseBody
     public String sayHi() {
         return "Hello from the building!";
     }
 
-    @RequestMapping("/buildings")
+    @GetMapping("/buildings")
+    @ResponseBody
     public List<Building> getAllBuildings() {
         return buildingService.getAllBuildings();
     }
 
-    @RequestMapping("/getBuilding/{id}")
+    @GetMapping("/getBuilding/{id}")
+    @ResponseBody
     public Building getBuilding(@PathVariable("id") int id) {
         return buildingService.getBuilding(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/buildings")
+    @PostMapping("/buildings")
+    @ResponseBody
     public void addBuilding(@RequestBody Building building) {
         buildingService.addBuilding(building);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/buildings/{id}")
+    @PutMapping("/buildings/{id}")
+    @ResponseBody
     public void updateBuilding(@RequestBody Building building, @PathVariable("id") int id) {
         buildingService.updateBuilding(id, building);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/buildings/{id}")
+    @DeleteMapping("/buildings/{id}")
+    @ResponseBody
     public void deleteBuilding(@PathVariable("id") int id) {
         buildingService.deleteBuilding(id);
     }
