@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -58,6 +59,8 @@ public class BookingControllerTest {
 
     @Test
     void roomNotConnected_test() {
+        when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
+            .thenThrow(HttpServerErrorException.class);
         String message = bookingController.checkIfRoomsConnected().substring(0, 26);
         Assertions.assertEquals("Not connected due to Error", message);
     }
@@ -66,7 +69,7 @@ public class BookingControllerTest {
     void roomConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
             .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class));
+        Assertions.assertEquals("<200 OK OK,[]>", bookingController.checkIfRoomsConnected());
     }
 
     @Test
