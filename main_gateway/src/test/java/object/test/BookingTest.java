@@ -2,6 +2,7 @@ package object.test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +14,12 @@ public class BookingTest {
 
     @BeforeEach
     void setup() {
-        booking = new Booking(1L, "Dan", "Steve Jobs Room",
+        booking = new Booking(1L, "Dan", 1, 36,
                 LocalDate.of(2021, 12, 4),
                 LocalTime.of(11, 10),
                 LocalTime.of(15, 45),
-                "Group study session");
+                "Group study session",
+                List.of("user0", "user1"));
     }
 
     @Test
@@ -32,7 +34,7 @@ public class BookingTest {
 
     @Test
     void getRoom_test() {
-        Assertions.assertThat(booking.getRoom()).isEqualTo("Steve Jobs Room");
+        Assertions.assertThat(booking.getRoom()).isEqualTo(1);
     }
 
     @Test
@@ -55,6 +57,10 @@ public class BookingTest {
         Assertions.assertThat(booking.getPurpose()).isEqualTo("Group study session");
     }
 
+    @Test
+    void getParticipants_test() {
+        Assertions.assertThat(booking.getParticipants()).isEqualTo(List.of("user0", "user1"));
+    }
 
 
     @Test
@@ -65,8 +71,8 @@ public class BookingTest {
 
     @Test
     void setRoom_test() {
-        booking.setRoom("Marie Currie");
-        Assertions.assertThat(booking.getRoom()).isEqualTo("Marie Currie");
+        booking.setRoom(1);
+        Assertions.assertThat(booking.getRoom()).isEqualTo(1);
     }
 
     @Test
