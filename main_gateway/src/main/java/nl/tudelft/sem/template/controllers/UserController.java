@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class UserController {
 
+    private transient RestTemplate restTemplate = new RestTemplate();
+
     /** Returns all the users in the system.
      *
      * @return list of users.
@@ -23,8 +25,7 @@ public class UserController {
     @ResponseBody
     public List getUsers() {
         String uri = "http://localhost:8081/users";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, List.class);
+        return restTemplate.getForObject(uri, List.class);
     }
 
     /** Returns a specific user with respect to its id.
@@ -36,8 +37,7 @@ public class UserController {
     @ResponseBody
     public User getUser(@PathVariable("id") String id) {
         String uri = "http://localhost:8081/getUser/".concat(id);
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, User.class);
+        return restTemplate.getForObject(uri, User.class);
     }
 
     /** Adds a user to the system.
@@ -50,8 +50,7 @@ public class UserController {
     public boolean postUser(@RequestBody User user) {
         try {
             String uri = "http://localhost:8081/users";
-            RestTemplate template = new RestTemplate();
-            template.postForObject(uri, user, void.class);
+            restTemplate.postForObject(uri, user, void.class);
             return true;
         } catch (Exception e) {
             return false;
@@ -69,8 +68,7 @@ public class UserController {
     public boolean updateUser(@RequestBody User user, @PathVariable("id") String id) {
         try {
             String uri = "http://localhost:8081/users/".concat(id);
-            RestTemplate template = new RestTemplate();
-            template.put(uri, user);
+            restTemplate.put(uri, user);
             return true;
         } catch (Exception e) {
             return false;
@@ -87,8 +85,7 @@ public class UserController {
     public boolean deleteUser(@PathVariable("id") String id) {
         try {
             String uri = "http://localhost:8081/users/".concat(id);
-            RestTemplate template = new RestTemplate();
-            template.delete(uri);
+            restTemplate.delete(uri);
             return true;
         } catch (Exception e) {
             return false;
