@@ -14,7 +14,7 @@ public class BookingTest {
 
     @BeforeEach
     void setup() {
-        booking = new Booking(1L, "Dan", "Steve Jobs Room",
+        booking = new Booking(1L, "Dan", 1, 36,
                 LocalDate.of(2021, 12, 4),
                 LocalTime.of(11, 10),
                 LocalTime.of(15, 45),
@@ -71,8 +71,8 @@ public class BookingTest {
 
     @Test
     void setRoom_test() {
-        booking.setRoom("Marie Currie");
-        Assertions.assertThat(booking.getRoom()).isEqualTo("Marie Currie");
+        booking.setRoom(1);
+        Assertions.assertThat(booking.getRoom()).isEqualTo(1);
     }
 
     @Test

@@ -19,13 +19,13 @@ public class BookingTest {
     @BeforeEach
     void setup() {
 
-        b1 = new Booking("A", "R1", LocalDate.of(2020, 1, 8),
+        b1 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 8),
             LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
                 "Studying", List.of("user0", "user1"));
-        b2 = new Booking("A", "R1", LocalDate.of(2020, 1, 5),
+        b2 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
             LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
                 "Project meeting", List.of("user0", "user1"));
-        b3 = new Booking("A", "R1", LocalDate.of(2020, 1, 5),
+        b3 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
             LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
                 "Project meeting", List.of("user0", "user1"));
     }
