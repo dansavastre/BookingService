@@ -21,17 +21,17 @@ public class UserTest {
     }
 
     @Test
-    void getName_test() {
+    void getPassword_test() {
         Assertions.assertThat(user.getPassword()).isEqualTo("password123");
     }
 
     @Test
-    void getCapacity_test() {
+    void getFirstName_test() {
         Assertions.assertThat(user.getFirstName()).isEqualTo("Dan");
     }
 
     @Test
-    void getEquipment_test() {
+    void getLastName_test() {
         Assertions.assertThat(user.getLastName()).isEqualTo("Savastre");
     }
 
