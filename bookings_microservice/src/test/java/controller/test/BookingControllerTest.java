@@ -17,12 +17,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 
 public class BookingControllerTest {
 
     @Mock
     private transient BookingService bookingService;
+    @Mock
+    private transient RestTemplate restTemplate;
 
     @InjectMocks
     private transient BookingController bookingController;
@@ -50,6 +55,13 @@ public class BookingControllerTest {
     void roomNotConnected_test() {
         String message = bookingController.checkIfRoomsConnected().substring(0, 26);
         Assertions.assertEquals("Not connected due to Error", message);
+    }
+
+    @Test
+    void roomConnected_test() {
+        when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
+            .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
+        Assertions.assertEquals("<200 OK OK,[]>", restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class));
     }
 
     @Test
