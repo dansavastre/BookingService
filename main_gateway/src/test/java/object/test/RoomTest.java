@@ -1,12 +1,9 @@
 package object.test;
 
-import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalTime;
 
 public class RoomTest {
 
