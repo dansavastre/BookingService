@@ -6,7 +6,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import nl.tudelft.sem.template.RoomApplication;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.repositories.RoomRepository;
@@ -33,12 +35,16 @@ public class RoomServiceTest {
     transient Room r0;
     transient Room r1;
     transient Room r2;
+    transient Map<String, Boolean> equipmentMap;
 
     @BeforeEach
     void setup() {
-        r0 = new Room(12, "Europe", 12, "projector, whiteboard", "yes", 36);
-        r1 = new Room(11, "Australia", 6, "projector", "no", 36);
-        r2 = new Room(11, "Australia", 6, "projector", "yes", 36);
+        equipmentMap = new HashMap<>();
+        equipmentMap.put("projector", true);
+        equipmentMap.put("smartBoard", true);
+        r0 = new Room(12, "Europe", 12, equipmentMap, "yes", 36);
+        r1 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
+        r2 = new Room(11, "Australia", 6, equipmentMap, "yes", 36);
     }
 
     @Test

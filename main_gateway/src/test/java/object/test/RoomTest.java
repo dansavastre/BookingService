@@ -1,5 +1,10 @@
 package object.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.util.HashMap;
+import java.util.Map;
 import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,10 +13,16 @@ import org.junit.jupiter.api.Test;
 public class RoomTest {
 
     private transient Room room;
+    private transient Map<String, Boolean> equipmentMap;
+    private transient String projector = "projector";
 
     @BeforeEach
     void setup() {
-        room = new Room(1, "Steve Jobs Room", 8, "wifi, desk, whiteboard", "available", 36);
+        equipmentMap = new HashMap<>();
+        equipmentMap.put("wifi", true);
+        equipmentMap.put("projector", true);
+        equipmentMap.put("smart board", true);
+        room = new Room(1, "Steve Jobs Room", 8, equipmentMap, "available", 36);
     }
 
     @Test
@@ -31,7 +42,45 @@ public class RoomTest {
 
     @Test
     void getEquipment_test() {
-        Assertions.assertThat(room.getEquipment()).isEqualTo("wifi, desk, whiteboard");
+        Assertions.assertThat(room.getEquipment()).isEqualTo(equipmentMap);
+    }
+
+    @Test
+    void addingEquipmentPass_test() {
+        room.addEquipment("chair");
+        assertEquals(true, room.getEquipment().get("chair"));
+    }
+
+    @Test
+    void addingEquipmentFail_test() {
+        room.addEquipment("desk");
+        assertEquals(null, room.getEquipment().get("123"));
+    }
+
+    @Test
+    void settingEquipmentAsDefectiveTrue_test() {
+        room.setEquipmentAsDefective(projector);
+        assertEquals(false, equipmentMap.get(projector));
+    }
+
+    @Test
+    void settingEquipmentAsDefectiveFalse_test() {
+        room.setEquipmentAsDefective("123");
+        assertNotEquals(false, equipmentMap.get(projector));
+    }
+
+    @Test
+    void settingEquipmentAsWorkingTrue_test() {
+        room.setEquipmentAsDefective(projector);
+        room.setEquipmentAsWorking(projector);
+        assertEquals(true, equipmentMap.get(projector));
+    }
+
+    @Test
+    void settingEquipmentAsWorkingFalse_test() {
+        room.setEquipmentAsDefective(projector);
+        room.setEquipmentAsWorking("123");
+        assertEquals(false, equipmentMap.get(projector));
     }
 
     @Test
@@ -43,5 +92,5 @@ public class RoomTest {
     void getBuildingNumber_test() {
         Assertions.assertThat(room.getBuildingNumber()).isEqualTo(36);
     }
-    
+
 }
