@@ -37,12 +37,17 @@ public class BookingControllerTest {
 
     @BeforeEach
     void setup() {
+        List<String> p = new ArrayList<>();
+        p.add("user0");
+        p.add("user1");
         MockitoAnnotations.initMocks(this);
         b1 = new Booking("A", "R1", LocalDate.of(2020, 1, 8),
-            LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0), "Studying");
+            LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
+                "Studying", p);
         b1.setId(1L);
         b2 = new Booking("A", "R1", LocalDate.of(2020, 1, 5),
-            LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0), "Project meeting");
+            LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
+                "Project meeting", p);
     }
 
     @Test
