@@ -13,7 +13,7 @@ public class Room {
     private transient int id;
     private transient String name;
     private transient int capacity;
-    private transient Map<String, Boolean> equipment;
+    private transient Map<String, String> equipment;
     private transient String available;
     private transient int buildingNumber;
 
@@ -34,7 +34,7 @@ public class Room {
     public Room(int id,
                 String name,
                 int capacity,
-                Map<String, Boolean> equipment,
+                Map<String, String> equipment,
                 String available,
                 int buildingNumber) {
         super();
@@ -70,24 +70,24 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public Map<String, Boolean> getEquipment() {
+    public Map<String, String> getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(Map<String, Boolean> equipment) {
+    public void setEquipment(Map<String, String> equipment) {
         this.equipment = equipment;
     }
 
     public void addEquipment(String equipment) {
-        this.equipment.put(equipment, true);
+        this.equipment.put(equipment, "True");
     }
 
     public void setEquipmentAsDefective(String equipment) {
-        this.equipment.replace(equipment, false);
+        this.equipment.replace(equipment, "False");
     }
 
     public void setEquipmentAsWorking(String equipment) {
-        this.equipment.replace(equipment, true);
+        this.equipment.replace(equipment, "True");
     }
 
     public String getAvailable() {
@@ -131,20 +131,12 @@ public class Room {
     @Override
     public String toString() {
         return "Room{"
-                + "id="
-                + id
-                + ", name='"
-                + name
-                + '\''
-                + ", capacity="
-                + capacity
-                + ", equipment="
-                + equipment
-                + ", available='"
-                + available
-                + '\''
-                + ", buildingNumber="
-                + buildingNumber
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", capacity=" + capacity
+                + ", equipment=" + equipment
+                + ", available='" + available + '\''
+                + ", buildingNumber=" + buildingNumber
                 + '}';
     }
 }

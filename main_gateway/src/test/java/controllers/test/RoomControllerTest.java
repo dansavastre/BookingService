@@ -29,15 +29,15 @@ public class RoomControllerTest {
     private transient Room room1;
     private transient Room room2;
     private transient List<Room> rooms = new ArrayList<>();
-    private transient Map<String, Boolean> equipmentMap;
+    private transient Map<String, String> equipmentMap;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
         equipmentMap = new HashMap<>();
-        equipmentMap.put("wifi", true);
-        equipmentMap.put("projector", true);
-        equipmentMap.put("smart board", true);
+        equipmentMap.put("wifi", "True");
+        equipmentMap.put("projector", "True");
+        equipmentMap.put("smart board", "True");
         room1 = new Room(1, "Steve Jobs Room", 4, equipmentMap, "available", 36);
         room2 = new Room(1, "Marie Currie Room", 8, equipmentMap, "available", 36);
         rooms.add(room1);
