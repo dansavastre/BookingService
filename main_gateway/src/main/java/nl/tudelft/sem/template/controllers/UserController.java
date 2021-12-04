@@ -2,25 +2,30 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-@RestController
+@Controller
 public class UserController {
+
+    private transient RestTemplate restTemplate = new RestTemplate();
 
     /** Returns all the users in the system.
      *
      * @return list of users.
      */
-    @RequestMapping("/getUsers")
+    @GetMapping("/getUsers")
+    @ResponseBody
     public List getUsers() {
         String uri = "http://localhost:8081/users";
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, List.class);
+        return restTemplate.getForObject(uri, List.class);
     }
 
     /** Returns a specific user with respect to its id.
@@ -28,11 +33,11 @@ public class UserController {
      * @param id the id of the user we want.
      * @return the user we are searching for.
      */
-    @RequestMapping("/getUser/{id}")
+    @GetMapping("/getUser/{id}")
+    @ResponseBody
     public User getUser(@PathVariable("id") String id) {
         String uri = "http://localhost:8081/getUser/".concat(id);
-        RestTemplate template = new RestTemplate();
-        return template.getForObject(uri, User.class);
+        return restTemplate.getForObject(uri, User.class);
     }
 
     /** Adds a user to the system.
@@ -40,12 +45,12 @@ public class UserController {
      * @param user the user we want to add.
      * @return true if its successfully added, else false.
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/postUser")
+    @PostMapping("/postUser")
+    @ResponseBody
     public boolean postUser(@RequestBody User user) {
         try {
             String uri = "http://localhost:8081/users";
-            RestTemplate template = new RestTemplate();
-            template.postForObject(uri, user, void.class);
+            restTemplate.postForObject(uri, user, void.class);
             return true;
         } catch (Exception e) {
             return false;
@@ -58,29 +63,29 @@ public class UserController {
      * @param id the id of the user to update.
      * @return true if successfully updated, else false.
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/putUser/{id}")
+    @PutMapping("/putUser/{id}")
+    @ResponseBody
     public boolean updateUser(@RequestBody User user, @PathVariable("id") String id) {
         try {
             String uri = "http://localhost:8081/users/".concat(id);
-            RestTemplate template = new RestTemplate();
-            template.put(uri, user);
+            restTemplate.put(uri, user);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
+
     /** Deletes a user from the system.
      *
      * @param id the id of the user to delete.
      * @return true if successfully deleted, else false.
      */
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser/{id}")
+    @DeleteMapping("/deleteUser/{id}")
+    @ResponseBody
     public boolean deleteUser(@PathVariable("id") String id) {
         try {
             String uri = "http://localhost:8081/users/".concat(id);
-            RestTemplate template = new RestTemplate();
-            template.delete(uri);
+            restTemplate.delete(uri);
             return true;
         } catch (Exception e) {
             return false;

@@ -26,10 +26,10 @@ plugins {
 	id 'info.solidsoft.pitest' version '1.5.2'
 }
 
-group = 'nl.tudelft.cse.sem.template'
+group = 'nl.tudelft.sem.template'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
 	mavenCentral()
@@ -41,6 +41,8 @@ dependencies {
 	implementation 'com.h2database:h2'
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.6.1'
+	// https://mvnrepository.com/artifact/com.auth0/java-jwt
+	implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.2'
 	runtimeOnly 'com.h2database:h2'
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.6.0'

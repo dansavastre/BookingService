@@ -2,24 +2,29 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.Room;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-@RestController
+@Controller
 public class RoomController {
+
+    private transient RestTemplate template = new RestTemplate();
 
     /** Returns all the rooms in the system.
      *
      * @return list of rooms.
      */
-    @RequestMapping("/getRooms")
+    @GetMapping("/getRooms")
+    @ResponseBody
     public List getRooms() {
         String uri = "http://localhost:8082/rooms";
-        RestTemplate template = new RestTemplate();
         return template.getForObject(uri, List.class);
     }
 
@@ -28,10 +33,10 @@ public class RoomController {
      * @param id the id of the room we want.
      * @return the room we are searching for.
      */
-    @RequestMapping("/getRoom/{id}")
+    @GetMapping("/getRoom/{id}")
+    @ResponseBody
     public Room getRoom(@PathVariable("id") int id) {
         String uri = "http://localhost:8082/getRoom/".concat(String.valueOf(id));
-        RestTemplate template = new RestTemplate();
         return template.getForObject(uri, Room.class);
     }
 
@@ -40,11 +45,11 @@ public class RoomController {
      * @param room the room we want to add.
      * @return true if its successfully added, else false.
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/postRoom")
+    @PostMapping("/postRoom")
+    @ResponseBody
     public boolean postRoom(@RequestBody Room room) {
         try {
             String uri = "http://localhost:8082/rooms";
-            RestTemplate template = new RestTemplate();
             template.postForObject(uri, room, void.class);
             return true;
         } catch (Exception e) {
@@ -58,11 +63,11 @@ public class RoomController {
      * @param id the id of the room to update.
      * @return true if successfully updated, else false.
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/putRoom/{id}")
+    @PutMapping("/putRoom/{id}")
+    @ResponseBody
     public boolean updateRoom(@RequestBody Room room, @PathVariable("id") int id) {
         try {
             String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
-            RestTemplate template = new RestTemplate();
             template.put(uri, room);
             return true;
         } catch (Exception e) {
@@ -75,11 +80,11 @@ public class RoomController {
      * @param id the id of the room to delete.
      * @return true if successfully deleted, else false.
      */
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteRoom/{id}")
+    @DeleteMapping("/deleteRoom/{id}")
+    @ResponseBody
     public boolean deleteRoom(@PathVariable("id") int id) {
         try {
             String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
-            RestTemplate template = new RestTemplate();
             template.delete(uri);
             return true;
         } catch (Exception e) {

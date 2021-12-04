@@ -5,11 +5,11 @@ import java.util.Objects;
 
 public class User {
 
-    private final String id;
-    private final String password;
-    private final String firstName;
-    private final String lastName;
-    private final String userType;
+    private transient String id;
+    private transient String password;
+    private transient String firstName;
+    private transient String lastName;
+    private transient String userType;
 
     /**
      * Parameterised constructor for the User class.
@@ -33,11 +33,6 @@ public class User {
      */
     public User() {
         super();
-        this.id = "PLACEHOLDER";
-        this.password = "PLACEHOLDER";
-        this.firstName = "PLACEHOLDER";
-        this.lastName = "PLACEHOLDER";
-        this.userType = "PLACEHOLDER";
     }
 
     public String getId() {
