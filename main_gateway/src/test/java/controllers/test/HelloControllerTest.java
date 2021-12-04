@@ -21,44 +21,47 @@ public class HelloControllerTest {
     @InjectMocks
     private transient HelloController helloController;
 
+    private transient String okResponse;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+        okResponse = "<200 OK OK,[]>";
     }
 
     @Test
     void helloUser_test() {
         when(restTemplate.getForObject("http://localhost:8081/sayHi", String.class))
                 .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", helloController.helloUser());
+        Assertions.assertEquals(okResponse, helloController.helloUser());
     }
 
     @Test
     void helloRoom_test() {
         when(restTemplate.getForObject("http://localhost:8082/sayHiToRoom", String.class))
                 .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", helloController.helloRoom());
+        Assertions.assertEquals(okResponse, helloController.helloRoom());
     }
 
     @Test
     void helloBuilding_test() {
         when(restTemplate.getForObject("http://localhost:8082/sayHiToBuilding", String.class))
                 .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", helloController.helloBuilding());
+        Assertions.assertEquals(okResponse, helloController.helloBuilding());
     }
 
     @Test
     void helloBookings_test() {
         when(restTemplate.getForObject("http://localhost:8083/sayHi", String.class))
                 .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", helloController.helloBookings());
+        Assertions.assertEquals(okResponse, helloController.helloBookings());
     }
 
     @Test
     void checkConnectionBookingsRooms_test() {
         when(restTemplate.getForObject("http://localhost:8083/confirmRoomsConnection", String.class))
                 .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", helloController.checkConnectionBookingsRooms());
+        Assertions.assertEquals(okResponse, helloController.checkConnectionBookingsRooms());
     }
 
 }
