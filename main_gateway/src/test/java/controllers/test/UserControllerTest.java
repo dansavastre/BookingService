@@ -27,12 +27,16 @@ public class UserControllerTest {
     private transient User u1;
     private transient User u2;
     private transient List<User> users = new ArrayList<>();
+    private transient String id1;
+    private transient String id2;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
         u1 = new User("1234567", "password", "Dan", "Savastre", "admin");
         u2 = new User("9876543", "psw", "Mike", "Jones", "employee");
+        id1 = u1.getId();
+        id2 = u2.getId();
         users.add(u1);
         users.add(u2);
     }
@@ -49,10 +53,10 @@ public class UserControllerTest {
 
     @Test
     void getUser_test() {
-        String uri = "http://localhost:8081/getUser/".concat("1234567");
+        String uri = "http://localhost:8081/getUser/".concat(id1);
         when(restTemplate.getForObject(uri, User.class))
                 .thenReturn(u1);
-        Assertions.assertThat(userController.getUser("1234567")).isEqualTo(u1);
+        Assertions.assertThat(userController.getUser(id1)).isEqualTo(u1);
         verify(restTemplate, times(1)).getForObject(uri, User.class);
     }
 
@@ -65,15 +69,15 @@ public class UserControllerTest {
 
     @Test
     void updateUser_test() {
-        String uri = "http://localhost:8081/users/".concat("1234567");
-        Assertions.assertThat(userController.updateUser(u2, "1234567")).isTrue();
+        String uri = "http://localhost:8081/users/".concat(id1);
+        Assertions.assertThat(userController.updateUser(u2, id1)).isTrue();
         verify(restTemplate, times(1)).put(uri, u2);
     }
 
     @Test
     void deleteUser_test() {
-        String uri = "http://localhost:8081/users/".concat("1234567");
-        Assertions.assertThat(userController.deleteUser("1234567")).isTrue();
+        String uri = "http://localhost:8081/users/".concat(id1);
+        Assertions.assertThat(userController.deleteUser(id1)).isTrue();
         verify(restTemplate, times(1)).delete(uri);
     }
 

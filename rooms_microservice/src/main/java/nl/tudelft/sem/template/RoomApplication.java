@@ -22,11 +22,18 @@ public class RoomApplication {
     @Bean
     CommandLineRunner run1(RoomService roomService) {
         return args -> {
-            Map<String, Boolean> equipmentMap = new HashMap<>();
+            String t = "True";
+            Map<String, String> equipmentMap = new HashMap<>();
+            equipmentMap.put("Projector", t);
+            equipmentMap.put("Whiteboard", t);
+            equipmentMap.put("Computer", "False");
+            Map<String, String> equipmentMap2 = new HashMap<>();
+            equipmentMap2.put("Extra Chairs", t);
+            equipmentMap2.put("Debate Stands", t);
             roomService.addRoom(new Room(0, "Europe", 12, equipmentMap, "yes", 36));
             roomService.addRoom(new Room(1, "Australia", 6, equipmentMap, "yes", 36));
             roomService.addRoom(new Room(2, "Africa", 8, equipmentMap, "maintenance", 36));
-            roomService.addRoom(new Room(1, "Steve Jobs", 12, equipmentMap, "yes", 24));
+            roomService.addRoom(new Room(1, "Steve Jobs", 12, equipmentMap2, "yes", 24));
         };
     }
 

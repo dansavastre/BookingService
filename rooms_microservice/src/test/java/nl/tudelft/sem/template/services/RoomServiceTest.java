@@ -35,13 +35,13 @@ public class RoomServiceTest {
     transient Room r0;
     transient Room r1;
     transient Room r2;
-    transient Map<String, Boolean> equipmentMap;
+    transient Map<String, String> equipmentMap;
 
     @BeforeEach
     void setup() {
         equipmentMap = new HashMap<>();
-        equipmentMap.put("projector", true);
-        equipmentMap.put("smartBoard", true);
+        equipmentMap.put("projector", "True");
+        equipmentMap.put("smartBoard", "True");
         r0 = new Room(12, "Europe", 12, equipmentMap, "yes", 36);
         r1 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
         r2 = new Room(11, "Australia", 6, equipmentMap, "yes", 36);
