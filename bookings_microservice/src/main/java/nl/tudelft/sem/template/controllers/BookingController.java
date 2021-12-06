@@ -76,9 +76,9 @@ public class BookingController {
         bookingService.deleteBooking(id);
     }
 
-    @GetMapping("/users/myBookings/default")
+    @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsExample(@RequestBody String userId) {
+    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId) {
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
 }
