@@ -1,10 +1,13 @@
 package nl.tudelft.sem.template.objects;
 
+import java.util.Map;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 
 @Entity(name = "Room")
 @Table(name = "room")
@@ -21,7 +24,8 @@ public class Room {
     private int capacity;
 
     @Column(name = "EQUIPMENT", nullable = true)
-    private String equipment;
+    @ElementCollection(targetClass = String.class)
+    private Map<String, String> equipment;
 
     @Column(name = "AVAILABLE", nullable = true, length = 50)
     private String available;
@@ -46,7 +50,7 @@ public class Room {
     public Room(int id,
                 String name,
                 int capacity,
-                String equipment,
+                Map<String, String> equipment,
                 String available,
                 int buildingNumber) {
         super();
@@ -82,12 +86,24 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public String getEquipment() {
+    public Map<String, String> getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(String equipment) {
+    public void setEquipment(Map<String, String> equipment) {
         this.equipment = equipment;
+    }
+
+    public void addEquipment(String equipment) {
+        this.equipment.put(equipment, "True");
+    }
+
+    public void setEquipmentAsDefective(String equipment) {
+        this.equipment.replace(equipment, "False");
+    }
+
+    public void setEquipmentAsWorking(String equipment) {
+        this.equipment.replace(equipment, "True");
     }
 
     public String getAvailable() {
@@ -131,20 +147,12 @@ public class Room {
     @Override
     public String toString() {
         return "Room{"
-                + "id="
-                + id
-                + ", name='"
-                + name
-                + '\''
-                + ", capacity="
-                + capacity
-                + ", equipment="
-                + equipment
-                + ", available='"
-                + available
-                + '\''
-                + ", buildingNumber="
-                + buildingNumber
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", capacity=" + capacity
+                + ", equipment=" + equipment
+                + ", available='" + available + '\''
+                + ", buildingNumber=" + buildingNumber
                 + '}';
     }
 }

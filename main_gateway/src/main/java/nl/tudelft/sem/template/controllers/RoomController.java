@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class RoomController {
 
+    private transient RestTemplate template = new RestTemplate();
+
     /** Returns all the rooms in the system.
      *
      * @return list of rooms.
@@ -23,7 +25,6 @@ public class RoomController {
     @ResponseBody
     public List getRooms() {
         String uri = "http://localhost:8082/rooms";
-        RestTemplate template = new RestTemplate();
         return template.getForObject(uri, List.class);
     }
 
@@ -36,7 +37,6 @@ public class RoomController {
     @ResponseBody
     public Room getRoom(@PathVariable("id") int id) {
         String uri = "http://localhost:8082/getRoom/".concat(String.valueOf(id));
-        RestTemplate template = new RestTemplate();
         return template.getForObject(uri, Room.class);
     }
 
@@ -50,7 +50,6 @@ public class RoomController {
     public boolean postRoom(@RequestBody Room room) {
         try {
             String uri = "http://localhost:8082/rooms";
-            RestTemplate template = new RestTemplate();
             template.postForObject(uri, room, void.class);
             return true;
         } catch (Exception e) {
@@ -69,7 +68,6 @@ public class RoomController {
     public boolean updateRoom(@RequestBody Room room, @PathVariable("id") int id) {
         try {
             String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
-            RestTemplate template = new RestTemplate();
             template.put(uri, room);
             return true;
         } catch (Exception e) {
@@ -87,7 +85,6 @@ public class RoomController {
     public boolean deleteRoom(@PathVariable("id") int id) {
         try {
             String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
-            RestTemplate template = new RestTemplate();
             template.delete(uri);
             return true;
         } catch (Exception e) {

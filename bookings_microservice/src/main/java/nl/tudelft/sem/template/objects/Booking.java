@@ -35,7 +35,10 @@ public class Booking {
     private String bookingOwner;
 
     @Column(name = "ROOM")
-    private String room;
+    private int room;
+
+    @Column(name = "BUILDING")
+    private int building;
 
     @Column(name = "DATE")
     private LocalDate date;
@@ -57,17 +60,20 @@ public class Booking {
      * Parameterised constructor for the Booking class.
      *
      * @param bookingOwner NetID of the user who made the booking
-     * @param room         Building number and room number of room
+     * @param room         Room number of room
+     * @param building     Building number
      * @param date         Date of the booking
      * @param startTime    Start time of booking
      * @param endTime      End time of booking
      * @param purpose      Purpose of booking
+     * @param participants Ids of the participants of the meeting
      */
     public Booking(String bookingOwner,
-                   String room, LocalDate date, LocalTime startTime,
+                   int room, int building, LocalDate date, LocalTime startTime,
                    LocalTime endTime, String purpose, List<String> participants) {
         this.bookingOwner = bookingOwner;
         this.room = room;
+        this.building = building;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -94,8 +100,12 @@ public class Booking {
         return bookingOwner;
     }
 
-    public String getRoom() {
+    public int getRoom() {
         return room;
+    }
+
+    public int getBuilding() {
+        return building;
     }
 
     public LocalTime getStartTime() {
@@ -122,8 +132,12 @@ public class Booking {
         this.bookingOwner = bookingOwner;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(int room) {
         this.room = room;
+    }
+
+    public void setBuilding(int building) {
+        this.building = building;
     }
 
     public void setStartTime(LocalTime startTime) {
@@ -158,6 +172,7 @@ public class Booking {
         return Objects.equals(id, booking.id)
                 && Objects.equals(bookingOwner, booking.bookingOwner)
                 && Objects.equals(room, booking.room)
+                && Objects.equals(building, booking.building)
                 && Objects.equals(date, booking.date)
                 && Objects.equals(startTime, booking.startTime)
                 && Objects.equals(endTime, booking.endTime)
@@ -167,7 +182,7 @@ public class Booking {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookingOwner, room, date, startTime,
+        return Objects.hash(id, bookingOwner, room, building, date, startTime,
                 endTime, purpose, participants);
     }
 
@@ -177,6 +192,7 @@ public class Booking {
                 + "id=" + id
                 + ", bookingOwner='" + bookingOwner + '\''
                 + ", room='" + room + '\''
+                + ", building='" + building + '\''
                 + ", date=" + date
                 + ", startTime=" + startTime
                 + ", endTime=" + endTime

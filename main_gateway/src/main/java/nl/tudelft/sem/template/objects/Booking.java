@@ -9,7 +9,8 @@ public class Booking {
 
     private transient Long id;
     private transient String bookingOwner;
-    private transient String room;
+    private transient int room;
+    private transient int building;
     private transient LocalDate date;
     private transient LocalTime startTime;
     private transient LocalTime endTime;
@@ -26,12 +27,13 @@ public class Booking {
      * @param endTime the end time of the booking.
      * @param purpose the purpose of the meeting.
      */
-    public Booking(Long id, String bookingOwner, String room, LocalDate date,
+    public Booking(Long id, String bookingOwner, int room, int building, LocalDate date,
                    LocalTime startTime, LocalTime endTime, String purpose,
                    List<String> participants) {
         this.id = id;
         this.bookingOwner = bookingOwner;
         this.room = room;
+        this.building = building;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -66,7 +68,7 @@ public class Booking {
      *
      * @return the room of the booking.
      */
-    public String getRoom() {
+    public int getRoom() {
         return room;
     }
 
@@ -110,6 +112,14 @@ public class Booking {
         return participants;
     }
 
+    public int getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(int building) {
+        this.building = building;
+    }
+
     /** Set the date of the booking.
      *
      * @param date the new date.
@@ -130,7 +140,7 @@ public class Booking {
      *
      * @param room the new room.
      */
-    public void setRoom(String room) {
+    public void setRoom(int room) {
         this.room = room;
     }
 

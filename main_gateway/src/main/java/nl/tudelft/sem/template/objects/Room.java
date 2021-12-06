@@ -1,35 +1,43 @@
 package nl.tudelft.sem.template.objects;
 
+import java.util.Map;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 public class Room {
 
     private transient int id;
     private transient String name;
     private transient int capacity;
-    private transient String equipment;
+    private transient Map<String, String> equipment;
     private transient String available;
     private transient int buildingNumber;
 
-    /**
-     * Parameterless constructor with placeholder values.
-     */
     public Room() {
-        super();
+
     }
 
     /**
-     * Parametrised constructor for the Room class.
+     * Parameterised constructor for the Room class.
      *
-     * @param id             Id number of the room
+     * @param id             Id of the room
      * @param name           Name of the room
      * @param capacity       Capacity of the room
-     * @param equipment      Equipment available in the room
-     * @param available      Availability of the room
-     * @param buildingNumber Id of the building that the room is in
+     * @param equipment      Equipment present in the room
+     * @param available      Availability of the room (whether it is under maintenance or not)
+     * @param buildingNumber The building Id of the building this room is in
      */
-    public Room(int id, String name, int capacity, String equipment,
-                String available, int buildingNumber) {
+    public Room(int id,
+                String name,
+                int capacity,
+                Map<String, String> equipment,
+                String available,
+                int buildingNumber) {
+        super();
         this.id = id;
         this.name = name;
         this.capacity = capacity;
@@ -42,24 +50,60 @@ public class Room {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public String getEquipment() {
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public Map<String, String> getEquipment() {
         return equipment;
+    }
+
+    public void setEquipment(Map<String, String> equipment) {
+        this.equipment = equipment;
+    }
+
+    public void addEquipment(String equipment) {
+        this.equipment.put(equipment, "True");
+    }
+
+    public void setEquipmentAsDefective(String equipment) {
+        this.equipment.replace(equipment, "False");
+    }
+
+    public void setEquipmentAsWorking(String equipment) {
+        this.equipment.replace(equipment, "True");
     }
 
     public String getAvailable() {
         return available;
     }
 
+    public void setAvailable(String available) {
+        this.available = available;
+    }
+
     public int getBuildingNumber() {
         return buildingNumber;
+    }
+
+    public void setBuildingNumber(int buildingNumber) {
+        this.buildingNumber = buildingNumber;
     }
 
     @Override
@@ -76,7 +120,7 @@ public class Room {
                 && buildingNumber == room.buildingNumber
                 && Objects.equals(name, room.name)
                 && Objects.equals(equipment, room.equipment)
-                && Objects.equals(available, room.available);
+                && this.available.equals(room.available);
     }
 
     @Override
@@ -90,7 +134,7 @@ public class Room {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", capacity=" + capacity
-                + ", equipment='" + equipment + '\''
+                + ", equipment=" + equipment
                 + ", available='" + available + '\''
                 + ", buildingNumber=" + buildingNumber
                 + '}';
