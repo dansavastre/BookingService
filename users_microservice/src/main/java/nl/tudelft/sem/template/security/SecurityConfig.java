@@ -37,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .and().csrf().ignoringAntMatchers("/h2-console/**")
                 .and().headers().frameOptions().sameOrigin();
-        http.authorizeRequests().antMatchers("/login/**").permitAll();
-        //http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers("/login/**").permitAll(); // this enables use of the database
+        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
     }
 
