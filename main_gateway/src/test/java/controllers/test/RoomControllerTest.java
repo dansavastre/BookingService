@@ -1,5 +1,13 @@
 package controllers.test;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import nl.tudelft.sem.template.controllers.RoomController;
 import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
@@ -10,13 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 public class RoomControllerTest {
 

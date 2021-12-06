@@ -1,5 +1,14 @@
 package controllers.test;
 
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.objects.Booking;
 import org.assertj.core.api.Assertions;
@@ -10,12 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.mockito.Mockito.*;
 
 public class BookingControllerTest {
 
