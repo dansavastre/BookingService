@@ -26,8 +26,8 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(username).get();
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getUserType()));
-        return new org.springframework.security.core.userdetails.
-                User(user.getId(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails
+                .User(user.getId(), user.getPassword(), authorities);
     }
 
     /**
