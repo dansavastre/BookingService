@@ -1,12 +1,11 @@
 package nl.tudelft.sem.template.schedule;
 
-
+import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 
-import java.util.List;
 
 public interface SortStrategy {
 
-    Booking getNextBooking(List<Booking> bookings);
+    List<Booking> sortBookings(List<Booking> bookings);
 
 }

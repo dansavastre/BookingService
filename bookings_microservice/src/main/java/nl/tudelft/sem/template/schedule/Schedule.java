@@ -1,10 +1,9 @@
 package nl.tudelft.sem.template.schedule;
 
-
-import nl.tudelft.sem.template.objects.Booking;
-
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.sem.template.objects.Booking;
+
 
 public class Schedule {
 
@@ -25,7 +24,23 @@ public class Schedule {
         bookings.add(booking);
     }
 
-    public Booking getNextBooking() {
-        return this.sortStrategy.getNextBooking(bookings);
+    public List<Booking> sortBookings() {
+        return this.sortStrategy.sortBookings(bookings);
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public SortStrategy getSortStrategy() {
+        return sortStrategy;
+    }
+
+    public void setSortStrategy(SortStrategy sortStrategy) {
+        this.sortStrategy = sortStrategy;
     }
 }
