@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,5 +73,11 @@ public class BookingController {
     @ResponseBody
     public void deleteBooking(@PathVariable("id") Long id) {
         bookingService.deleteBooking(id);
+    }
+
+    @GetMapping("/users/myBookings/default")
+    @ResponseBody
+    public List<Booking> getMyBookingsExample(@RequestBody String userId) {
+        return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
 }
