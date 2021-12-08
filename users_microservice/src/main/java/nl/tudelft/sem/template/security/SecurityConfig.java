@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .and().csrf().ignoringAntMatchers("/h2-console/**")
+                //.and().csrf().ignoringAntMatchers("/h2-console/**")
                 .and().headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 .antMatchers("/login/**").permitAll(); // this enables use of the database

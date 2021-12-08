@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @AutoConfigureMockMvc
@@ -25,6 +26,8 @@ public class UserServiceTest {
 
     @Mock
     private transient UserRepository userRepository;
+    @Mock
+    private transient BCryptPasswordEncoder encoder;
 
     @InjectMocks
     private transient UserService userService;
@@ -58,6 +61,9 @@ public class UserServiceTest {
 
     @Test
     void addUser_test() {
+        String pw = user1.getPassword();
+        when(encoder.encode(pw)).thenReturn(pw);
+        when(encoder.matches(pw, pw)).thenReturn(true);
         userService.addUser(user1);
         verify(userRepository, times(1)).save(user1);
     }

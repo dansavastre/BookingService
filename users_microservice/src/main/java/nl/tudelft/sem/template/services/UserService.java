@@ -3,6 +3,7 @@ package nl.tudelft.sem.template.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(username).get();
+        Optional<User> u = userRepository.findById(username);
+        if (u.isEmpty()) {
+            throw new UsernameNotFoundException("user not found");
+        }
+        User user = u.get();
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getUserType()));
         return new org.springframework.security.core.userdetails
@@ -45,8 +50,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).get();
     }
 
+    /** Encrypts the password and saves the user.
+     *
+     * @param user     User to be saved in the db, has raw password
+     */
     public void addUser(User user) {
-        user.setPassword(passwordEncoder.encode(passwordEncoder.encode(user.getPassword())));
+        String password = user.getPassword();
+        String enc = passwordEncoder.encode(password);
+        assert (passwordEncoder.matches(password, enc));
+        user.setPassword(enc);
         userRepository.save(user);
     }
 
