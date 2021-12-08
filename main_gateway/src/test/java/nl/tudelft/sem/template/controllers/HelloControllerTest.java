@@ -1,6 +1,5 @@
-package controllers.test;
+package nl.tudelft.sem.template.controllers;
 
-import nl.tudelft.sem.template.controllers.HelloController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

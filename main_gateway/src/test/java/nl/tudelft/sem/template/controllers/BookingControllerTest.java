@@ -1,6 +1,5 @@
-package controllers.test;
+package nl.tudelft.sem.template.controllers;
 
-import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.objects.Booking;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
