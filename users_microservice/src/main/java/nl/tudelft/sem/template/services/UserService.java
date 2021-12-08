@@ -55,10 +55,7 @@ public class UserService implements UserDetailsService {
      * @param user     User to be saved in the db, has raw password
      */
     public void addUser(User user) {
-        String password = user.getPassword();
-        String enc = passwordEncoder.encode(password);
-        assert (passwordEncoder.matches(password, enc));
-        user.setPassword(enc);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
