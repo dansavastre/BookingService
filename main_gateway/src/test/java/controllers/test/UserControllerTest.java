@@ -1,5 +1,11 @@
 package controllers.test;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.sem.template.controllers.UserController;
 import nl.tudelft.sem.template.objects.User;
 import org.assertj.core.api.Assertions;
@@ -9,12 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 public class UserControllerTest {
 

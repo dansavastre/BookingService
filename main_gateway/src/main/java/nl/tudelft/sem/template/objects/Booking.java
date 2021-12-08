@@ -190,7 +190,7 @@ public class Booking {
             return false;
         }
         Booking booking = (Booking) o;
-        return id == booking.id && Objects.equals(bookingOwner, booking.bookingOwner)
+        return Objects.equals(id, booking.id) && Objects.equals(bookingOwner, booking.bookingOwner)
             && Objects.equals(room, booking.room) && Objects.equals(date, booking.date)
             && Objects.equals(startTime, booking.startTime)
             && Objects.equals(endTime, booking.endTime) && Objects.equals(purpose, booking.purpose);
