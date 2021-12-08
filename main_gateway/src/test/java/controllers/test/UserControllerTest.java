@@ -33,8 +33,8 @@ public class UserControllerTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        u1 = new User("1234567", "password", "Dan", "Savastre", "admin");
-        u2 = new User("9876543", "psw", "Mike", "Jones", "employee");
+        u1 = new User("1234567", "password", "Dan", "Savastre");
+        u2 = new User("9876543", "psw", "Mike", "Jones");
         id1 = u1.getId();
         id2 = u2.getId();
         users.add(u1);

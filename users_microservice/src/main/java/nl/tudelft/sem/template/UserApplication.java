@@ -1,10 +1,12 @@
 package nl.tudelft.sem.template;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Role;
 import nl.tudelft.sem.template.objects.User;
+import nl.tudelft.sem.template.services.RoleService;
 import nl.tudelft.sem.template.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +18,16 @@ public class UserApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner run2(RoleService roleService) {
+        return args -> {
+            roleService.addRole(new Role("employee"));
+            roleService.addRole(new Role("secretary"));
+            roleService.addRole(new Role("admin"));
+
+        };
     }
 
     @Bean
@@ -42,4 +54,6 @@ public class UserApplication {
             userService.addUser(u6);
         };
     }
+
+
 }

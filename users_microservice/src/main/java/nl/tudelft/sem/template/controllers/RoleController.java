@@ -33,7 +33,7 @@ public class RoleController {
 
     @GetMapping("/getRole/{id}")
     @ResponseBody
-    public Role getRole(@PathVariable("id") String id) {
+    public Role getRole(@PathVariable("id") Long id) {
         return roleService.getRole(id);
     }
 
@@ -45,12 +45,12 @@ public class RoleController {
 
     @PutMapping("/roles/{id}")
     @ResponseBody
-    public void updateRole(@RequestBody Role role, @PathVariable("id") String id) {
+    public void updateRole(@RequestBody Role role, @PathVariable("id") Long id) {
         roleService.updateRole(id, role);
     }
 
     @DeleteMapping("/roles/{id}")
-    public void deleteRole(@PathVariable("id") String id) {
+    public void deleteRole(@PathVariable("id") Long id) {
         roleService.deleteRole(id);
     }
 }

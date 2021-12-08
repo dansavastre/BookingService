@@ -1,6 +1,6 @@
 package object.test;
 
-import nl.tudelft.sem.template.objects.Room;
+import java.util.ArrayList;
 import nl.tudelft.sem.template.objects.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ public class UserTest {
 
     @BeforeEach
     void setup() {
-        user = new User("1234567", "password123", "Dan", "Savastre", "admin");
+        user = new User("1234567", "password123", "Dan", "Savastre");
     }
 
     @Test
@@ -36,8 +36,8 @@ public class UserTest {
     }
 
     @Test
-    void getAvailable_test() {
-        Assertions.assertThat(user.getUserType()).isEqualTo("admin");
+    void getRoles_test() {
+        Assertions.assertThat(user.getRoles()).isEqualTo(new ArrayList<>());
     }
 
 }

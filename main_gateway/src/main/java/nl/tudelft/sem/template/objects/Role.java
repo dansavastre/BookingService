@@ -1,40 +1,10 @@
 package nl.tudelft.sem.template.objects;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
-@Entity(name = "Role")
-@Table(name = "role")
 public class Role {
-
-    @Id
-    @SequenceGenerator(
-        name = "role_sequence",
-        sequenceName = "role_sequence",
-        allocationSize = 1
-    )
-    @GeneratedValue(
-        strategy = IDENTITY,
-        generator = "role_sequence"
-    )
-    @Column(name = "ID")
-    private Long id;
-
-    @Column(name = "TYPE")
-    private String type;
-
-    /**
-     * Parameterless constructor for role.
-     */
-    public Role() {
-    }
+    private transient Long id;
+    private transient String type;
 
     /**
      * Constructor for role with parameter.
