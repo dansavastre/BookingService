@@ -1,0 +1,35 @@
+package nl.tudelft.sem.template.validators;
+
+import nl.tudelft.sem.template.controllers.BuildingController;
+import nl.tudelft.sem.template.controllers.RoomController;
+import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
+import nl.tudelft.sem.template.exceptions.InvalidRoomException;
+import nl.tudelft.sem.template.exceptions.InvalidBookingException;
+import nl.tudelft.sem.template.objects.Booking;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class BookingValidator extends BaseValidator {
+    private BuildingController buildingController;
+    private RoomController roomController;
+
+    @Override
+    public boolean handle(Booking booking) throws InvalidBookingException,
+        InvalidRoomException, BuildingNotOpenException {
+        LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now();
+
+        if (booking.getDate().compareTo(today) < 0) {
+            throw new InvalidBookingException("Date of booking is in the past");
+        } else if (booking.getDate().compareTo(today) == 0 && booking.getStartTime().compareTo(now) <= 0) {
+            throw  new InvalidBookingException("Booking start time is before current time");
+        } else if (buildingController.getBuilding(booking.getBuilding()) == null) {
+            throw new InvalidBookingException("Building does not exist");
+        } else if (roomController.getRoom(booking.getRoom())==null) {
+            throw new InvalidBookingException("Room does not exist");
+        }
+
+        return super.checkNext(booking);
+    }
+}
