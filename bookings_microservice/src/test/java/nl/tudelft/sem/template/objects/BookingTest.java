@@ -1,4 +1,4 @@
-package object.test;
+package nl.tudelft.sem.template.objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import nl.tudelft.sem.template.objects.Booking;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

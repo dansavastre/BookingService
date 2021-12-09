@@ -1,7 +1,6 @@
-package object.test;
+package nl.tudelft.sem.template.objects;
 
 import java.util.ArrayList;
-import nl.tudelft.sem.template.objects.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
