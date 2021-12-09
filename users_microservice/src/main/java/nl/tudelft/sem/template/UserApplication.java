@@ -13,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class UserApplication {
@@ -41,12 +40,16 @@ public class UserApplication {
     CommandLineRunner run(UserService userService) {
         return args -> {
             List<Role> roles = new ArrayList<Role>(Arrays.asList(new Role("employee")));
+            List<Role> roles2 = new ArrayList<Role>(Arrays.asList(new Role("employee"),
+                    new Role("secretary")));
+            List<Role> roles3 = new ArrayList<Role>(Arrays.asList(new Role("employee"),
+                    new Role("secretary"), new Role("admin")));
             User u1 = new User("ltwubben", "MTIzNA==", "Luuk", "Wubben");
             u1.setRoles(roles);
             User u2 = new User("vmadhu", "NTY3OA==", "Veena", "Madhu");
-            u2.setRoles(roles);
+            u2.setRoles(roles2);
             User u3 = new User("keshavnair", "OTEyMw==", "Keshav", "Nair");
-            u3.setRoles(roles);
+            u3.setRoles(roles3);
             User u4 = new User("npietnoczko", "NDU2Nw==", "Natalia", "Pietnoczko");
             u4.setRoles(roles);
             User u5 = new User("bserbanescu", "ODkxMg==", "Bianca", "Serbanescu");

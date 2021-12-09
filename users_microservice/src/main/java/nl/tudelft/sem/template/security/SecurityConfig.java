@@ -1,6 +1,7 @@
 package nl.tudelft.sem.template.security;
 
 import nl.tudelft.sem.template.filter.CustomAuthenticationFilter;
+import nl.tudelft.sem.template.filter.CustomAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -36,8 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().headers().frameOptions().sameOrigin();
         http.authorizeRequests()
                 .antMatchers("/login/**").permitAll(); // this enables use of the database
+        http.authorizeRequests().antMatchers("/admin/**").hasAuthority("admin");
+        http.authorizeRequests().antMatchers("/employee/**")
+                .hasAnyAuthority("employee", "admin", "secretary");
+        http.authorizeRequests().antMatchers("/secretary/**")
+                .hasAnyAuthority("admin", "secretary");
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilterBefore(new CustomAuthorizationFilter(),
+                UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
