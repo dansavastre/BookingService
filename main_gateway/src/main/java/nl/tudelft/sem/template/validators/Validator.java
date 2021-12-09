@@ -9,5 +9,6 @@ public interface Validator {
 
     void setNext(Validator handler);
 
-    boolean handle(Booking booking) throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException;
+    boolean handle(Booking booking) throws InvalidBookingException,
+        InvalidRoomException, BuildingNotOpenException;
 }

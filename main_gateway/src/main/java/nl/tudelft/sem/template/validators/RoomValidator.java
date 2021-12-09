@@ -1,21 +1,26 @@
 package nl.tudelft.sem.template.validators;
 
+import java.util.List;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
-import nl.tudelft.sem.template.objects.Room;
-
-import java.util.List;
 
 public class RoomValidator extends BaseValidator {
 
-    BookingController bookingController;
+    private transient BookingController bookingController;
 
+    /**
+     * Method for checking if two bookings overlap.
+     *
+     * @param booking the booking we check for validity
+     * @param other a booking from the database
+     * @return true if the bookings overlap, false otherwise
+     */
     public boolean bookingsOverlap(Booking booking, Booking other) {
-        if (booking.getRoom() == other.getRoom() &&
-            booking.getDate().equals(other.getDate())) {
+        if (booking.getRoom() == other.getRoom()
+            && booking.getDate().equals(other.getDate())) {
             if ((booking.getEndTime().compareTo(other.getStartTime()) >= 0
                 && booking.getEndTime().compareTo(other.getEndTime()) > 0)
                 || (booking.getStartTime().compareTo(other.getStartTime()) >= 0

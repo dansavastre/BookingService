@@ -7,7 +7,7 @@ import nl.tudelft.sem.template.objects.Booking;
 
 public abstract class BaseValidator implements Validator {
 
-    private Validator next;
+    private transient Validator next;
 
     public void setNext(Validator validator) {
         this.next = validator;

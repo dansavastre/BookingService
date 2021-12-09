@@ -9,7 +9,7 @@ import nl.tudelft.sem.template.objects.Building;
 
 public class BuildingValidator extends BaseValidator {
 
-    private BuildingController buildingController;
+    private transient BuildingController buildingController;
 
     @Override
     public boolean handle(Booking booking) throws BuildingNotOpenException,
