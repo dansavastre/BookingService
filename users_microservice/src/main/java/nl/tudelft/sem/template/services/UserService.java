@@ -19,8 +19,7 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private transient UserRepository userRepository;
-    @Autowired
-    private transient PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -55,7 +54,7 @@ public class UserService implements UserDetailsService {
      * @param user     User to be saved in the db, has raw password
      */
     public void addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

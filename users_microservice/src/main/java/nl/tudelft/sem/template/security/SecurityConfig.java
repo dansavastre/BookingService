@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private transient UserDetailsService userDetailsService;
     @Autowired
-    private transient BCryptPasswordEncoder passwordEncoder;
+    private transient NoEncoding passwordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

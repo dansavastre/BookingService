@@ -1,6 +1,7 @@
 package nl.tudelft.sem.template;
 
 import nl.tudelft.sem.template.objects.User;
+import nl.tudelft.sem.template.security.NoEncoding;
 import nl.tudelft.sem.template.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,8 +18,8 @@ public class UserApplication {
     }
 
     @Bean
-    BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    NoEncoding passwordEncoder() {
+        return new NoEncoding();
     }
 
     private transient String employee = "Employee";
@@ -26,12 +27,24 @@ public class UserApplication {
     @Bean
     CommandLineRunner run(UserService userService) {
         return args -> {
-            userService.addUser(new User("ltwubben", "1234", "Luuk", "Wubben", employee));
-            userService.addUser(new User("vmadhu", "5678", "Veena", "Madhu", employee));
-            userService.addUser(new User("keshavnair", "9123", "Keshav", "Nair", employee));
-            userService.addUser(new User("npietnoczko", "4567", "Natalia", "Pietnoczko", employee));
-            userService.addUser(new User("bserbanescu", "8912", "Bianca", "Serbanescu", employee));
-            userService.addUser(new User("dsavastre", "3456", "Dan", "Savastre", employee));
+            // password: 1234
+            userService.addUser(new User("ltwubben", "MTIzNA==",
+                    "Luuk", "Wubben", employee));
+            // password: 5678
+            userService.addUser(new User("vmadhu", "NTY3OA==",
+                    "Veena", "Madhu", employee));
+            // password: 9123
+            userService.addUser(new User("keshavnair", "OTEyMw==",
+                    "Keshav", "Nair", employee));
+            // password: 4567
+            userService.addUser(new User("npietnoczko", "NDU2Nw==",
+                    "Natalia", "Pietnoczko", employee));
+            // password: 8912
+            userService.addUser(new User("bserbanescu", "ODkxMg==",
+                    "Bianca", "Serbanescu", employee));
+            // password: 3456
+            userService.addUser(new User("dsavastre", "MzQ1Ng==",
+                    "Dan", "Savastre", employee));
         };
     }
 }
