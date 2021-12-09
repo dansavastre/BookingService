@@ -106,4 +106,11 @@ public class BookingController {
         return restTemplate.getForObject(uri, List.class);
     }
 
+    @GetMapping("/myBookings/location/{userId}")
+    @ResponseBody
+    public List getMyBookingsLocation(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/location/" + userId;
+        return restTemplate.getForObject(uri, List.class);
+    }
+
 }
