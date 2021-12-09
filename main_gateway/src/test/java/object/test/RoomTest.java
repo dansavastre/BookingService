@@ -1,5 +1,9 @@
 package object.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import nl.tudelft.sem.template.objects.Room;
@@ -7,21 +11,20 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class RoomTest {
 
     private transient Room room;
     private transient Map<String, String> equipmentMap;
     private final transient String projector = "projector";
-    private final transient String t = "True";
+    private final transient String trueS = "True";
 
     @BeforeEach
     void setup() {
         equipmentMap = new HashMap<>();
-        equipmentMap.put("wifi", t);
-        equipmentMap.put("projector", t);
-        equipmentMap.put("smart board", t);
+        equipmentMap.put("wifi", trueS);
+        equipmentMap.put("projector", trueS);
+        equipmentMap.put("smart board", trueS);
         room = new Room(1, "Steve Jobs Room", 8, equipmentMap, "available", 36);
     }
 
@@ -48,7 +51,7 @@ public class RoomTest {
     @Test
     void addingEquipmentPass_test() {
         room.addEquipment("chair");
-        assertEquals(t, room.getEquipment().get("chair"));
+        assertEquals(trueS, room.getEquipment().get("chair"));
     }
 
     @Test
@@ -73,7 +76,7 @@ public class RoomTest {
     void settingEquipmentAsWorkingTrue_test() {
         room.setEquipmentAsDefective(projector);
         room.setEquipmentAsWorking(projector);
-        assertEquals(t, equipmentMap.get(projector));
+        assertEquals(trueS, equipmentMap.get(projector));
     }
 
     @Test

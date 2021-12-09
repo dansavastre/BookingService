@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
+import nl.tudelft.sem.template.schedule.Schedule;
+import nl.tudelft.sem.template.schedule.SortStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +39,17 @@ public class BookingService {
 
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
+    }
+
+    /** get the schedule for the user using the specified sorting strategy.
+     *
+     * @param id            id of the user
+     * @param sortStrategy  sorting strategy for bookings
+     * @return              list of user's bookings in correct order
+     */
+    public List<Booking> getBookingsForUser(String id, SortStrategy sortStrategy) {
+        List<Booking> bookings = bookingRepository.findBookingByBookingOwnerEquals(id);
+        Schedule s = new Schedule(bookings, sortStrategy);
+        return s.sortBookings();
     }
 }
