@@ -1,5 +1,7 @@
 package nl.tudelft.sem.template.objects;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -9,7 +11,7 @@ public class User {
     private transient String password;
     private transient String firstName;
     private transient String lastName;
-    private transient String userType;
+    private transient List<Role> roles;
 
     /**
      * Parameterised constructor for the User class.
@@ -18,14 +20,13 @@ public class User {
      * @param password  Password of the user
      * @param firstName First name of the user
      * @param lastName  Last name of the user
-     * @param userType  Type of the user
      */
-    public User(String id, String password, String firstName, String lastName, String userType) {
+    public User(String id, String password, String firstName, String lastName) {
         this.id = id;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userType = userType;
+        this.roles = new ArrayList<>();
     }
 
     /**
@@ -51,8 +52,8 @@ public class User {
         return lastName;
     }
 
-    public String getUserType() {
-        return userType;
+    public List<Role> getRoles() {
+        return roles;
     }
 
     @Override
@@ -68,22 +69,39 @@ public class User {
                 && password.equals(user.password)
                 && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName)
-                && userType.equals(user.userType);
+                && roles.equals(user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, firstName, lastName, userType);
+        return Objects.hash(id, password, firstName, lastName);
     }
 
     @Override
     public String toString() {
+        String string = "";
+        for (Role role : roles) {
+            string = string + role.toString() + ", ";
+        }
+        if (string.length() > 0) {
+            string = string.substring(0, string.length() - 2);
+        }
         return "User{"
-                + "id='" + id + '\''
-                + ", password='" + password + '\''
-                + ", firstName='" + firstName + '\''
-                + ", lastName='" + lastName + '\''
-                + ", userType='" + userType + '\''
-                + '}';
+            + "id='"
+            + id
+            + '\''
+            + ", password='"
+            + password
+            + '\''
+            + ", firstName='"
+            + firstName
+            + '\''
+            + ", lastName='"
+            + lastName
+            + '\''
+            + ", roles='"
+            + string
+            + '\''
+            + '}';
     }
 }

@@ -17,13 +17,13 @@ public class RoomTest {
     transient Room r2;
     transient Map<String, String> equipmentMap;
     private transient String projector = "projector";
-    private transient String t = "True";
+    private transient String string = "True";
 
     @BeforeEach
     void setup() {
         equipmentMap = new HashMap<>();
-        equipmentMap.put("projector", t);
-        equipmentMap.put("smartBoard", t);
+        equipmentMap.put("projector", string);
+        equipmentMap.put("smartBoard", string);
         r0 = new Room(12, "Europe", 12, equipmentMap, "yes", 36);
         r1 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
         r2 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
@@ -32,7 +32,7 @@ public class RoomTest {
     @Test
     void addingEquipmentPass_test() {
         r1.addEquipment("chair");
-        assertEquals(t, r1.getEquipment().get("chair"));
+        assertEquals(string, r1.getEquipment().get("chair"));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class RoomTest {
     void settingEquipmentAsWorkingTrue_test() {
         r1.setEquipmentAsDefective(projector);
         r1.setEquipmentAsWorking(projector);
-        assertEquals(t, equipmentMap.get(projector));
+        assertEquals(string, equipmentMap.get(projector));
     }
 
     @Test
