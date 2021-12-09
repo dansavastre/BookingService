@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
 import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,10 @@ public class BookingController {
     @ResponseBody
     public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId) {
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
+    }
+    @GetMapping("/myBookings/chrono/{userId}")
+    @ResponseBody
+    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId) {
+        return bookingService.getBookingsForUser(userId, new ChronologicalSortStrategy());
     }
 }

@@ -99,4 +99,11 @@ public class BookingController {
         return restTemplate.getForObject(uri, List.class);
     }
 
+    @GetMapping("/myBookings/chrono/{userId}")
+    @ResponseBody
+    public List getMyBookingsChrono(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/chrono/" + userId;
+        return restTemplate.getForObject(uri, List.class);
+    }
+
 }
