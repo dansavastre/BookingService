@@ -58,7 +58,7 @@ public class BookingControllerTest {
         when(restTemplate.getForObject(uri, List.class))
                 .thenReturn(bookings);
 
-        Assertions.assertThat(bookingController.getBookings()).isEqualTo(bookings);
+        Assertions.assertThat(bookingController.getAllBookings()).isEqualTo(bookings);
         verify(restTemplate, times(1)).getForObject(uri, List.class);
     }
 

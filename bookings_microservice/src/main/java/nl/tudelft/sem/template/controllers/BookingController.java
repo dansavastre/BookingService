@@ -48,10 +48,16 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/bookings")
+    @GetMapping("/allbookings")
     @ResponseBody
     public List<Booking> getAllBookings() {
         return bookingService.getAllBookings();
+    }
+
+    @GetMapping("/bookings")
+    @ResponseBody
+    public List<Booking> getFutureBookings() {
+        return bookingService.getFutureBookings();
     }
 
     @GetMapping("/getBooking/{id}")
