@@ -24,6 +24,10 @@ public class BookingService {
         return new ArrayList<>(bookingRepository.findAll());
     }
 
+    public List<Booking> getFutureBookings() {
+        return new ArrayList<>(bookingRepository.findFutureBookings());
+    }
+
     public Booking getBooking(Long id) {
         return bookingRepository.findById(id).get();
     }

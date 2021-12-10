@@ -47,10 +47,16 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/bookings")
+    @GetMapping("/allbookings")
     @ResponseBody
     public List<Booking> getAllBookings() {
         return bookingService.getAllBookings();
+    }
+
+    @GetMapping("/bookings")
+    @ResponseBody
+    public List<Booking> getFutureBookings() {
+        return bookingService.getFutureBookings();
     }
 
     @GetMapping("/getBooking/{id}")
@@ -82,6 +88,7 @@ public class BookingController {
     public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId) {
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
+
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
     public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId) {
