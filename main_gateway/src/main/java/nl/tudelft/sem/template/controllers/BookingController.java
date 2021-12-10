@@ -21,14 +21,14 @@ public class BookingController {
      *
      * @return list of all bookings.
      */
-    @GetMapping("/getbookings")
+    @GetMapping("/getallbookings")
     @ResponseBody
     public List getAllBookings() {
         String uri = "http://localhost:8083/allbookings";
         return restTemplate.getForObject(uri, List.class);
     }
 
-    @GetMapping("/bookings")
+    @GetMapping("/getbookings")
     @ResponseBody
     public List getFutureBookings() {
         String uri = "http://localhost:8083/bookings";

@@ -43,7 +43,7 @@ public class BookingControllerTest {
                 "Group study session",
                 List.of("user0", "user1"));
         b2 = new Booking(2L, "Mike", 1, 1,
-                LocalDate.of(2021, 12, 5),
+                LocalDate.of(2022, 1, 5),
                 LocalTime.of(10, 30),
                 LocalTime.of(16, 0),
                 "Project room",
@@ -53,12 +53,22 @@ public class BookingControllerTest {
     }
 
     @Test
-    void getBookings_test() {
-        String uri = "http://localhost:8083/bookings";
+    void getAllBookings_test() {
+        String uri = "http://localhost:8083/allbookings";
         when(restTemplate.getForObject(uri, List.class))
                 .thenReturn(bookings);
 
         Assertions.assertThat(bookingController.getAllBookings()).isEqualTo(bookings);
+        verify(restTemplate, times(1)).getForObject(uri, List.class);
+    }
+
+    @Test
+    void getFutureBookings_test() {
+        String uri = "http://localhost:8083/bookings";
+        when(restTemplate.getForObject(uri, List.class))
+                .thenReturn(bookings);
+
+        Assertions.assertThat(bookingController.getFutureBookings()).isEqualTo(bookings);
         verify(restTemplate, times(1)).getForObject(uri, List.class);
     }
 
