@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
 import nl.tudelft.sem.template.schedule.Schedule;
@@ -52,7 +53,9 @@ public class BookingService {
      * @return              list of user's bookings in correct order
      */
     public List<Booking> getBookingsForUser(String id, SortStrategy sortStrategy) {
-        List<Booking> bookings = bookingRepository.findBookingByBookingOwnerEquals(id);
+        List<Booking> bookings = getFutureBookings();
+        bookings = bookings.stream().filter(b -> b.getBookingOwner().equals(id))
+                .collect(Collectors.toList());
         Schedule s = new Schedule(bookings, sortStrategy);
         return s.sortBookings();
     }

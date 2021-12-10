@@ -10,11 +10,12 @@ import org.junit.jupiter.api.Test;
 
 public class ChronologicalSortTest {
 
-    transient List<Booking> bookingList;
-    transient Booking b1;
-    transient Booking b2;
-    transient Booking b3;
-    transient Booking b4;
+    private transient List<Booking> bookingList;
+    private transient Booking b1;
+    private transient Booking b2;
+    private transient Booking b3;
+    private transient Booking b4;
+    private transient String studying = "Studying";
 
     @BeforeEach
     void setup() {
@@ -24,16 +25,16 @@ public class ChronologicalSortTest {
         p.add("user1");
         b1 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
-                "Studying", p);
+                studying, p);
         b2 = new Booking("B", 3, 36, LocalDate.of(2021, 8, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
-                "Studying", p);
+                studying, p);
         b3 = new Booking("C", 1, 42, LocalDate.of(2020, 4, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
-                "Studying", p);
+                studying, p);
         b4 = new Booking("D", 3, 42, LocalDate.of(2020, 1, 8),
                 LocalTime.of(18, 45, 0), LocalTime.of(12, 45, 0),
-                "Studying", p);
+                studying, p);
     }
 
     @Test
