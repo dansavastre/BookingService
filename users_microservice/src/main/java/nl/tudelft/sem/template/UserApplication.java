@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class UserApplication {
 
+    private transient String employee = "employee";
+
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
     }
@@ -29,7 +31,7 @@ public class UserApplication {
     @Bean
     CommandLineRunner run2(RoleService roleService) {
         return args -> {
-            roleService.addRole(new Role("employee"));
+            roleService.addRole(new Role(employee));
             roleService.addRole(new Role("secretary"));
             roleService.addRole(new Role("admin"));
 
@@ -39,10 +41,10 @@ public class UserApplication {
     @Bean
     CommandLineRunner run(UserService userService) {
         return args -> {
-            List<Role> roles = new ArrayList<Role>(Arrays.asList(new Role("employee")));
-            List<Role> roles2 = new ArrayList<Role>(Arrays.asList(new Role("employee"),
+            List<Role> roles = new ArrayList<Role>(Arrays.asList(new Role(employee)));
+            List<Role> roles2 = new ArrayList<Role>(Arrays.asList(new Role(employee),
                     new Role("secretary")));
-            List<Role> roles3 = new ArrayList<Role>(Arrays.asList(new Role("employee"),
+            List<Role> roles3 = new ArrayList<Role>(Arrays.asList(new Role(employee),
                     new Role("secretary"), new Role("admin")));
             User u1 = new User("ltwubben", "MTIzNA==", "Luuk", "Wubben");
             u1.setRoles(roles);

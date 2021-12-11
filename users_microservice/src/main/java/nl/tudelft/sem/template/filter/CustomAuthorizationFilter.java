@@ -29,20 +29,18 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader("Authorization");
-            String givenUserName = request.getHeader("Username");
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring(("Bearer ").length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJWT = verifier.verify(token);
-                    String username = decodedJWT.getSubject();
-                    if (givenUserName != null) {
-                        if (!username.equals(givenUserName)) {
-                            throw new BadCredentialsException("Usernames don't match!");
-                        }
+                    DecodedJWT decodedJwt = verifier.verify(token);
+                    String username = decodedJwt.getSubject();
+                    String givenUserName = request.getHeader("Username");
+                    if (givenUserName != null && !username.equals(givenUserName)) {
+                        throw new BadCredentialsException("Usernames don't match!");
                     }
-                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                    String[] roles = decodedJwt.getClaim("roles").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     for (String r : roles) {
                         authorities.add(new SimpleGrantedAuthority(r));

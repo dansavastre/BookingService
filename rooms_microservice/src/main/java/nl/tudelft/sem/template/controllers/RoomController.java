@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -18,6 +19,10 @@ public class RoomController {
 
     @Autowired
     private transient RoomService roomService;
+    @Autowired
+    private transient Authorization auth;
+
+    private final transient String authorization = "Authorization";
 
     @GetMapping("/sayHiToRoom")
     @ResponseBody
@@ -33,31 +38,41 @@ public class RoomController {
 
     @GetMapping("/rooms")
     @ResponseBody
-    public List<Room> getAllRooms() {
+    public List<Room> getAllRooms(@RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return roomService.getAllRooms();
     }
 
     @GetMapping("/getRoom/{id}")
     @ResponseBody
-    public Room getRoom(@PathVariable("id") int id) {
+    public Room getRoom(@PathVariable("id") int id,
+                        @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return roomService.getRoom(id);
     }
 
     @PostMapping("/rooms")
     @ResponseBody
-    public void addRoom(@RequestBody Room room) {
+    public void addRoom(@RequestBody Room room,
+                        @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.ADMIN, token);
         roomService.addRoom(room);
     }
 
     @PutMapping("/rooms/{id}")
     @ResponseBody
-    public void updateRoom(@RequestBody Room room, @PathVariable("id") int id) {
+    public void updateRoom(@RequestBody Room room,
+                           @PathVariable("id") int id,
+                           @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.ADMIN, token);
         roomService.updateRoom(id, room);
     }
 
     @DeleteMapping("/rooms/{id}")
     @ResponseBody
-    public void deleteRoom(@PathVariable("id") int id) {
+    public void deleteRoom(@PathVariable("id") int id,
+                           @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.ADMIN, token);
         roomService.deleteRoom(id);
     }
 }
