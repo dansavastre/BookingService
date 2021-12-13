@@ -1,0 +1,69 @@
+package schedule;
+
+import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
+import nl.tudelft.sem.template.schedule.Schedule;
+import nl.tudelft.sem.template.schedule.SortStrategy;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ScheduleTest {
+    transient Schedule sched;
+    transient List<Booking> bookingList;
+    transient Booking b1;
+    transient Booking b2;
+    transient Booking b3;
+    transient Booking b4;
+
+    @BeforeEach
+    void setup() {
+        bookingList = new ArrayList<>();
+        SortStrategy sort = new ChronologicalSortStrategy();
+        sched = new Schedule(bookingList,sort);
+        b1 = new Booking("A", 1, 36, LocalDate.of(2021, 1, 8),
+                LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
+                "Studying", List.of("user0", "user1"));
+        b2 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
+                LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
+                "Project meeting", List.of("user0", "user1"));
+        b3 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
+                LocalTime.of(8, 30, 0), LocalTime.of(15, 45, 0),
+                "Project meeting", List.of("user0", "user1"));
+        b4 = new Booking("A", 2, 42, LocalDate.of(2021, 1, 5),
+                LocalTime.of(8, 30, 0), LocalTime.of(15, 45, 0),
+                "Project meeting", List.of("user0", "user1"));
+    }
+
+    @Test
+    void sortBookingsTest() {
+        List<Booking> result = new ArrayList<>();
+        result.add(b2);
+        result.add(b3);
+        result.add(b1);
+        bookingList.add(b1);
+        bookingList.add(b2);
+        bookingList.add(b3);
+        Assertions.assertEquals(result,sched.sortBookings());
+    }
+
+    @Test
+    void addBookingTest() {
+        List<Booking> result = new ArrayList<>();
+        result.add(b1);
+        result.add(b2);
+        result.add(b3);
+        result.add(b4);
+        bookingList.add(b1);
+        bookingList.add(b2);
+        bookingList.add(b3);
+        sched.addBooking(b4);
+        Assertions.assertEquals(result,bookingList);
+    }
+}
