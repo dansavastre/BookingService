@@ -2,6 +2,7 @@ package schedule;
 
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
+import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
 import nl.tudelft.sem.template.schedule.Schedule;
 import nl.tudelft.sem.template.schedule.SortStrategy;
 import org.aspectj.lang.annotation.Before;
@@ -21,11 +22,12 @@ public class ScheduleTest {
     transient Booking b2;
     transient Booking b3;
     transient Booking b4;
+    transient SortStrategy sort;
 
     @BeforeEach
     void setup() {
         bookingList = new ArrayList<>();
-        SortStrategy sort = new ChronologicalSortStrategy();
+        sort = new ChronologicalSortStrategy();
         sched = new Schedule(bookingList,sort);
         b1 = new Booking("A", 1, 36, LocalDate.of(2021, 1, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
@@ -65,5 +67,32 @@ public class ScheduleTest {
         bookingList.add(b3);
         sched.addBooking(b4);
         Assertions.assertEquals(result,bookingList);
+    }
+
+    @Test
+    void getBookingTest() {
+        Assertions.assertEquals(bookingList,sched.getBookings());
+    }
+    @Test
+    void setBookingTest() {
+        List<Booking> result = new ArrayList<>();
+        result.add(b1);
+        result.add(b2);
+        result.add(b3);
+        result.add(b4);
+        sched.setBookings(result);
+        Assertions.assertEquals(result,sched.getBookings());
+    }
+
+    @Test
+    void getSortStrategyTest() {
+        Assertions.assertEquals(sort,sched.getSortStrategy());
+    }
+
+    @Test
+    void setSortStrategy() {
+        SortStrategy sort1 = new DefaultSortStrategy();
+        sched.setSortStrategy(sort1);
+        Assertions.assertEquals(sort1,sched.getSortStrategy());
     }
 }
