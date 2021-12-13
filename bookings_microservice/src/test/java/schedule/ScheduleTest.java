@@ -1,19 +1,18 @@
 package schedule;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
 import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
 import nl.tudelft.sem.template.schedule.Schedule;
 import nl.tudelft.sem.template.schedule.SortStrategy;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ScheduleTest {
     transient Schedule sched;
@@ -28,7 +27,7 @@ public class ScheduleTest {
     void setup() {
         bookingList = new ArrayList<>();
         sort = new ChronologicalSortStrategy();
-        sched = new Schedule(bookingList,sort);
+        sched = new Schedule(bookingList, sort);
         b1 = new Booking("A", 1, 36, LocalDate.of(2021, 1, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
                 "Studying", List.of("user0", "user1"));
@@ -52,7 +51,7 @@ public class ScheduleTest {
         bookingList.add(b1);
         bookingList.add(b2);
         bookingList.add(b3);
-        Assertions.assertEquals(result,sched.sortBookings());
+        Assertions.assertEquals(result, sched.sortBookings());
     }
 
     @Test
@@ -66,13 +65,14 @@ public class ScheduleTest {
         bookingList.add(b2);
         bookingList.add(b3);
         sched.addBooking(b4);
-        Assertions.assertEquals(result,bookingList);
+        Assertions.assertEquals(result, bookingList);
     }
 
     @Test
     void getBookingTest() {
-        Assertions.assertEquals(bookingList,sched.getBookings());
+        Assertions.assertEquals(bookingList, sched.getBookings());
     }
+
     @Test
     void setBookingTest() {
         List<Booking> result = new ArrayList<>();
@@ -81,18 +81,18 @@ public class ScheduleTest {
         result.add(b3);
         result.add(b4);
         sched.setBookings(result);
-        Assertions.assertEquals(result,sched.getBookings());
+        Assertions.assertEquals(result, sched.getBookings());
     }
 
     @Test
     void getSortStrategyTest() {
-        Assertions.assertEquals(sort,sched.getSortStrategy());
+        Assertions.assertEquals(sort, sched.getSortStrategy());
     }
 
     @Test
     void setSortStrategy() {
         SortStrategy sort1 = new DefaultSortStrategy();
         sched.setSortStrategy(sort1);
-        Assertions.assertEquals(sort1,sched.getSortStrategy());
+        Assertions.assertEquals(sort1, sched.getSortStrategy());
     }
 }
