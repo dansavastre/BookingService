@@ -132,7 +132,8 @@ public class BookingControllerTest {
         List<Booking> bookings = new ArrayList<>();
         bookings.add(b2);
         bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class), any(ChronologicalSortStrategy.class)))
+        when(bookingService.getBookingsForUser(any(String.class),
+                any(ChronologicalSortStrategy.class)))
                 .thenReturn(bookings);
         List<Booking> b = bookingController.getMyBookingsChrono("A");
         Assertions.assertEquals(bookings, b);
