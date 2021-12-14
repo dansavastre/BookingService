@@ -21,9 +21,6 @@ public class ChronologicalSortStrategy implements SortStrategy {
             Booking b2 = (Booking) o2;
             LocalDate dateB1 = b1.getDate();
             LocalDate dateB2 = b2.getDate();
-            //return 1 if o1 > o2
-            //return -1 if o1 < o2
-            //return 0 if 01 == 02
 
             if (dateB1.isBefore(dateB2)) {
                 return -1;

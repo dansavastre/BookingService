@@ -99,4 +99,10 @@ public class ScheduleTest {
         sched.setSortStrategy(sort1);
         Assertions.assertEquals(sort1, sched.getSortStrategy());
     }
+
+    @Test
+    void emptyConstructor() {
+        Schedule emptySched = new Schedule(new DefaultSortStrategy());
+        Assertions.assertEquals(new ArrayList<>(), emptySched.getBookings());
+    }
 }
