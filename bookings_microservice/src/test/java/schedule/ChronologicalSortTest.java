@@ -18,6 +18,8 @@ public class ChronologicalSortTest {
     private transient Booking b2;
     private transient Booking b3;
     private transient Booking b4;
+    private transient Booking b5;
+    private transient Booking b6;
     private transient String studying = "Studying";
 
     @BeforeEach
@@ -39,6 +41,12 @@ public class ChronologicalSortTest {
         b4 = new Booking("D", 3, 42, LocalDate.of(2021, 4, 8),
                 LocalTime.of(18, 45, 0), LocalTime.of(12, 45, 0),
                 studying, p);
+        b5 = new Booking("E", 3, 42, LocalDate.of(2021, 4, 8),
+                LocalTime.of(18, 45, 0), LocalTime.of(12, 45, 0),
+                studying, p);
+        b6 = new Booking("F", 3, 42, LocalDate.of(2021, 4, 8),
+                LocalTime.of(11, 45, 0), LocalTime.of(12, 45, 0),
+                studying, p);
 
     }
 
@@ -46,13 +54,17 @@ public class ChronologicalSortTest {
     void sortTest() {
         List<Booking> result = new ArrayList<>();
         result.add(b2);
-        result.add(b4);
         result.add(b3);
+        result.add(b6);
+        result.add(b4);
+        result.add(b5);
         result.add(b1);
         bookingList.add(b1);
         bookingList.add(b2);
         bookingList.add(b3);
         bookingList.add(b4);
+        bookingList.add(b5);
+        bookingList.add(b6);
         Assertions.assertEquals(result, cr.sortBookings(bookingList));
 
     }
