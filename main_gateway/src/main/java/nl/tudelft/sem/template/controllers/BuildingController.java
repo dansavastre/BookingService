@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class BuildingController {
 
-    private final transient RestTemplate restTemplate = new RestTemplate();
+    private transient RestTemplate restTemplate = new RestTemplate();
 
     /** Returns all the buildings in the system.
      *
