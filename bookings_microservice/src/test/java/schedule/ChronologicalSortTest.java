@@ -36,7 +36,7 @@ public class ChronologicalSortTest {
         b3 = new Booking("C", 1, 42, LocalDate.of(2021, 4, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
                 studying, p);
-        b4 = new Booking("D", 3, 42, LocalDate.of(2021, 1, 8),
+        b4 = new Booking("D", 3, 42, LocalDate.of(2021, 4, 8),
                 LocalTime.of(18, 45, 0), LocalTime.of(12, 45, 0),
                 studying, p);
 

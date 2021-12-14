@@ -19,6 +19,7 @@ public class LocationSortTest {
     private transient Booking b2;
     private transient Booking b3;
     private transient Booking b4;
+    private transient Booking b5;
     private transient String studying = "Studying";
 
     @BeforeEach
@@ -38,8 +39,12 @@ public class LocationSortTest {
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
                 studying, p);
 
-        b4 = new Booking("D", 3, 42, LocalDate.of(2021, 1, 8),
+        b4 = new Booking("D", 3, 12, LocalDate.of(2021, 1, 8),
                 LocalTime.of(18, 45, 0), LocalTime.of(12, 45, 0),
+                studying, p);
+
+        b5 = new Booking("B", 9, 36, LocalDate.of(2020, 8, 8),
+                LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
                 studying, p);
 
     }
@@ -47,14 +52,16 @@ public class LocationSortTest {
     @Test
     void locationSortTest() {
         List<Booking> result = new ArrayList<>();
+        result.add(b4);
         result.add(b3);
         result.add(b1);
-        result.add(b4);
+        result.add(b5);
         result.add(b2);
+        bookingList.add(b4);
         bookingList.add(b1);
         bookingList.add(b2);
         bookingList.add(b3);
-        bookingList.add(b4);
+        bookingList.add(b5);
         Assertions.assertEquals(result, loc.sortBookings(bookingList));
 
     }
