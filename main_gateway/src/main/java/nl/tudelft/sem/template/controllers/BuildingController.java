@@ -123,9 +123,8 @@ public class BuildingController {
         HttpEntity<Building> entity = new HttpEntity<>(building, headers);
 
         try {
-            ResponseEntity<Boolean> res = restTemplate
-                    .exchange(uri, HttpMethod.PUT, entity, Boolean.class);
-            return Boolean.TRUE.equals(res.getBody());
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+            return true;
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
@@ -149,9 +148,8 @@ public class BuildingController {
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
         try {
-            ResponseEntity<Boolean> res = restTemplate
-                    .exchange(uri, HttpMethod.DELETE, entity, Boolean.class);
-            return Boolean.TRUE.equals(res.getBody());
+            restTemplate.exchange(uri, HttpMethod.DELETE, entity, void.class);
+            return true;
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {

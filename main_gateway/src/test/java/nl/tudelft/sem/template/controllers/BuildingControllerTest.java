@@ -92,12 +92,12 @@ public class BuildingControllerTest {
     @Test
     void updateBuilding_test() {
         String uri = "http://localhost:8082/buildings/".concat(String.valueOf(2));
-        ResponseEntity<Boolean> res = new ResponseEntity<>(true, HttpStatus.OK);
+        ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
-                entity.capture(), eq(Boolean.class))).thenReturn(res);
+                entity.capture(), eq(void.class))).thenReturn(res);
         Assertions.assertThat(buildingController.updateBuilding(b2, 2, token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.PUT),
-                entity.capture(), eq(Boolean.class));
+                entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
         assertEquals(b2, entity.getValue().getBody());
     }
@@ -105,12 +105,12 @@ public class BuildingControllerTest {
     @Test
     void deleteBuilding_test() {
         String uri = "http://localhost:8082/buildings/".concat(String.valueOf(1));
-        ResponseEntity<Boolean> res = new ResponseEntity<>(true, HttpStatus.OK);
+        ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
-                entity.capture(), eq(Boolean.class))).thenReturn(res);
+                entity.capture(), eq(void.class))).thenReturn(res);
         Assertions.assertThat(buildingController.deleteBuilding(1, token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
-                entity.capture(), eq(Boolean.class));
+                entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
