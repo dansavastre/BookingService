@@ -3,23 +3,21 @@ package nl.tudelft.sem.template.controllers;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Building;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 
 @Controller
 public class BuildingController {
 
-    private transient RestTemplate restTemplate = new RestTemplate();
+    private final transient RestTemplate restTemplate = new RestTemplate();
 
     /** Returns all the buildings in the system.
      *
      * @return list of the buildings.
      */
-    @RequestMapping("/getBuildings")
+    @GetMapping("/getBuildings")
+    @ResponseBody
     public List getBuildings() {
         String uri = "http://localhost:8082/buildings";
         return restTemplate.getForObject(uri, List.class);
@@ -30,7 +28,8 @@ public class BuildingController {
      * @param id the id of the building we want.
      * @return the building we are searching for.
      */
-    @RequestMapping("/getBuilding/{id}")
+    @GetMapping("/getBuilding/{id}")
+    @ResponseBody
     public Building getBuilding(@PathVariable("id") int id) {
         String uri = "http://localhost:8082/getBuilding/".concat(String.valueOf(id));
         return restTemplate.getForObject(uri, Building.class);
@@ -41,7 +40,8 @@ public class BuildingController {
      * @param building the building we want to add.
      * @return true if its successfully added, else false.
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/postBuilding")
+    @PostMapping( "/postBuilding")
+    @ResponseBody
     public boolean postBuilding(@RequestBody Building building) {
         try {
             String uri = "http://localhost:8082/buildings";
@@ -58,7 +58,8 @@ public class BuildingController {
      * @param id the id of the building to update.
      * @return true if successfully updated, else false.
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/putBuilding/{id}")
+    @PutMapping("/putBuilding/{id}")
+    @ResponseBody
     public boolean updateBuilding(@RequestBody Building building, @PathVariable("id") int id) {
         try {
             String uri = "http://localhost:8082/buildings/".concat(String.valueOf(id));
@@ -74,7 +75,8 @@ public class BuildingController {
      * @param id the id of the building to delete.
      * @return true if successfully deleted, else false.
      */
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteBuilding/{id}")
+    @DeleteMapping( "/deleteBuilding/{id}")
+    @ResponseBody
     public boolean deleteBuilding(@PathVariable("id") int id) {
         try {
             String uri = "http://localhost:8082/buildings/".concat(String.valueOf(id));
