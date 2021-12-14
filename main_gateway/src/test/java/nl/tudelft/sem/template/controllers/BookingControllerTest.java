@@ -1,5 +1,9 @@
 package nl.tudelft.sem.template.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,7 +12,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.objects.Building;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,15 +30,22 @@ public class BookingControllerTest {
     private transient RestTemplate restTemplate;
 
     @InjectMocks
+    private transient BuildingController buildingController;
+
+    @InjectMocks
     private transient BookingController bookingController;
 
     private transient Booking b1;
     private transient Booking b2;
+    private transient Booking b3;
+    private transient Building building;
     private transient List<Booking> bookings = new ArrayList<>();
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+        building = new Building(36, LocalTime.of(8, 0),
+                                LocalTime.of(22, 0), "Building 36");
         b1 = new Booking(1L, "Mike", 1, 1,
                 LocalDate.of(2021, 12, 4),
                 LocalTime.of(11, 10),
@@ -42,6 +56,13 @@ public class BookingControllerTest {
                 LocalDate.of(2021, 12, 5),
                 LocalTime.of(10, 30),
                 LocalTime.of(16, 0),
+                "Project room",
+                List.of("user2", "user3"));
+
+        b3 = new Booking(2L, "Mike", 1, 36,
+                LocalDate.of(2021, 12, 15),
+                LocalTime.of(9, 30),
+                LocalTime.of(12, 0),
                 "Project room",
                 List.of("user2", "user3"));
         bookings.add(b1);
@@ -70,8 +91,34 @@ public class BookingControllerTest {
     @Test
     void postBooking_test() {
         String uri = "http://localhost:8083/bookings";
-        Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
+        //Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
         verify(restTemplate, times(1)).postForObject(uri, b1, void.class);
+    }
+
+    @Test
+    void postBookingInvalid_test() {
+        MockitoAnnotations.initMocks(this);
+        when(buildingController.getBuilding(36)).thenReturn(building);
+        when(restTemplate.getForObject("http://localhost:8082/getBuilding/36", Building.class))
+                .thenReturn(building);
+        String uri = "http://localhost:8083/bookings";
+        try {
+            Assertions.assertThat(bookingController.postBooking(b3)).isTrue();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        //InvalidBookingException thrown = assertThrows(InvalidBookingException.class, () -> bookingController.postBooking(b3));
+        //Assertions.assertThat(thrown.getMessage()).isEqualTo("Booking start time is before current time");
+
+
+        //when(restTemplate.getForObject("http://localhost:8083/bookings/postBooking", boolean.class)).thenThrow(InvalidBookingException.class);
+        //when(bookingController.postBooking(b3)).thenThrow(InvalidBookingException.class);
+        //boolean isValid = bookingController.postBooking(b3);
+        //Assertions.assertThat(isValid).isTrue();
+        //Assertions.assertThat(bookingController.postBooking(b3)).isEqualTo("Booking start time is before current time");
+
+        //verify(restTemplate, times(0)).postForObject(uri, b3, void.class);
     }
 
     @Test

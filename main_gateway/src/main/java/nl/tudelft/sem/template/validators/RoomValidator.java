@@ -9,7 +9,7 @@ import nl.tudelft.sem.template.objects.Booking;
 
 public class RoomValidator extends BaseValidator {
 
-    private transient BookingController bookingController;
+    private transient BookingController bookingController = new BookingController();
 
     /**
      * Method for checking if two bookings overlap.
@@ -27,7 +27,6 @@ public class RoomValidator extends BaseValidator {
                 && booking.getStartTime().compareTo(other.getEndTime()) < 0)) {
                 return true;
             }
-            return false;
         }
         return false;
     }

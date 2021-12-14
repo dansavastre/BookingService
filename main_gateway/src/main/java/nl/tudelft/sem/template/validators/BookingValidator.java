@@ -10,8 +10,9 @@ import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
 
 public class BookingValidator extends BaseValidator {
-    private transient BuildingController buildingController;
-    private transient RoomController roomController;
+
+    private transient BuildingController buildingController = new BuildingController();
+    private transient RoomController roomController = new RoomController();
 
     @Override
     public boolean handle(Booking booking) throws InvalidBookingException,
@@ -26,6 +27,8 @@ public class BookingValidator extends BaseValidator {
             throw new InvalidBookingException("Building does not exist");
         } else if (roomController.getRoom(booking.getRoom()) == null) {
             throw new InvalidBookingException("Room does not exist");
+        } else if(booking.getStartTime().compareTo(booking.getEndTime()) >= 0) {
+            throw new InvalidBookingException("Start time is after end time");
         }
 
         return super.checkNext(booking);

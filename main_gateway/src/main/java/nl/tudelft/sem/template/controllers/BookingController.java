@@ -1,7 +1,15 @@
 package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
+
+import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
+import nl.tudelft.sem.template.exceptions.InvalidBookingException;
+import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.validators.BookingValidator;
+import nl.tudelft.sem.template.validators.BuildingValidator;
+import nl.tudelft.sem.template.validators.RoomValidator;
+import nl.tudelft.sem.template.validators.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,13 +55,23 @@ public class BookingController {
      */
     @PostMapping("/postBooking")
     @ResponseBody
-    public boolean postBooking(@RequestBody Booking booking) {
+    public boolean postBooking(@RequestBody Booking booking) throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+        Validator handler = new BookingValidator();
+        handler.setNext(new BuildingValidator());
+        handler.setNext(new RoomValidator());
         try {
-            String uri = "http://localhost:8083/bookings";
-            restTemplate.postForObject(uri, booking, void.class);
-            return true;
-        } catch (Exception e) {
+            boolean isValid = handler.handle(booking);
+            if (isValid) {
+                String uri = "http://localhost:8083/bookings";
+                restTemplate.postForObject(uri, booking, void.class);
+                return true;
+            }
             return false;
+
+        } catch (Exception e) {
+            throw e;
+            //e.printStackTrace();
+            //return false;
         }
     }
 
