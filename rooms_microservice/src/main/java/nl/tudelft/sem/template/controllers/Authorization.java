@@ -61,13 +61,9 @@ public class Authorization {
         try {
             ResponseEntity<Boolean> res = restTemplate
                     .exchange(uri, HttpMethod.GET, entity, Boolean.class);
-            if (!Boolean.TRUE.equals(res.getBody())) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "user microservice returned false or null");
-            }
 
         } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.toString());
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Something went wrong while connecting to user microservice");
