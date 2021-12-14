@@ -22,24 +22,28 @@ public class ScheduleTest {
     transient Booking b3;
     transient Booking b4;
     transient SortStrategy sort;
+    transient String user0;
+    transient String user1;
 
     @BeforeEach
     void setup() {
         bookingList = new ArrayList<>();
         sort = new ChronologicalSortStrategy();
         sched = new Schedule(bookingList, sort);
+        user0 = "user0";
+        user1 = "user1";
         b1 = new Booking("A", 1, 36, LocalDate.of(2021, 1, 8),
                 LocalTime.of(10, 45, 0), LocalTime.of(12, 45, 0),
-                "Studying", List.of("user0", "user1"));
+                "Studying", List.of(user0, user1));
         b2 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
                 LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
-                "Project meeting", List.of("user0", "user1"));
+                "Project meeting", List.of(user0, user1));
         b3 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
                 LocalTime.of(8, 30, 0), LocalTime.of(15, 45, 0),
-                "Project meeting", List.of("user0", "user1"));
+                "Project meeting", List.of(user0, user1));
         b4 = new Booking("A", 2, 42, LocalDate.of(2021, 1, 5),
                 LocalTime.of(8, 30, 0), LocalTime.of(15, 45, 0),
-                "Project meeting", List.of("user0", "user1"));
+                "Project meeting", List.of(user0, user1));
     }
 
     @Test
