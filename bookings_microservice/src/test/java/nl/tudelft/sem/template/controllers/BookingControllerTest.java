@@ -28,12 +28,15 @@ public class BookingControllerTest {
     private transient BookingService bookingService;
     @Mock
     private transient RestTemplate restTemplate;
+    @Mock
+    private transient Authorization auth;
 
     @InjectMocks
     private transient BookingController bookingController;
 
     transient Booking b1;
     transient Booking b2;
+    transient String token;
 
     @BeforeEach
     void setup() {
@@ -48,6 +51,7 @@ public class BookingControllerTest {
         b2 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
             LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
                 "Project meeting", p);
+        token = "token";
     }
 
     @Test
@@ -77,31 +81,36 @@ public class BookingControllerTest {
         bookings.add(b1);
         bookings.add(b2);
         when(bookingService.getAllBookings()).thenReturn(bookings);
-        Assertions.assertEquals(bookings, bookingController.getAllBookings());
+        Assertions.assertEquals(bookings, bookingController.getAllBookings(token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void getBooking_test() {
         when(bookingService.getBooking(1L)).thenReturn(b1);
-        Assertions.assertEquals(b1, bookingService.getBooking(1L));
+        Assertions.assertEquals(b1, bookingController.getBooking(1L, token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void addBooking_test() {
-        bookingController.addBooking(b1);
+        bookingController.addBooking(b1, token);
         verify(bookingService, times(1)).addBooking(b1);
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void updateBooking_Test() {
-        bookingController.updateBooking(b1, 1L);
+        bookingController.updateBooking(b1, 1L, token);
         verify(bookingService, times(1)).updateBooking(1L, b1);
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void deleteBooking_test() {
-        bookingController.deleteBooking(1L);
+        bookingController.deleteBooking(1L, token);
         verify(bookingService, times(1)).deleteBooking(1L);
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +20,11 @@ public class BookingController {
 
     @Autowired
     private transient BookingService bookingService;
+
+    @Autowired
+    private transient Authorization auth;
+
+    private final transient String authorization = "Authorization";
 
     private transient RestTemplate template = new RestTemplate();
 
@@ -47,31 +53,40 @@ public class BookingController {
 
     @GetMapping("/bookings")
     @ResponseBody
-    public List<Booking> getAllBookings() {
+    public List<Booking> getAllBookings(@RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getAllBookings();
     }
 
     @GetMapping("/getBooking/{id}")
     @ResponseBody
-    public Booking getBooking(@PathVariable("id") Long id) {
+    public Booking getBooking(@PathVariable("id") Long id,
+                              @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBooking(id);
     }
 
     @PostMapping("/bookings")
     @ResponseBody
-    public void addBooking(@RequestBody Booking booking) {
+    public void addBooking(@RequestBody Booking booking,
+                           @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         bookingService.addBooking(booking);
     }
 
     @PutMapping("/users/{id}")
     @ResponseBody
-    public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id) {
+    public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
+                              @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         bookingService.updateBooking(id, booking);
     }
 
     @DeleteMapping("/users/{id}")
     @ResponseBody
-    public void deleteBooking(@PathVariable("id") Long id) {
+    public void deleteBooking(@PathVariable("id") Long id,
+                              @RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         bookingService.deleteBooking(id);
     }
 }
