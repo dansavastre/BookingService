@@ -1,10 +1,6 @@
 package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
-
-import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
-import nl.tudelft.sem.template.exceptions.InvalidBookingException;
-import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.validators.BookingValidator;
 import nl.tudelft.sem.template.validators.BuildingValidator;

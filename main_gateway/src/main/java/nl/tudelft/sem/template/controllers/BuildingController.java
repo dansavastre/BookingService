@@ -3,7 +3,13 @@ package nl.tudelft.sem.template.controllers;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Building;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -40,7 +46,7 @@ public class BuildingController {
      * @param building the building we want to add.
      * @return true if its successfully added, else false.
      */
-    @PostMapping( "/postBuilding")
+    @PostMapping("/postBuilding")
     @ResponseBody
     public boolean postBuilding(@RequestBody Building building) {
         try {
@@ -75,7 +81,7 @@ public class BuildingController {
      * @param id the id of the building to delete.
      * @return true if successfully deleted, else false.
      */
-    @DeleteMapping( "/deleteBuilding/{id}")
+    @DeleteMapping("/deleteBuilding/{id}")
     @ResponseBody
     public boolean deleteBuilding(@PathVariable("id") int id) {
         try {
