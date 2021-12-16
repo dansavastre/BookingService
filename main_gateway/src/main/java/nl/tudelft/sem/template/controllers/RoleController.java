@@ -24,7 +24,7 @@ public class RoleController {
     @GetMapping("/getRoles")
     @ResponseBody
     public List getRoles() {
-        String uri = "http://localhost:8081/roles";
+        String uri = "http://localhost:8081/employee/roles";
         return restTemplate.getForObject(uri, List.class);
     }
 
@@ -36,7 +36,7 @@ public class RoleController {
     @GetMapping("/getRole/{id}")
     @ResponseBody
     public Role getRole(@PathVariable("id") Long id) {
-        String uri = "http://localhost:8081/getRole/".concat(String.valueOf(id));
+        String uri = "http://localhost:8081/employee/getRole/".concat(String.valueOf(id));
         return restTemplate.getForObject(uri, Role.class);
     }
 
@@ -49,7 +49,7 @@ public class RoleController {
     @ResponseBody
     public boolean postRole(@RequestBody Role role) {
         try {
-            String uri = "http://localhost:8081/roles";
+            String uri = "http://localhost:8081/admin/roles";
             restTemplate.postForObject(uri, role, void.class);
             return true;
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class RoleController {
     @ResponseBody
     public boolean updateRole(@RequestBody Role role, @PathVariable("id") Long id) {
         try {
-            String uri = "http://localhost:8081/roles/".concat(String.valueOf(id));
+            String uri = "http://localhost:8081/admin/roles/".concat(String.valueOf(id));
             restTemplate.put(uri, role);
             return true;
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class RoleController {
     @ResponseBody
     public boolean deleteRole(@PathVariable("id") Long id) {
         try {
-            String uri = "http://localhost:8081/roles/".concat(String.valueOf(id));
+            String uri = "http://localhost:8081/admin/roles/".concat(String.valueOf(id));
             restTemplate.delete(uri);
             return true;
         } catch (Exception e) {
