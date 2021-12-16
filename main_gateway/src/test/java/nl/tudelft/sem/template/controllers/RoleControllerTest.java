@@ -47,7 +47,7 @@ public class RoleControllerTest {
 
     @Test
     void getRoles_test() {
-        String uri = "http://localhost:8081/roles";
+        String uri = "http://localhost:8081/employee/roles";
         when(restTemplate.getForObject(uri, List.class))
             .thenReturn(roles);
 
@@ -57,7 +57,7 @@ public class RoleControllerTest {
 
     @Test
     void getRole_test() {
-        String uri = "http://localhost:8081/getRole/".concat(String.valueOf(id1));
+        String uri = "http://localhost:8081/employee/getRole/".concat(String.valueOf(id1));
         when(restTemplate.getForObject(uri, Role.class))
             .thenReturn(r1);
         Assertions.assertThat(roleController.getRole(id1)).isEqualTo(r1);
@@ -66,21 +66,21 @@ public class RoleControllerTest {
 
     @Test
     void postRole_test() {
-        String uri = "http://localhost:8081/roles";
+        String uri = "http://localhost:8081/admin/roles";
         Assertions.assertThat(roleController.postRole(r1)).isTrue();
         verify(restTemplate, times(1)).postForObject(uri, r1, void.class);
     }
 
     @Test
     void updateRole_test() {
-        String uri = "http://localhost:8081/roles/".concat(String.valueOf(id1));
+        String uri = "http://localhost:8081/admin/roles/".concat(String.valueOf(id1));
         Assertions.assertThat(roleController.updateRole(r2, id1)).isTrue();
         verify(restTemplate, times(1)).put(uri, r2);
     }
 
     @Test
     void deleteRole_test() {
-        String uri = "http://localhost:8081/roles/".concat(String.valueOf(id1));
+        String uri = "http://localhost:8081/admin/roles/".concat(String.valueOf(id1));
         Assertions.assertThat(roleController.deleteRole(id1)).isTrue();
         verify(restTemplate, times(1)).delete(uri);
     }

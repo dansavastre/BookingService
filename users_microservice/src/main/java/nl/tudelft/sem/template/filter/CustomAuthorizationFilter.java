@@ -31,10 +31,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    String token = authorizationHeader.substring(("Bearer ").length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJwt = verifier.verify(token);
+                    DecodedJWT decodedJwt = verifier.verify(authorizationHeader);
                     String username = decodedJwt.getSubject();
                     String givenUserName = request.getHeader("Username");
                     if (givenUserName != null && !username.equals(givenUserName)) {
@@ -50,7 +49,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    response.setHeader("error", e.getMessage());
+                    response.setHeader("Error", e.getMessage());
                     response.sendError(403); //FORBIDDEN
                 }
             } else {

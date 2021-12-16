@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private transient AuthenticationManager authenticationManager;
+    private final transient AuthenticationManager authenticationManager;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -36,7 +36,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             throws AuthenticationException {
         String password = request.getHeader("Authentication");
         String username = request.getHeader("Username"); //might have to be id
-        // String password = request.getParameter("password");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authenticationToken);
@@ -56,14 +55,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withClaim("roles", user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
-        String refreshToken = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-                .withIssuer(request.getRequestURI().toString())
-                .sign(algorithm);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
