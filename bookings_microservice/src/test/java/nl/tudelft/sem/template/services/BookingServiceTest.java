@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
+import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,7 @@ public class BookingServiceTest {
         b2 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
             LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
                 "Project meeting", List.of("user0", "user1"));
+        b2.setId(2L);
     }
 
     @Test
@@ -73,6 +75,25 @@ public class BookingServiceTest {
     void deleteBooking_test() {
         bookingService.deleteBooking(1L);
         verify(bookingRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void getFutureBookings_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b1);
+        bookings.add(b2);
+        when(bookingRepository.findFutureBookings()).thenReturn(bookings);
+        Assertions.assertEquals(bookings, bookingService.getFutureBookings());
+    }
+
+    @Test
+    void getBookingsForUser_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b1);
+        bookings.add(b2);
+        when(bookingRepository.findFutureBookings()).thenReturn(bookings);
+        Assertions.assertEquals(bookings,
+                bookingService.getBookingsForUser("A", new DefaultSortStrategy()));
     }
 
 }
