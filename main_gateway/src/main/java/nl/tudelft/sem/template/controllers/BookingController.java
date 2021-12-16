@@ -55,11 +55,11 @@ public class BookingController {
      */
     @PostMapping("/postBooking")
     @ResponseBody
-    public boolean postBooking(@RequestBody Booking booking) throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
-        Validator handler = new BookingValidator();
-        handler.setNext(new BuildingValidator());
-        handler.setNext(new RoomValidator());
+    public boolean postBooking(@RequestBody Booking booking) {
         try {
+            Validator handler = new BookingValidator();
+            handler.setNext(new BuildingValidator());
+            handler.setNext(new RoomValidator());
             boolean isValid = handler.handle(booking);
             if (isValid) {
                 String uri = "http://localhost:8083/bookings";
@@ -69,9 +69,7 @@ public class BookingController {
             return false;
 
         } catch (Exception e) {
-            throw e;
-            //e.printStackTrace();
-            //return false;
+            return false;
         }
     }
 
