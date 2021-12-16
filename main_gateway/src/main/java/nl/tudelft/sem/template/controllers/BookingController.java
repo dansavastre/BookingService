@@ -69,6 +69,7 @@ public class BookingController {
         }
     }
 
+
     /** Update a booking.
      *
      * @param booking the new booking.
