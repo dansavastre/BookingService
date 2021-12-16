@@ -1,4 +1,4 @@
-package controller.test;
+package nl.tudelft.sem.template.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
 import nl.tudelft.sem.template.schedule.DefaultSortStrategy;

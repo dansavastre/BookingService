@@ -1,9 +1,7 @@
-package controllers.test;
-
+package nl.tudelft.sem.template.controllers;
 
 import static org.mockito.Mockito.when;
 
-import nl.tudelft.sem.template.controllers.HelloController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 
 public class HelloControllerTest {
 
