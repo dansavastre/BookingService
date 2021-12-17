@@ -39,9 +39,9 @@ public class UserControllerTest {
 
     @BeforeEach
     void setup() {
-        user1 = new User(string, "123", "Bob", "Benson", "Student");
-        user2 = new User("4832", "pwd", "Andy", "Joe", "Admin");
-        user3 = new User("2839", "ok", "Joe", "Bob", "Secretary");
+        user1 = new User(string, "123", "Bob", "Benson");
+        user2 = new User("4832", "pwd", "Andy", "Joe");
+        user3 = new User("2839", "ok", "Joe", "Bob");
     }
 
     @Test

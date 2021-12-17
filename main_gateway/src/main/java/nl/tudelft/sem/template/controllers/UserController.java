@@ -2,6 +2,8 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,8 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class UserController {
 
-    private transient RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private transient RestTemplate restTemplate;
 
     /** Returns all the users in the system.
      *

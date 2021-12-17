@@ -2,8 +2,12 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
+import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
+import nl.tudelft.sem.template.schedule.LocationStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +24,18 @@ public class BookingController {
     @Autowired
     private transient BookingService bookingService;
 
-    private transient RestTemplate template = new RestTemplate();
+    @Autowired
+    private transient RestTemplate template;
+
+    @Bean
+    public RestTemplate templateCreator() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public BookingService serviceCreator() {
+        return new BookingService();
+    }
 
     @GetMapping("/sayHi")
     @ResponseBody
@@ -45,10 +60,16 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/bookings")
+    @GetMapping("/allbookings")
     @ResponseBody
     public List<Booking> getAllBookings() {
         return bookingService.getAllBookings();
+    }
+
+    @GetMapping("/bookings")
+    @ResponseBody
+    public List<Booking> getFutureBookings() {
+        return bookingService.getFutureBookings();
     }
 
     @GetMapping("/getBooking/{id}")
@@ -73,5 +94,23 @@ public class BookingController {
     @ResponseBody
     public void deleteBooking(@PathVariable("id") Long id) {
         bookingService.deleteBooking(id);
+    }
+
+    @GetMapping("/myBookings/default/{userId}")
+    @ResponseBody
+    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId) {
+        return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
+    }
+
+    @GetMapping("/myBookings/chrono/{userId}")
+    @ResponseBody
+    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId) {
+        return bookingService.getBookingsForUser(userId, new ChronologicalSortStrategy());
+    }
+
+    @GetMapping("/myBookings/location/{userId}")
+    @ResponseBody
+    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId) {
+        return bookingService.getBookingsForUser(userId, new LocationStrategy());
     }
 }

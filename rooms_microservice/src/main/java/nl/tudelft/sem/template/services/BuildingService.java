@@ -20,9 +20,7 @@ public class BuildingService {
      * @return List of Building Objects
      */
     public List<Building> getAllBuildings() {
-        List<Building> b = new ArrayList<>();
-        buildingRepository.findAll().forEach(b::add);
-        return b;
+        return new ArrayList<>(buildingRepository.findAll());
     }
 
     public Building getBuilding(int id) {
