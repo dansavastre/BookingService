@@ -1,8 +1,5 @@
 package nl.tudelft.sem.template.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -15,9 +12,6 @@ import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.objects.Building;
-import nl.tudelft.sem.template.validators.BookingValidator;
-import nl.tudelft.sem.template.validators.BuildingValidator;
-import nl.tudelft.sem.template.validators.RoomValidator;
 import nl.tudelft.sem.template.validators.Validator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +24,9 @@ public class BookingControllerTest {
     @Mock
     private transient RestTemplate restTemplate;
 
+    @Mock
+    private transient Validator handler;
+
     @InjectMocks
     private transient BuildingController buildingController;
 
@@ -41,7 +38,7 @@ public class BookingControllerTest {
     private transient Booking b3;
     private transient Building building;
     private transient Building building1;
-    private transient List<Booking> bookings = new ArrayList<>();
+    private transient List<Booking> bookings;
 
     @BeforeEach
     void setup() {
@@ -69,8 +66,7 @@ public class BookingControllerTest {
                 LocalTime.of(12, 0),
                 "Project room",
                 List.of("user2", "user3"));
-        bookings.add(b1);
-        bookings.add(b2);
+        bookings = new ArrayList<>(List.of(b1, b2));
     }
 
     @Test
@@ -93,17 +89,14 @@ public class BookingControllerTest {
     }
 
     //TODO: fix this test
-//    @Test
-//    void postBooking_test() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
-//        RestTemplate template = Mockito.mock(RestTemplate.class);
-//        BookingValidator validator = Mockito.mock(BookingValidator.class);
-//        String uri = "http://localhost:8083/bookings";
-//        when(template.getForObject(eq(anyString()), Building.class)).thenReturn(building1);
-//        when(buildingController.getBuilding(eq(anyInt()))).thenReturn(building1);
-//        when(validator.handle(any(Booking.class))).thenReturn(true);
-//        Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
-//        verify(restTemplate, times(1)).postForObject(uri, b1, void.class);
-//    }
+    @Test
+    void postBooking_test() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+        String uri = "http://localhost:8083/bookings";
+        when(handler.handle(any(Booking.class))).thenReturn(true);
+        Mockito.doThrow(new RuntimeException("error")).when(restTemplate).postForObject(eq(anyString()), any(Booking.class), void.class);
+        Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
+        verify(restTemplate, times(1)).postForObject(uri, b1, void.class);
+    }
 
     @Test
     void postBookingInvalid_test() {

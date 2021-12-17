@@ -1,4 +1,4 @@
-package controllers.test;
+package nl.tudelft.sem.template.controllers;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -6,10 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.sem.template.controllers.RoleController;
-import nl.tudelft.sem.template.controllers.UserController;
 import nl.tudelft.sem.template.objects.Role;
-import nl.tudelft.sem.template.objects.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +25,14 @@ public class RoleControllerTest {
 
     private transient Role r1;
     private transient Role r2;
-    private transient List<Role> roles = new ArrayList<>();
+    private transient List<Role> roles;
     private transient Long id1;
     private transient Long id2;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+        roles = new ArrayList<>();
         r1 = new Role("employee");
         r2 = new Role("admin");
         r1.setId(1L);
