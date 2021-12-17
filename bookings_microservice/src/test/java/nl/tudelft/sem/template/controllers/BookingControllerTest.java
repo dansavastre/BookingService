@@ -1,5 +1,6 @@
 package nl.tudelft.sem.template.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,12 +10,16 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
+import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
+import nl.tudelft.sem.template.schedule.LocationStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +57,7 @@ public class BookingControllerTest {
             LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
                 "Project meeting", p);
         token = "token";
+        b2.setId(2L);
     }
 
     @Test
@@ -71,8 +77,8 @@ public class BookingControllerTest {
     @Test
     void roomConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
-            .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", bookingController.checkIfRoomsConnected());
+            .thenReturn("Rooms Microservice is connected!");
+        Assertions.assertEquals("Rooms Microservice is connected!", bookingController.checkIfRoomsConnected());
     }
 
     @Test
@@ -111,6 +117,46 @@ public class BookingControllerTest {
         bookingController.deleteBooking(1L, token);
         verify(bookingService, times(1)).deleteBooking(1L);
         verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
+    }
+
+    @Test
+    void getFutureBooking_test() {
+        when(bookingService.getFutureBookings()).thenReturn(List.of(b2));
+        Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings());
+    }
+
+    @Test
+    void getMyBookingsDefault_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b2);
+        bookings.add(b1);
+        when(bookingService.getBookingsForUser(any(String.class), any(DefaultSortStrategy.class)))
+                .thenReturn(bookings);
+        List<Booking> b = bookingController.getMyBookingsDefault("A");
+        Assertions.assertEquals(bookings, b);
+    }
+
+    @Test
+    void getMyBookingsChrono_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b2);
+        bookings.add(b1);
+        when(bookingService.getBookingsForUser(any(String.class),
+                any(ChronologicalSortStrategy.class)))
+                .thenReturn(bookings);
+        List<Booking> b = bookingController.getMyBookingsChrono("A");
+        Assertions.assertEquals(bookings, b);
+    }
+
+    @Test
+    void getMyBookingsLocation_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b2);
+        bookings.add(b1);
+        when(bookingService.getBookingsForUser(any(String.class), any(LocationStrategy.class)))
+                .thenReturn(bookings);
+        List<Booking> b = bookingController.getMyBookingsLocation("A");
+        Assertions.assertEquals(bookings, b);
     }
 
 }

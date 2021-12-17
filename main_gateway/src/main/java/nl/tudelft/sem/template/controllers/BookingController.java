@@ -2,6 +2,12 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
+import nl.tudelft.sem.template.validators.BookingValidator;
+import nl.tudelft.sem.template.validators.BuildingValidator;
+import nl.tudelft.sem.template.validators.RoomValidator;
+import nl.tudelft.sem.template.validators.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,16 +29,40 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 public class BookingController {
 
-    private transient RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private transient RestTemplate restTemplate;
 
-    /** Returns list of all bookings in system.
+    @Bean
+    public RestTemplate templateCreator() {
+        return new RestTemplate();
+    }
+
+    @Autowired
+    private transient Validator handler;
+
+
+    /**
+     * Create bean for validator, so it can be mocked for tests.
+     *
+     * @return A new instance of a Validator.
+     */
+    @Bean
+    public Validator validatorCreator() {
+        Validator handler = new BookingValidator();
+        handler.setNext(new BuildingValidator());
+        handler.setNext(new RoomValidator());
+        return handler;
+    }
+
+    /**
+     * Returns list of all bookings in system.
      *
      * @return list of all bookings.
      */
-    @GetMapping("/getBookings")
+    @GetMapping("/getallbookings")
     @ResponseBody
-    public List getBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/bookings";
+    public List getAllBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8083/allbookings";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
@@ -47,8 +77,16 @@ public class BookingController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
     }
+    
+    @GetMapping("/getBookings")
+    @ResponseBody
+    public List getFutureBookings() {
+        String uri = "http://localhost:8083/bookings";
+        return restTemplate.getForObject(uri, List.class);
+    }
 
-    /** Returns a specific booking with respect to its id.
+    /**
+     * Returns a specific booking with respect to its id.
      *
      * @param id the id of the booking we want.
      * @return the booking we are searching for.
@@ -73,7 +111,8 @@ public class BookingController {
         }
     }
 
-    /** Adds a booking to the system.
+    /**
+     * Adds a booking to the system.
      *
      * @param booking the booking we want to add.
      * @return true if its successfully added, else false.
@@ -88,20 +127,24 @@ public class BookingController {
         HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
 
         try {
+            boolean isValid = handler.handle(booking);
+            if (isValid) {
             restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
             return true;
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+            }
+            return false;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
 
     }
 
-    /** Update a booking.
+
+    /**
+     * Update a booking.
      *
      * @param booking the new booking.
-     * @param id the id of the booking to update.
+     * @param id      the id of the booking to update.
      * @return true if successfully updated, else false.
      */
     @PutMapping("/putBooking/{id}")
@@ -123,7 +166,8 @@ public class BookingController {
         }
     }
 
-    /** Deletes a booking from the system.
+    /**
+     * Deletes a booking from the system.
      *
      * @param id the id of the booking to delete.
      * @return true if successfully deleted, else false.
@@ -144,6 +188,27 @@ public class BookingController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
+    }
+
+    @GetMapping("/myBookings/default/{userId}")
+    @ResponseBody
+    public List getMyBookingsDefault(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/default/" + userId;
+        return restTemplate.getForObject(uri, List.class);
+    }
+
+    @GetMapping("/myBookings/chrono/{userId}")
+    @ResponseBody
+    public List getMyBookingsChrono(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/chrono/" + userId;
+        return restTemplate.getForObject(uri, List.class);
+    }
+
+    @GetMapping("/myBookings/location/{userId}")
+    @ResponseBody
+    public List getMyBookingsLocation(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/location/" + userId;
+        return restTemplate.getForObject(uri, List.class);
     }
 
 }

@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +26,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 public class UserController {
 
-    private transient RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private transient RestTemplate restTemplate;
 
 
     /** Sends the request to user for authentication of the user.
