@@ -4,7 +4,7 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,15 +12,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-@Controller
+@RestController
 public class BookingController {
 
     @Autowired
     private transient BookingService bookingService;
 
-    private transient RestTemplate template = new RestTemplate();
+    @Autowired
+    private transient RestTemplate template;
+
+    @Bean
+    public RestTemplate templateCreator() {
+        return new RestTemplate();
+    }
 
     @GetMapping("/sayHi")
     @ResponseBody

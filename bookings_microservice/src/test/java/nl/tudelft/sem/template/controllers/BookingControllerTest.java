@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,8 +68,8 @@ public class BookingControllerTest {
     @Test
     void roomConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
-            .thenReturn(String.valueOf(new ResponseEntity(HttpStatus.OK)));
-        Assertions.assertEquals("<200 OK OK,[]>", bookingController.checkIfRoomsConnected());
+            .thenReturn("Rooms Microservice is connected!");
+        Assertions.assertEquals("Rooms Microservice is connected!", bookingController.checkIfRoomsConnected());
     }
 
     @Test
