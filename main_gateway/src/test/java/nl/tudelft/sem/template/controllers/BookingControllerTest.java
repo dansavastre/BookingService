@@ -1,4 +1,5 @@
-package nl.tudelft.sem.template.controllers;
+package controllers.test;
+
 
 import static org.mockito.Mockito.*;
 
@@ -18,6 +19,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.web.client.RestTemplate;
+
+
 
 public class BookingControllerTest {
 
@@ -70,12 +73,22 @@ public class BookingControllerTest {
     }
 
     @Test
-    void getBookings_test() {
+    void getAllBookings_test() {
+        String uri = "http://localhost:8083/allbookings";
+        when(restTemplate.getForObject(uri, List.class))
+                .thenReturn(bookings);
+
+        Assertions.assertThat(bookingController.getAllBookings()).isEqualTo(bookings);
+        verify(restTemplate, times(1)).getForObject(uri, List.class);
+    }
+
+    @Test
+    void getFutureBookings_test() {
         String uri = "http://localhost:8083/bookings";
         when(restTemplate.getForObject(uri, List.class))
                 .thenReturn(bookings);
 
-        Assertions.assertThat(bookingController.getBookings()).isEqualTo(bookings);
+        Assertions.assertThat(bookingController.getFutureBookings()).isEqualTo(bookings);
         verify(restTemplate, times(1)).getForObject(uri, List.class);
     }
 

@@ -51,9 +51,16 @@ public class BookingController {
      *
      * @return list of all bookings.
      */
-    @GetMapping("/getBookings")
+    @GetMapping("/getallbookings")
     @ResponseBody
-    public List getBookings() {
+    public List getAllBookings() {
+        String uri = "http://localhost:8083/allbookings";
+        return restTemplate.getForObject(uri, List.class);
+    }
+
+    @GetMapping("/getbookings")
+    @ResponseBody
+    public List getFutureBookings() {
         String uri = "http://localhost:8083/bookings";
         return restTemplate.getForObject(uri, List.class);
     }
@@ -130,6 +137,27 @@ public class BookingController {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @GetMapping("/myBookings/default/{userId}")
+    @ResponseBody
+    public List getMyBookingsDefault(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/default/" + userId;
+        return restTemplate.getForObject(uri, List.class);
+    }
+
+    @GetMapping("/myBookings/chrono/{userId}")
+    @ResponseBody
+    public List getMyBookingsChrono(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/chrono/" + userId;
+        return restTemplate.getForObject(uri, List.class);
+    }
+
+    @GetMapping("/myBookings/location/{userId}")
+    @ResponseBody
+    public List getMyBookingsLocation(@PathVariable("userId") String userId) {
+        String uri = "http://localhost:8083/myBookings/location/" + userId;
+        return restTemplate.getForObject(uri, List.class);
     }
 
 }

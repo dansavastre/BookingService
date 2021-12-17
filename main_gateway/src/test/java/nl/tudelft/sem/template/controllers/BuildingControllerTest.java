@@ -1,4 +1,4 @@
-package nl.tudelft.sem.template.controllers;
+package controllers.test;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.objects.Building;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
+
+
 
 public class BuildingControllerTest {
 
