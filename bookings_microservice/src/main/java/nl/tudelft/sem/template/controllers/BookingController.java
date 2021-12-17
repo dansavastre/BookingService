@@ -7,6 +7,7 @@ import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
 import nl.tudelft.sem.template.schedule.LocationStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,18 @@ public class BookingController {
     @Autowired
     private transient BookingService bookingService;
 
-    private transient RestTemplate template = new RestTemplate();
+    @Autowired
+    private transient RestTemplate template;
+
+    @Bean
+    public RestTemplate templateCreator() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public BookingService serviceCreator() {
+        return new BookingService();
+    }
 
     @GetMapping("/sayHi")
     @ResponseBody

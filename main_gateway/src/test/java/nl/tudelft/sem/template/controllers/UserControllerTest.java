@@ -25,7 +25,7 @@ public class UserControllerTest {
 
     private transient User u1;
     private transient User u2;
-    private transient List<User> users = new ArrayList<>();
+    private transient List<User> users;
     private transient String id1;
     private transient String id2;
 
@@ -36,8 +36,7 @@ public class UserControllerTest {
         u2 = new User("9876543", "psw", "Mike", "Jones");
         id1 = u1.getId();
         id2 = u2.getId();
-        users.add(u1);
-        users.add(u2);
+        users = new ArrayList<>(List.of(u1, u2));
     }
 
     @Test
