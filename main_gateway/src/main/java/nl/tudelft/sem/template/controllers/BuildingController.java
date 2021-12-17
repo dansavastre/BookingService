@@ -21,11 +21,6 @@ public class BuildingController {
     @Autowired
     private transient RestTemplate restTemplate;
 
-    @Bean
-    public RestTemplate templateCreator() {
-        return new RestTemplate();
-    }
-
     /** Returns all the buildings in the system.
      *
      * @return list of the buildings.

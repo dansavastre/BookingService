@@ -20,10 +20,6 @@ public class RoomController {
     @Autowired
     private transient RestTemplate template;
 
-    @Bean
-    public RestTemplate templateCreator() {
-        return new RestTemplate();
-    }
 
     /** Returns all the rooms in the system.
      *

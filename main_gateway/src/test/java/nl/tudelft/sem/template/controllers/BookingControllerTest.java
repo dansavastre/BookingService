@@ -1,4 +1,4 @@
-package controllers.test;
+package nl.tudelft.sem.template.controllers;
 
 
 import static org.mockito.Mockito.*;

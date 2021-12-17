@@ -13,10 +13,6 @@ public class HelloController {
     @Autowired
     private transient RestTemplate restTemplate;
 
-    @Bean
-    public RestTemplate templateCreator() {
-        return new RestTemplate();
-    }
 
     /** Receives a message from the user microservice.
      *

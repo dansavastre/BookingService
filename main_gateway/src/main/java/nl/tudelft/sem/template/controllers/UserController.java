@@ -20,11 +20,6 @@ public class UserController {
     @Autowired
     private transient RestTemplate restTemplate;
 
-    @Bean
-    public RestTemplate templateCreator() {
-        return new RestTemplate();
-    }
-
     /** Returns all the users in the system.
      *
      * @return list of users.

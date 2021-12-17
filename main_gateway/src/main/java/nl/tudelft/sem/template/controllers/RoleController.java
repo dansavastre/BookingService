@@ -20,10 +20,6 @@ public class RoleController {
     @Autowired
     private transient RestTemplate restTemplate;
 
-    @Bean
-    public RestTemplate templateCreator() {
-        return new RestTemplate();
-    }
 
     /** Returns all the roles in the system.
      *

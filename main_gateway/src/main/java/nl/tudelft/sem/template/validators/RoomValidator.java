@@ -34,7 +34,7 @@ public class RoomValidator extends BaseValidator {
     @Override
     public boolean handle(Booking newBooking) throws InvalidRoomException,
         InvalidBookingException, BuildingNotOpenException {
-        List<Booking> bookings = bookingController.getBookings();
+        List<Booking> bookings = bookingController.getAllBookings();
         for (Booking booking : bookings) {
             if (bookingsOverlap(newBooking, booking)) {
                 throw new InvalidRoomException("The room is not available during this interval");

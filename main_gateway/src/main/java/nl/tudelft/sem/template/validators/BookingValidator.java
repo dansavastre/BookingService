@@ -18,7 +18,7 @@ public class BookingValidator extends BaseValidator {
     private transient BookingController bookingController = new BookingController();
 
     private boolean checkOtherBookings(Booking newBooking) {
-        List<Booking> bookings = bookingController.getBookings();
+        List<Booking> bookings = bookingController.getAllBookings();
         for (Booking booking : bookings) {
             if (booking.getDate().equals(newBooking.getDate())) {
                 if ((booking.getStartTime().compareTo(newBooking.getStartTime()) < 0
