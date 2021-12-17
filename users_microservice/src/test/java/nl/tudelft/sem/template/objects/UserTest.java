@@ -36,24 +36,17 @@ public class UserTest {
     }
 
     @Test
-    public void userTypeTest() {
-        User user = new User();
-        user.setUserType("admin");
-        Assertions.assertEquals("admin", user.getUserType());
-    }
-
-    @Test
     public void equalsTest() {
-        User user1 = new User("123", "pwd", "Joe", "B", "student");
-        User user2 = new User("123", "pwd", "Joe", "B", "student");
+        User user1 = new User("123", "pwd", "Joe", "B");
+        User user2 = new User("123", "pwd", "Joe", "B");
         Assertions.assertTrue(user1.equals(user2));
     }
 
     @Test
     public void toStringTest() {
-        User user = new User("123", "pwd", "Joe", "B", "student");
+        User user = new User("123", "pwd", "Joe", "B");
         Assertions.assertEquals("User{id='123', password='pwd', "
-                + "firstName='Joe', lastName='B', userType='student'}", user.toString());
+                + "firstName='Joe', lastName='B', roles=''}", user.toString());
 
     }
 }

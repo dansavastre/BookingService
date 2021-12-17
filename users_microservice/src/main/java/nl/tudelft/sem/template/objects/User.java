@@ -1,9 +1,14 @@
 package nl.tudelft.sem.template.objects;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "User")
@@ -23,8 +28,10 @@ public class User {
     @Column(name = "LAST_NAME", nullable = true, length = 50)
     private String lastName;
 
-    @Column(name = "USER_TYPE", nullable = true, length = 50)
-    private String userType;
+    @Column(name = "ROLE", nullable = true, length = 50)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Role> roles;
+
 
 
     /**
@@ -40,15 +47,14 @@ public class User {
      * @param password  - password belonging to users account as a String
      * @param firstName - first name of user as a String
      * @param lastName  - last name of user as a String
-     * @param userType  - user type (e.g. Admin) as a String
      */
-    public User(String id, String password, String firstName, String lastName, String userType) {
+    public User(String id, String password, String firstName, String lastName) {
         super();
         this.id = id;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userType = userType;
+        this.roles = new ArrayList<>();
     }
 
     /**
@@ -96,6 +102,8 @@ public class User {
         return firstName;
     }
 
+
+
     /**
      * Setter to set/change the users first name.
      *
@@ -124,24 +132,6 @@ public class User {
     }
 
     /**
-     * Getter for the users type.
-     *
-     * @return users type as a String
-     */
-    public String getUserType() {
-        return userType;
-    }
-
-    /**
-     * Setter to set/change the users type.
-     *
-     * @param userType - new String for users first name
-     */
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    /**
      * Equals method to check whether 2 users are equivalent based on the attributes.
      *
      * @param o = 2nd User object to compare to
@@ -159,7 +149,7 @@ public class User {
         return Objects.equals(id, user.id) && Objects.equals(password, user.password)
                 && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName)
-                && Objects.equals(userType, user.userType);
+                && roles.equals(user.roles);
     }
 
     /**
@@ -169,7 +159,7 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, firstName, lastName, userType);
+        return Objects.hash(id, password, firstName, lastName);
     }
 
     /**
@@ -179,6 +169,13 @@ public class User {
      */
     @Override
     public String toString() {
+        String string = "";
+        for (Role role : roles) {
+            string = string + role.toString() + ", ";
+        }
+        if (string.length() > 0) {
+            string = string.substring(0, string.length() - 2);
+        }
         return "User{"
                 + "id='"
                 + id
@@ -192,9 +189,27 @@ public class User {
                 + ", lastName='"
                 + lastName
                 + '\''
-                + ", userType='"
-                + userType
+                + ", roles='"
+                + string
                 + '\''
                 + '}';
+    }
+
+    /**
+     * Getter for user roles.
+     *
+     * @return a list of the user's roles
+     */
+    public List<Role> getRoles() {
+        return this.roles;
+    }
+
+    /**
+     * Setter for setting the roles.
+     *
+     * @param roles a list of roles for the user
+     */
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
