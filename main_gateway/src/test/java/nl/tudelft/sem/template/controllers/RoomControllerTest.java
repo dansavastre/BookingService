@@ -40,6 +40,7 @@ public class RoomControllerTest {
     private transient Room room1;
     private transient Room room2;
     private final transient String token = "token";
+    private transient List<Room> rooms;
 
     @BeforeEach
     void setup() {

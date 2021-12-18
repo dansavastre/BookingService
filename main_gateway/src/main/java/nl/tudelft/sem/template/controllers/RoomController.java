@@ -26,7 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class RoomController {
 
     @Autowired
-    private transient RestTemplate template;
+    private transient RestTemplate restTemplate;
 
 
     /** Returns all the rooms in the system.
