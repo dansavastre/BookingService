@@ -145,6 +145,7 @@ public class BookingController {
         HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
 
         try {
+            handler.setToken(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
                 restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);

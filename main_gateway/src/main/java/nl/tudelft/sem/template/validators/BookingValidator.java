@@ -17,8 +17,10 @@ public class BookingValidator extends BaseValidator {
     private transient RoomController roomController = new RoomController();
     private transient BookingController bookingController = new BookingController();
 
+    private transient String token;
+
     private boolean checkOtherBookings(Booking newBooking) {
-        List<Booking> bookings = bookingController.getAllBookings();
+        List<Booking> bookings = bookingController.getAllBookings(token);
         for (Booking booking : bookings) {
             if (booking.getDate().equals(newBooking.getDate())) {
                 if ((booking.getStartTime().compareTo(newBooking.getStartTime()) < 0
@@ -42,9 +44,9 @@ public class BookingValidator extends BaseValidator {
         } else if (booking.getDate().compareTo(LocalDate.now()) == 0
             && booking.getStartTime().compareTo(LocalTime.now()) <= 0) {
             throw  new InvalidBookingException("Booking start time is before current time");
-        } else if (buildingController.getBuilding(booking.getBuilding()) == null) {
+        } else if (buildingController.getBuilding(booking.getBuilding(), token) == null) {
             throw new InvalidBookingException("Building does not exist");
-        } else if (roomController.getRoom(booking.getRoom()) == null) {
+        } else if (roomController.getRoom(booking.getRoom(), token) == null) {
             throw new InvalidBookingException("Room does not exist");
         } else if (booking.getStartTime().compareTo(booking.getEndTime()) >= 0) {
             throw new InvalidBookingException("Start time is after end time");
@@ -53,5 +55,10 @@ public class BookingValidator extends BaseValidator {
         }
 
         return super.checkNext(booking);
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
 }
