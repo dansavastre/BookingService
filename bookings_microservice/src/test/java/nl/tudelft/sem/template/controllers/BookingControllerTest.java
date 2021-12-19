@@ -61,12 +61,6 @@ public class BookingControllerTest {
     }
 
     @Test
-    void sayHi_test() {
-        Assertions.assertEquals("Hello from the bookings microservice!",
-            bookingController.sayHi());
-    }
-
-    @Test
     void roomNotConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
             .thenThrow(HttpServerErrorException.class);
@@ -89,7 +83,17 @@ public class BookingControllerTest {
         bookings.add(b2);
         when(bookingService.getAllBookings()).thenReturn(bookings);
         Assertions.assertEquals(bookings, bookingController.getAllBookings(token));
-        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
+    }
+
+    @Test
+    void getFutureBookings_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b1);
+        bookings.add(b2);
+        when(bookingService.getFutureBookings()).thenReturn(bookings);
+        Assertions.assertEquals(bookings, bookingController.getFutureBookings(token));
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
