@@ -1,15 +1,21 @@
 package nl.tudelft.sem.template.validators;
 
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class RoomValidator extends BaseValidator {
 
-    private transient BookingController bookingController = new BookingController();
+    @Autowired
+    private transient BookingController bookingController;
 
     /**
      * Method for checking if two bookings overlap.
@@ -34,7 +40,10 @@ public class RoomValidator extends BaseValidator {
     @Override
     public boolean handle(Booking newBooking) throws InvalidRoomException,
         InvalidBookingException, BuildingNotOpenException {
-        List<Booking> bookings = bookingController.getAllBookings();
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(),
+                new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
             if (bookingsOverlap(newBooking, booking)) {
                 throw new InvalidRoomException("The room is not available during this interval");

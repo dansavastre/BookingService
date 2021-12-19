@@ -3,6 +3,10 @@ package nl.tudelft.sem.template.validators;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.controllers.RoomController;
@@ -10,15 +14,22 @@ import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BookingValidator extends BaseValidator {
 
-    private transient BuildingController buildingController = new BuildingController();
-    private transient RoomController roomController = new RoomController();
-    private transient BookingController bookingController = new BookingController();
+    @Autowired
+    private transient BuildingController buildingController;
+    @Autowired
+    private transient RoomController roomController;
+    @Autowired
+    private transient BookingController bookingController;
 
     private boolean checkOtherBookings(Booking newBooking) {
-        List<Booking> bookings = bookingController.getAllBookings();
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(),
+                new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
             if (booking.getDate().equals(newBooking.getDate())) {
                 if ((booking.getStartTime().compareTo(newBooking.getStartTime()) < 0

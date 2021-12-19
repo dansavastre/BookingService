@@ -6,10 +6,12 @@ import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.objects.Building;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BuildingValidator extends BaseValidator {
 
-    private transient BuildingController buildingController = new BuildingController();
+    @Autowired
+    private transient BuildingController buildingController;
 
     @Override
     public boolean handle(Booking booking) throws BuildingNotOpenException,
