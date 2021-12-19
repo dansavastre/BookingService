@@ -10,6 +10,7 @@ import nl.tudelft.sem.template.objects.Booking;
 public class RoomValidator extends BaseValidator {
 
     private transient BookingController bookingController = new BookingController();
+    private transient String token;
 
     /**
      * Method for checking if two bookings overlap.
@@ -34,13 +35,18 @@ public class RoomValidator extends BaseValidator {
     @Override
     public boolean handle(Booking newBooking) throws InvalidRoomException,
         InvalidBookingException, BuildingNotOpenException {
-        List<Booking> bookings = bookingController.getAllBookings();
+        List<Booking> bookings = bookingController.getAllBookings(token);
         for (Booking booking : bookings) {
             if (bookingsOverlap(newBooking, booking)) {
                 throw new InvalidRoomException("The room is not available during this interval");
             }
         }
         return super.checkNext(newBooking);
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }
