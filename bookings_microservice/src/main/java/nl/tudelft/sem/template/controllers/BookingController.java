@@ -68,13 +68,14 @@ public class BookingController {
     @GetMapping("/allbookings")
     @ResponseBody
     public List<Booking> getAllBookings(@RequestHeader(authorization) String token) {
-        auth.authorize(Authorization.EMPLOYEE, token);
+        auth.authorize(Authorization.ADMIN, token);
         return bookingService.getAllBookings();
     }
 
     @GetMapping("/bookings")
     @ResponseBody
-    public List<Booking> getFutureBookings() {
+    public List<Booking> getFutureBookings(@RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.ADMIN, token);
         return bookingService.getFutureBookings();
     }
 
@@ -112,19 +113,22 @@ public class BookingController {
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId) {
+    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId,@RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId) {
+    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId,@RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBookingsForUser(userId, new ChronologicalSortStrategy());
     }
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId) {
+    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId,@RequestHeader(authorization) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBookingsForUser(userId, new LocationStrategy());
     }
 }

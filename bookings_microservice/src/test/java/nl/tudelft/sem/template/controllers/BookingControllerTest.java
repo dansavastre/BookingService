@@ -122,7 +122,7 @@ public class BookingControllerTest {
     @Test
     void getFutureBooking_test() {
         when(bookingService.getFutureBookings()).thenReturn(List.of(b2));
-        Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings());
+        Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings(token));
     }
 
     @Test
@@ -132,7 +132,7 @@ public class BookingControllerTest {
         bookings.add(b1);
         when(bookingService.getBookingsForUser(any(String.class), any(DefaultSortStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsDefault("A");
+        List<Booking> b = bookingController.getMyBookingsDefault("A",token);
         Assertions.assertEquals(bookings, b);
     }
 
@@ -144,7 +144,7 @@ public class BookingControllerTest {
         when(bookingService.getBookingsForUser(any(String.class),
                 any(ChronologicalSortStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsChrono("A");
+        List<Booking> b = bookingController.getMyBookingsChrono("A",token);
         Assertions.assertEquals(bookings, b);
     }
 
@@ -155,7 +155,7 @@ public class BookingControllerTest {
         bookings.add(b1);
         when(bookingService.getBookingsForUser(any(String.class), any(LocationStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsLocation("A");
+        List<Booking> b = bookingController.getMyBookingsLocation("A",token);
         Assertions.assertEquals(bookings, b);
     }
 
