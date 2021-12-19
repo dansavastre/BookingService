@@ -77,12 +77,30 @@ public class BookingController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
     }
-    
+
+    /**
+     * Returns a list of all future bookings, requires token.
+
+     * @param token for authentication
+     * @return list of future bookings
+     */
     @GetMapping("/getBookings")
     @ResponseBody
-    public List getFutureBookings() {
+    public List getFutureBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/bookings";
-        return restTemplate.getForObject(uri, List.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+
+        try {
+            ResponseEntity<List> res = restTemplate
+                    .exchange(uri, HttpMethod.GET, entity, List.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
     }
 
     /**
@@ -129,8 +147,8 @@ public class BookingController {
         try {
             boolean isValid = handler.handle(booking);
             if (isValid) {
-            restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
-            return true;
+                restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
+                return true;
             }
             return false;
         } catch (Exception e) {

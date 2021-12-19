@@ -78,7 +78,8 @@ public class BookingControllerTest {
     void roomConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
             .thenReturn("Rooms Microservice is connected!");
-        Assertions.assertEquals("Rooms Microservice is connected!", bookingController.checkIfRoomsConnected());
+        Assertions.assertEquals("Rooms Microservice is connected!",
+                bookingController.checkIfRoomsConnected());
     }
 
     @Test
@@ -132,7 +133,7 @@ public class BookingControllerTest {
         bookings.add(b1);
         when(bookingService.getBookingsForUser(any(String.class), any(DefaultSortStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsDefault("A",token);
+        List<Booking> b = bookingController.getMyBookingsDefault("A", token);
         Assertions.assertEquals(bookings, b);
     }
 
@@ -144,7 +145,7 @@ public class BookingControllerTest {
         when(bookingService.getBookingsForUser(any(String.class),
                 any(ChronologicalSortStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsChrono("A",token);
+        List<Booking> b = bookingController.getMyBookingsChrono("A", token);
         Assertions.assertEquals(bookings, b);
     }
 
@@ -155,7 +156,7 @@ public class BookingControllerTest {
         bookings.add(b1);
         when(bookingService.getBookingsForUser(any(String.class), any(LocationStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsLocation("A",token);
+        List<Booking> b = bookingController.getMyBookingsLocation("A", token);
         Assertions.assertEquals(bookings, b);
     }
 

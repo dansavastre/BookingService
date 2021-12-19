@@ -1,18 +1,17 @@
 package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
@@ -26,6 +25,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -95,7 +95,7 @@ public class BookingControllerTest {
         when(restTemplate.getForObject(uri, List.class))
                 .thenReturn(bookings);
 
-        Assertions.assertThat(bookingController.getAllBookings()).isEqualTo(bookings);
+        Assertions.assertThat(bookingController.getAllBookings(token)).isEqualTo(bookings);
         verify(restTemplate, times(1)).getForObject(uri, List.class);
     }
 
@@ -107,7 +107,7 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET), entity.capture(), eq(List.class)))
             .thenReturn(res);
 
-        Assertions.assertThat(bookingController.getBookings(token)).isEqualTo(bookings);
+        Assertions.assertThat(bookingController.getFutureBookings(token)).isEqualTo(bookings);
         verify(restTemplate, times(1))
             .exchange(eq(uri), eq(HttpMethod.GET), entity.capture(), eq(List.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -129,7 +129,8 @@ public class BookingControllerTest {
 
     //TODO: fix this test
     @Test
-    void postBooking_test() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+    void postBooking_test() throws InvalidBookingException, InvalidRoomException,
+            BuildingNotOpenException {
         String uri = "http://localhost:8083/bookings";
         //security version
         Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
@@ -139,18 +140,19 @@ public class BookingControllerTest {
         assertEquals(b1, entity.getValue().getBody());
         //development version
         when(handler.handle(any(Booking.class))).thenReturn(true);
-        Mockito.doThrow(new RuntimeException("error")).when(restTemplate).postForObject(eq(anyString()), any(Booking.class), void.class);
-        Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
+        Mockito.doThrow(new RuntimeException("error")).when(restTemplate)
+                        .postForObject(eq(anyString()), any(Booking.class), void.class);
+        Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
         verify(restTemplate, times(1)).postForObject(uri, b1, void.class);
     }
 
     @Test
     void postBookingInvalid_test() {
         MockitoAnnotations.initMocks(this);
-        when(buildingController.getBuilding(36)).thenReturn(building);
+        when(buildingController.getBuilding(36, token)).thenReturn(building);
         when(restTemplate.getForObject("http://localhost:8082/getBuilding/36", Building.class))
                 .thenReturn(building);
-        Assertions.assertThat(bookingController.postBooking(b3)).isFalse();
+        Assertions.assertThat(bookingController.postBooking(b3, token)).isFalse();
     }
 
     @Test

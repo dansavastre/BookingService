@@ -27,6 +27,7 @@ public class BookingController {
 
     @Autowired
     private transient RestTemplate template;
+
     @Autowired
     private transient Authorization auth;
 
@@ -113,21 +114,24 @@ public class BookingController {
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId,@RequestHeader(authorization) String token) {
+    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId,
+                                              @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId,@RequestHeader(authorization) String token) {
+    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId,
+                                             @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBookingsForUser(userId, new ChronologicalSortStrategy());
     }
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId,@RequestHeader(authorization) String token) {
+    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId,
+                                               @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBookingsForUser(userId, new LocationStrategy());
     }
