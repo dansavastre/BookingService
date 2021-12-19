@@ -10,8 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BuildingValidator extends BaseValidator {
 
-    @Autowired
+
     private transient BuildingController buildingController;
+
+    public BuildingValidator(BuildingController buildingController) {
+        this.buildingController = buildingController;
+    }
+
 
     @Override
     public boolean handle(Booking booking) throws BuildingNotOpenException,

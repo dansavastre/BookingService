@@ -74,7 +74,8 @@ public class BookingControllerTest {
     void roomConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
             .thenReturn("Rooms Microservice is connected!");
-        Assertions.assertEquals("Rooms Microservice is connected!", bookingController.checkIfRoomsConnected());
+        Assertions.assertEquals("Rooms Microservice is connected!",
+                bookingController.checkIfRoomsConnected());
     }
 
     @Test

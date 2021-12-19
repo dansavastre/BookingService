@@ -1,12 +1,12 @@
 package nl.tudelft.sem.template.validators;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.controllers.RoomController;
@@ -14,16 +14,26 @@ import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class BookingValidator extends BaseValidator {
 
-    @Autowired
     private transient BuildingController buildingController;
-    @Autowired
     private transient RoomController roomController;
-    @Autowired
     private transient BookingController bookingController;
+
+    /** Constructor for BookingValidator.
+     *
+     * @param buildingController    building Controller
+     * @param roomController        room Controller
+     * @param bookingController     booking Controller
+     */
+    public BookingValidator(BuildingController buildingController,
+                            RoomController roomController,
+                            BookingController bookingController) {
+        this.buildingController = buildingController;
+        this.roomController = roomController;
+        this.bookingController = bookingController;
+    }
 
     private boolean checkOtherBookings(Booking newBooking) {
         ObjectMapper om = new ObjectMapper();

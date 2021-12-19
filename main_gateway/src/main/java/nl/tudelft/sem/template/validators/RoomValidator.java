@@ -1,21 +1,23 @@
 package nl.tudelft.sem.template.validators;
 
-import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.List;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class RoomValidator extends BaseValidator {
 
-    @Autowired
     private transient BookingController bookingController;
+
+    public RoomValidator(BookingController bookingController) {
+        this.bookingController = bookingController;
+    }
 
     /**
      * Method for checking if two bookings overlap.
