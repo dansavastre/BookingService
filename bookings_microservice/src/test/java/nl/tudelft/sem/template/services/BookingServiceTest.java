@@ -67,7 +67,6 @@ public class BookingServiceTest {
     @Test
     void updateBooking_test() {
         bookingService.updateBooking(1L, b1);
-        verify(bookingRepository, times(1)).deleteById(1L);
         verify(bookingRepository, times(1)).save(b1);
     }
 
