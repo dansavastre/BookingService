@@ -33,7 +33,6 @@ public class RoomService {
     }
 
     public void updateRoom(int id, Room room) {
-        roomRepository.deleteById(id);
         roomRepository.save(room);
     }
 
