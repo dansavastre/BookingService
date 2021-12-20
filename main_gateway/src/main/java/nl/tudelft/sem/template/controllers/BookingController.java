@@ -120,7 +120,7 @@ public class BookingController {
     @ResponseBody
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") String id) {
         try {
-            String uri = "http://localhost:8081/bookings/".concat(id);
+            String uri = "http://localhost:8083/bookings/".concat(id);
             restTemplate.put(uri, booking);
             return true;
         } catch (Exception e) {
@@ -138,7 +138,7 @@ public class BookingController {
     @ResponseBody
     public boolean deleteBooking(@PathVariable("id") String id) {
         try {
-            String uri = "http://localhost:8081/bookings/".concat(id);
+            String uri = "http://localhost:8083/bookings/".concat(id);
             restTemplate.delete(uri);
             return true;
         } catch (Exception e) {
