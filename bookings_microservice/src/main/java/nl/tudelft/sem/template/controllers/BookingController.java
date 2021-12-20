@@ -84,13 +84,13 @@ public class BookingController {
         bookingService.addBooking(booking);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/bookings/{id}")
     @ResponseBody
     public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id) {
         bookingService.updateBooking(id, booking);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/bookings/{id}")
     @ResponseBody
     public void deleteBooking(@PathVariable("id") Long id) {
         bookingService.deleteBooking(id);
