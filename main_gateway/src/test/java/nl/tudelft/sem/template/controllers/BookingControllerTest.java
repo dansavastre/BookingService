@@ -12,13 +12,14 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.objects.Building;
-import nl.tudelft.sem.template.validators.Validator;
+import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,11 +45,13 @@ public class BookingControllerTest {
     @Captor
     private transient ArgumentCaptor<HttpEntity> entity;
 
-    @Mock
-    private transient Validator handler;
 
-    @InjectMocks
+    @Mock
     private transient BuildingController buildingController;
+    @Mock
+    private transient BookingController bookingControllerMock;
+    @Mock
+    private transient RoomController roomController;
 
     @InjectMocks
     private transient BookingController bookingController;
@@ -56,6 +59,7 @@ public class BookingControllerTest {
     private transient Booking b1;
     private transient Booking b2;
     private transient Booking b3;
+    private transient Room room1;
     private transient Building building;
     private transient Building building1;
     private transient List<Booking> bookings;
@@ -65,9 +69,11 @@ public class BookingControllerTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
         building = new Building(36, LocalTime.of(8, 0),
-                                LocalTime.of(22, 0), "Building 36");
+                LocalTime.of(22, 0), "Building 36");
         building1 = new Building(1, LocalTime.of(8, 0),
                 LocalTime.of(22, 0), "Building 1");
+        room1 = new Room(1, "Nice room", 4,
+                new HashMap<>(), "yes", 1);
         b1 = new Booking(1L, "Mike", 1, 1,
                 LocalDate.of(2025, 12, 4),
                 LocalTime.of(11, 10),
@@ -133,15 +139,16 @@ public class BookingControllerTest {
 
     //TODO: fix this test
     @Test
-    void postBooking_test() throws InvalidBookingException, InvalidRoomException,
-            BuildingNotOpenException {
-        //String uri = "http://localhost:8083/bookings";
-        //security version
-        //Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
-        //verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.POST),
-        //entity.capture(), eq(void.class));
-        //assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
-        //assertEquals(b1, entity.getValue().getBody());
+    void postBooking_test() throws InvalidBookingException,
+            InvalidRoomException, BuildingNotOpenException {
+        String uri = "http://localhost:8083/bookings";
+        Mockito.doThrow(new RuntimeException("error")).when(restTemplate)
+                .postForObject(eq(anyString()), any(Booking.class), void.class);
+        when(buildingController.getBuilding(b1.getBuilding())).thenReturn(building1);
+        when(roomController.getRoom(b1.getRoom())).thenReturn(room1);
+        when(bookingController.getAllBookings()).thenReturn(bookings);
+        Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
+        verify(restTemplate, times(1)).postForObject(uri, b1, void.class);
     }
 
     @Test
@@ -155,7 +162,7 @@ public class BookingControllerTest {
 
     @Test
     void updateBooking_test() {
-        String uri = "http://localhost:8081/bookings/".concat(String.valueOf(1L));
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(1L));
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
             entity.capture(), eq(void.class))).thenReturn(res);
@@ -168,7 +175,7 @@ public class BookingControllerTest {
 
     @Test
     void deleteBooking_test() {
-        String uri = "http://localhost:8081/bookings/".concat(String.valueOf(1L));
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(1L));
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
             entity.capture(), eq(void.class))).thenReturn(res);

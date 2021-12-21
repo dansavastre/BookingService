@@ -38,7 +38,6 @@ public class BookingService {
     }
 
     public void updateBooking(Long id, Booking booking) {
-        bookingRepository.deleteById(id);
         bookingRepository.save(booking);
     }
 

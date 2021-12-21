@@ -1,5 +1,9 @@
 package nl.tudelft.sem.template.validators;
 
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -13,14 +17,31 @@ import nl.tudelft.sem.template.objects.Booking;
 
 public class BookingValidator extends BaseValidator {
 
-    private transient BuildingController buildingController = new BuildingController();
-    private transient RoomController roomController = new RoomController();
-    private transient BookingController bookingController = new BookingController();
+    private transient BuildingController buildingController;
+    private transient RoomController roomController;
+    private transient BookingController bookingController;
 
     private transient String token;
 
+    /** Constructor for BookingValidator.
+     *
+     * @param buildingController    building Controller
+     * @param roomController        room Controller
+     * @param bookingController     booking Controller
+     */
+    public BookingValidator(BuildingController buildingController,
+                            RoomController roomController,
+                            BookingController bookingController) {
+        this.buildingController = buildingController;
+        this.roomController = roomController;
+        this.bookingController = bookingController;
+    }
+
     private boolean checkOtherBookings(Booking newBooking) {
-        List<Booking> bookings = bookingController.getAllBookings(token);
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
+                new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
             if (booking.getDate().equals(newBooking.getDate())) {
                 if ((booking.getStartTime().compareTo(newBooking.getStartTime()) < 0

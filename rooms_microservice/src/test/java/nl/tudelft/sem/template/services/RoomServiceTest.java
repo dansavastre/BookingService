@@ -71,7 +71,6 @@ public class RoomServiceTest {
     @Test
     void updateRoom_test() {
         roomService.updateRoom(11, r2);
-        verify(roomRepository, times(1)).deleteById(11);
         verify(roomRepository, times(1)).save(r2);
     }
 

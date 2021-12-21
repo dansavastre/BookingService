@@ -54,11 +54,11 @@ public class BookingApplication {
                     LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
             bookingService.addBooking(new Booking(name2, 1, 24,
                     LocalDate.of(2022, 7, 9),
-                    LocalTime.of(11, 01),
+                    LocalTime.of(10, 30),
                     LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
             bookingService.addBooking(new Booking(name2, 1, 24,
-                    LocalDate.of(2021, 7, 9),
-                    LocalTime.of(11, 01),
+                    LocalDate.of(2022, 7, 10),
+                    LocalTime.of(10, 00),
                     LocalTime.of(12, 30), "Studying in the past", List.of(name1)));
         };
 

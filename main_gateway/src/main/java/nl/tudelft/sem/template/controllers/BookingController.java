@@ -31,14 +31,18 @@ public class BookingController {
 
     @Autowired
     private transient RestTemplate restTemplate;
+    @Autowired
+    private transient BuildingController buildingController;
+    @Autowired
+    private transient BookingController bookingControllerAutowired;
+    @Autowired
+    private transient RoomController roomController;
 
     @Bean
     public RestTemplate templateCreator() {
         return new RestTemplate();
     }
 
-    @Autowired
-    private transient Validator handler;
 
 
     /**
@@ -46,11 +50,13 @@ public class BookingController {
      *
      * @return A new instance of a Validator.
      */
-    @Bean
     public Validator validatorCreator() {
-        Validator handler = new BookingValidator();
-        handler.setNext(new BuildingValidator());
-        handler.setNext(new RoomValidator());
+        Validator handler = new BookingValidator(buildingController,
+                roomController,
+                bookingControllerAutowired);
+        Validator buildingValidator = new BuildingValidator(buildingController);
+        buildingValidator.setNext(new RoomValidator(bookingControllerAutowired));
+        handler.setNext(buildingValidator);
         return handler;
     }
 
@@ -117,6 +123,7 @@ public class BookingController {
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
             handler.setToken(token);
+            Validator handler = validatorCreator();
             boolean isValid = handler.handle(booking);
             if (isValid) {
                 String uri = "http://localhost:8083/bookings";

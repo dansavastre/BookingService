@@ -127,6 +127,8 @@ public class UserController {
             String uri = "http://localhost:8081/users/".concat(id);
             restTemplate.delete(uri);
             return true;
+        } catch (HttpClientErrorException exception) {
+            return exception.getRawStatusCode() == 404;
         } catch (Exception e) {
             return false;
         }
