@@ -63,19 +63,7 @@ public class BookingController {
     @ResponseBody
     public List getAllBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/allbookings";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
-        try {
-            ResponseEntity<List> res = restTemplate
-                .exchange(uri, HttpMethod.GET, entity, List.class);
-            return res.getBody();
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.toString());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
-        }
+        return getList(token, uri);
     }
 
     /**
@@ -88,19 +76,7 @@ public class BookingController {
     @ResponseBody
     public List getFutureBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/bookings";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
-        try {
-            ResponseEntity<List> res = restTemplate
-                    .exchange(uri, HttpMethod.GET, entity, List.class);
-            return res.getBody();
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.toString());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
-        }
+        return getList(token, uri);
     }
 
     /**
@@ -116,7 +92,7 @@ public class BookingController {
         String uri = "http://localhost:8083/getBooking/".concat(String.valueOf(id));
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         try {
             ResponseEntity<Booking> res = restTemplate
@@ -139,15 +115,14 @@ public class BookingController {
     @ResponseBody
     public boolean postBooking(@RequestBody Booking booking,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/bookings";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
-
         try {
             handler.setToken(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
+                String uri = "http://localhost:8083/bookings";
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.AUTHORIZATION, token);
+                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
                 restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
                 return true;
             }
@@ -198,7 +173,7 @@ public class BookingController {
         String uri = "http://localhost:8081/bookings/".concat(String.valueOf(id));
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
         try {
             restTemplate.exchange(uri, HttpMethod.DELETE, entity, void.class);
             return true;
@@ -211,23 +186,47 @@ public class BookingController {
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List getMyBookingsDefault(@PathVariable("userId") String userId) {
+    public List getMyBookingsDefault(@PathVariable("userId") String userId,
+                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/default/" + userId;
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
     }
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List getMyBookingsChrono(@PathVariable("userId") String userId) {
+    public List getMyBookingsChrono(@PathVariable("userId") String userId,
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/chrono/" + userId;
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
     }
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List getMyBookingsLocation(@PathVariable("userId") String userId) {
+    public List getMyBookingsLocation(@PathVariable("userId") String userId,
+                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/location/" + userId;
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
+    }
+
+    /** Sends a request for retrieving a list.
+     *
+     * @param token     user's token
+     * @param uri       url path
+     * @return          retrieved list
+     */
+    private List getList(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, String uri) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        try {
+            ResponseEntity<List> res =
+                    restTemplate.exchange(uri, HttpMethod.GET, entity, List.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
     }
 
 }

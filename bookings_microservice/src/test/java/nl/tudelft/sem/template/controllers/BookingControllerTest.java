@@ -121,7 +121,7 @@ public class BookingControllerTest {
     void deleteBooking_test() {
         bookingController.deleteBooking(1L, token);
         verify(bookingService, times(1)).deleteBooking(1L);
-        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
