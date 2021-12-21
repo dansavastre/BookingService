@@ -50,12 +50,16 @@ public class BookingController {
      *
      * @return A new instance of a Validator.
      */
-    public Validator validatorCreator() {
+    public Validator validatorCreator(String token) {
         Validator handler = new BookingValidator(buildingController,
                 roomController,
                 bookingControllerAutowired);
+        handler.setToken(token);
         Validator buildingValidator = new BuildingValidator(buildingController);
-        buildingValidator.setNext(new RoomValidator(bookingControllerAutowired));
+        buildingValidator.setToken(token);
+        Validator roomValidator = new RoomValidator(bookingControllerAutowired);
+        roomValidator.setToken(token);
+        buildingValidator.setNext(roomValidator);
         handler.setNext(buildingValidator);
         return handler;
     }
@@ -122,8 +126,7 @@ public class BookingController {
     public boolean postBooking(@RequestBody Booking booking,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
-            handler.setToken(token);
-            Validator handler = validatorCreator();
+            Validator handler = validatorCreator(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
                 String uri = "http://localhost:8083/bookings";
@@ -152,7 +155,7 @@ public class BookingController {
     @ResponseBody
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/bookings/".concat(String.valueOf(id));
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
@@ -177,7 +180,7 @@ public class BookingController {
     @ResponseBody
     public boolean deleteBooking(@PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/bookings/".concat(String.valueOf(id));
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("", headers);

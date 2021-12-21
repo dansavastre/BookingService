@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -142,13 +143,19 @@ public class BookingControllerTest {
     void postBooking_test() throws InvalidBookingException,
             InvalidRoomException, BuildingNotOpenException {
         String uri = "http://localhost:8083/bookings";
-        Mockito.doThrow(new RuntimeException("error")).when(restTemplate)
-                .postForObject(eq(anyString()), any(Booking.class), void.class);
-        when(buildingController.getBuilding(b1.getBuilding())).thenReturn(building1);
-        when(roomController.getRoom(b1.getRoom())).thenReturn(room1);
-        when(bookingController.getAllBookings()).thenReturn(bookings);
-        Assertions.assertThat(bookingController.postBooking(b1)).isTrue();
-        verify(restTemplate, times(1)).postForObject(uri, b1, void.class);
+        ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
+        ResponseEntity<Void> res1 = new ResponseEntity<>(HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
+                entity.capture(), eq(void.class))).thenReturn(res1);
+
+        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(roomController.getRoom(b1.getRoom(), token)).thenReturn(room1);
+        when(restTemplate.exchange(eq("http://localhost:8083/allbookings"),
+                eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
+        Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
+        verify(restTemplate, times(1))
+                .exchange(eq(uri), eq(HttpMethod.POST), entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
     @Test
