@@ -68,7 +68,7 @@ public class BookingController {
     @GetMapping("/allbookings")
     @ResponseBody
     public List<Booking> getAllBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        auth.authorize(Authorization.ADMIN, token);
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getAllBookings();
     }
 

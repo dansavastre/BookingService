@@ -63,9 +63,20 @@ public class UserController {
      */
     @GetMapping("/getUsers")
     @ResponseBody
-    public List getUsers() {
-        String uri = "http://localhost:8081/users";
-        return restTemplate.getForObject(uri, List.class);
+    public List getUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/users";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        try {
+            ResponseEntity<List> res = restTemplate.exchange(uri,
+                    HttpMethod.GET, entity, List.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
     }
 
     /** Returns a specific user with respect to its id.
@@ -75,9 +86,21 @@ public class UserController {
      */
     @GetMapping("/getUser/{id}")
     @ResponseBody
-    public User getUser(@PathVariable("id") String id) {
-        String uri = "http://localhost:8081/getUser/".concat(id);
-        return restTemplate.getForObject(uri, User.class);
+    public User getUser(@PathVariable("id") String id,
+                        @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/getUser/".concat(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        try {
+            ResponseEntity<User> res = restTemplate.exchange(uri,
+                    HttpMethod.GET, entity, User.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
     }
 
     /** Adds a user to the system.
@@ -87,11 +110,18 @@ public class UserController {
      */
     @PostMapping("/postUser")
     @ResponseBody
-    public boolean postUser(@RequestBody User user) {
+    public boolean postUser(@RequestBody User user,
+                            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/users";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<User> entity = new HttpEntity<>(user, headers);
         try {
-            String uri = "http://localhost:8081/users";
-            restTemplate.postForObject(uri, user, void.class);
+            restTemplate.exchange(uri,
+                    HttpMethod.POST, entity, void.class);
             return true;
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             return false;
         }
@@ -105,11 +135,18 @@ public class UserController {
      */
     @PutMapping("/putUser/{id}")
     @ResponseBody
-    public boolean updateUser(@RequestBody User user, @PathVariable("id") String id) {
+    public boolean updateUser(@RequestBody User user, @PathVariable("id") String id,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/users/".concat(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<User> entity = new HttpEntity<>(user, headers);
         try {
-            String uri = "http://localhost:8081/users/".concat(id);
-            restTemplate.put(uri, user);
+            restTemplate.exchange(uri,
+                    HttpMethod.PUT, entity, void.class);
             return true;
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             return false;
         }
@@ -122,13 +159,18 @@ public class UserController {
      */
     @DeleteMapping("/deleteUser/{id}")
     @ResponseBody
-    public boolean deleteUser(@PathVariable("id") String id) {
+    public boolean deleteUser(@PathVariable("id") String id,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/users/".concat(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
         try {
-            String uri = "http://localhost:8081/users/".concat(id);
-            restTemplate.delete(uri);
+            restTemplate.exchange(uri,
+                    HttpMethod.DELETE, entity, void.class);
             return true;
-        } catch (HttpClientErrorException exception) {
-            return exception.getRawStatusCode() == 404;
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             return false;
         }

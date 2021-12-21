@@ -53,11 +53,11 @@ public class UserApplication {
             User u3 = new User("keshavnair", "OTEyMw==", "Keshav", "Nair");
             u3.setRoles(roles3);
             User u4 = new User("npietnoczko", "NDU2Nw==", "Natalia", "Pietnoczko");
-            u4.setRoles(roles);
+            u4.setRoles(Arrays.asList(new Role(employee)));
             User u5 = new User("bserbanescu", "ODkxMg==", "Bianca", "Serbanescu");
-            u5.setRoles(roles);
+            u5.setRoles(Arrays.asList(new Role(employee)));
             User u6 = new User("dsavastre", "MzQ1Ng==", "Dan", "Savastre");
-            u6.setRoles(roles);
+            u6.setRoles(Arrays.asList(new Role(employee)));
             userService.addUser(u1);
             userService.addUser(u2);
             userService.addUser(u3);
