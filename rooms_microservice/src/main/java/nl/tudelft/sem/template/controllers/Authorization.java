@@ -27,7 +27,7 @@ public class Authorization {
         String uri = "http://localhost:8081/" + role + "/authorize";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
+        headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
         sendAuthorizationRequest(uri, entity);
@@ -44,7 +44,7 @@ public class Authorization {
         String uri = "http://localhost:8081/" + role + "/authorizeWithUsername";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
+        headers.add(HttpHeaders.AUTHORIZATION, token);
         headers.add("Username", username);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 

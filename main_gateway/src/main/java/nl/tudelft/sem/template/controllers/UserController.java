@@ -42,7 +42,7 @@ public class UserController {
         String uri = "http://localhost:8081/login";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authentication", password);
+        headers.add(HttpHeaders.AUTHORIZATION, password);
         headers.add("Username", username);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
