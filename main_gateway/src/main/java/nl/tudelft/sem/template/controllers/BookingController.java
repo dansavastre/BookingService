@@ -8,6 +8,11 @@ import nl.tudelft.sem.template.validators.RoomValidator;
 import nl.tudelft.sem.template.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class BookingController {
@@ -42,12 +50,16 @@ public class BookingController {
      *
      * @return A new instance of a Validator.
      */
-    public Validator validatorCreator() {
+    public Validator validatorCreator(String token) {
         Validator handler = new BookingValidator(buildingController,
                 roomController,
                 bookingControllerAutowired);
+        handler.setToken(token);
         Validator buildingValidator = new BuildingValidator(buildingController);
-        buildingValidator.setNext(new RoomValidator(bookingControllerAutowired));
+        buildingValidator.setToken(token);
+        Validator roomValidator = new RoomValidator(bookingControllerAutowired);
+        roomValidator.setToken(token);
+        buildingValidator.setNext(roomValidator);
         handler.setNext(buildingValidator);
         return handler;
     }
@@ -59,16 +71,22 @@ public class BookingController {
      */
     @GetMapping("/getallbookings")
     @ResponseBody
-    public List getAllBookings() {
+    public List getAllBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/allbookings";
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
     }
 
-    @GetMapping("/getbookings")
+    /**
+     * Returns a list of all future bookings, requires token.
+
+     * @param token for authentication
+     * @return list of future bookings
+     */
+    @GetMapping("/getBookings")
     @ResponseBody
-    public List getFutureBookings() {
+    public List getFutureBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/bookings";
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
     }
 
     /**
@@ -79,9 +97,22 @@ public class BookingController {
      */
     @GetMapping("/getBooking/{id}")
     @ResponseBody
-    public Booking getBooking(@PathVariable("id") String id) {
-        String uri = "http://localhost:8083/getBooking/".concat(id);
-        return restTemplate.getForObject(uri, Booking.class);
+    public Booking getBooking(@PathVariable("id") Long id,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8083/getBooking/".concat(String.valueOf(id));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        try {
+            ResponseEntity<Booking> res = restTemplate
+                .exchange(uri, HttpMethod.GET, entity, Booking.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
     }
 
     /**
@@ -92,20 +123,24 @@ public class BookingController {
      */
     @PostMapping("/postBooking")
     @ResponseBody
-    public boolean postBooking(@RequestBody Booking booking) {
+    public boolean postBooking(@RequestBody Booking booking,
+                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
-            Validator handler = validatorCreator();
+            Validator handler = validatorCreator(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
                 String uri = "http://localhost:8083/bookings";
-                restTemplate.postForObject(uri, booking, void.class);
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.AUTHORIZATION, token);
+                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+                restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
                 return true;
             }
             return false;
-
         } catch (Exception e) {
-            return false;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
+
     }
 
 
@@ -118,13 +153,20 @@ public class BookingController {
      */
     @PutMapping("/putBooking/{id}")
     @ResponseBody
-    public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") String id) {
+    public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
+                                 @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+
         try {
-            String uri = "http://localhost:8083/bookings/".concat(id);
-            restTemplate.put(uri, booking);
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
             return true;
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
-            return false;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
     }
 
@@ -136,35 +178,65 @@ public class BookingController {
      */
     @DeleteMapping("/deleteBooking/{id}")
     @ResponseBody
-    public boolean deleteBooking(@PathVariable("id") String id) {
+    public boolean deleteBooking(@PathVariable("id") Long id,
+                                 @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
         try {
-            String uri = "http://localhost:8083/bookings/".concat(id);
-            restTemplate.delete(uri);
+            restTemplate.exchange(uri, HttpMethod.DELETE, entity, void.class);
             return true;
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
-            return false;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
     }
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List getMyBookingsDefault(@PathVariable("userId") String userId) {
+    public List getMyBookingsDefault(@PathVariable("userId") String userId,
+                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/default/" + userId;
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
     }
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List getMyBookingsChrono(@PathVariable("userId") String userId) {
+    public List getMyBookingsChrono(@PathVariable("userId") String userId,
+                                    @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/chrono/" + userId;
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
     }
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List getMyBookingsLocation(@PathVariable("userId") String userId) {
+    public List getMyBookingsLocation(@PathVariable("userId") String userId,
+                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/location/" + userId;
-        return restTemplate.getForObject(uri, List.class);
+        return getList(token, uri);
+    }
+
+    /** Sends a request for retrieving a list.
+     *
+     * @param token     user's token
+     * @param uri       url path
+     * @return          retrieved list
+     */
+    private List getList(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, String uri) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        try {
+            ResponseEntity<List> res =
+                    restTemplate.exchange(uri, HttpMethod.GET, entity, List.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
     }
 
 }

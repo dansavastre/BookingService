@@ -8,6 +8,7 @@ import nl.tudelft.sem.template.schedule.LocationStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,6 +28,9 @@ public class BookingController {
 
     @Autowired
     private transient RestTemplate template;
+
+    @Autowired
+    private transient Authorization auth;
 
     @Bean
     public RestTemplate templateCreator() {
@@ -62,55 +67,74 @@ public class BookingController {
 
     @GetMapping("/allbookings")
     @ResponseBody
-    public List<Booking> getAllBookings() {
+    public List<Booking> getAllBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getAllBookings();
     }
 
     @GetMapping("/bookings")
     @ResponseBody
-    public List<Booking> getFutureBookings() {
+    public List<Booking> getFutureBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.ADMIN, token);
         return bookingService.getFutureBookings();
     }
 
     @GetMapping("/getBooking/{id}")
     @ResponseBody
-    public Booking getBooking(@PathVariable("id") Long id) {
+    public Booking getBooking(@PathVariable("id") Long id,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getBooking(id);
     }
 
     @PostMapping("/bookings")
     @ResponseBody
-    public void addBooking(@RequestBody Booking booking) {
+    public void addBooking(@RequestBody Booking booking,
+                           @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         bookingService.addBooking(booking);
     }
 
     @PutMapping("/bookings/{id}")
     @ResponseBody
-    public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id) {
+    public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.EMPLOYEE, token);
         bookingService.updateBooking(id, booking);
     }
 
     @DeleteMapping("/bookings/{id}")
     @ResponseBody
-    public void deleteBooking(@PathVariable("id") Long id) {
+    public void deleteBooking(@PathVariable("id") Long id,
+                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.ADMIN, token);
         bookingService.deleteBooking(id);
     }
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId) {
+    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId,
+                                              @RequestHeader(HttpHeaders
+                                                      .AUTHORIZATION) String token) {
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId) {
+    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId,
+                                             @RequestHeader(HttpHeaders
+                                                     .AUTHORIZATION) String token) {
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
         return bookingService.getBookingsForUser(userId, new ChronologicalSortStrategy());
     }
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId) {
+    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId,
+                                               @RequestHeader(HttpHeaders
+                                                       .AUTHORIZATION) String token) {
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
         return bookingService.getBookingsForUser(userId, new LocationStrategy());
     }
 }

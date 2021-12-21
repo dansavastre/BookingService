@@ -21,6 +21,8 @@ public class BookingValidator extends BaseValidator {
     private transient RoomController roomController;
     private transient BookingController bookingController;
 
+    private transient String token;
+
     /** Constructor for BookingValidator.
      *
      * @param buildingController    building Controller
@@ -38,7 +40,7 @@ public class BookingValidator extends BaseValidator {
     private boolean checkOtherBookings(Booking newBooking) {
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
-        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(),
+        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
                 new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
             if (booking.getDate().equals(newBooking.getDate())) {
@@ -63,9 +65,9 @@ public class BookingValidator extends BaseValidator {
         } else if (booking.getDate().compareTo(LocalDate.now()) == 0
             && booking.getStartTime().compareTo(LocalTime.now()) <= 0) {
             throw  new InvalidBookingException("Booking start time is before current time");
-        } else if (buildingController.getBuilding(booking.getBuilding()) == null) {
+        } else if (buildingController.getBuilding(booking.getBuilding(), token) == null) {
             throw new InvalidBookingException("Building does not exist");
-        } else if (roomController.getRoom(booking.getRoom()) == null) {
+        } else if (roomController.getRoom(booking.getRoom(), token) == null) {
             throw new InvalidBookingException("Room does not exist");
         } else if (booking.getStartTime().compareTo(booking.getEndTime()) >= 0) {
             throw new InvalidBookingException("Start time is after end time");
@@ -74,5 +76,10 @@ public class BookingValidator extends BaseValidator {
         }
 
         return super.checkNext(booking);
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
 }

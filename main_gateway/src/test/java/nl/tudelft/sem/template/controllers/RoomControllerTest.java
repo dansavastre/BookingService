@@ -1,5 +1,7 @@
 package nl.tudelft.sem.template.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,21 +14,32 @@ import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
 
 public class RoomControllerTest {
 
     @Mock
     private transient RestTemplate restTemplate;
+    @Captor
+    private transient ArgumentCaptor<HttpEntity> entity;
 
     @InjectMocks
     private transient RoomController roomController;
 
     private transient Room room1;
     private transient Room room2;
+    private final transient String token = "token";
     private transient List<Room> rooms;
 
     @BeforeEach
@@ -46,40 +59,64 @@ public class RoomControllerTest {
     @Test
     void getRooms_test() {
         String uri = "http://localhost:8082/rooms";
-        when(restTemplate.getForObject(uri, List.class))
-                .thenReturn(rooms);
+        ResponseEntity<List> res = new ResponseEntity<>(rooms, HttpStatus.OK);
 
-        Assertions.assertThat(roomController.getRooms()).isEqualTo(rooms);
-        verify(restTemplate, times(1)).getForObject(uri, List.class);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET), entity.capture(), eq(List.class)))
+                .thenReturn(res);
+
+        Assertions.assertThat(roomController.getRooms(token)).isEqualTo(rooms);
+        verify(restTemplate, times(1))
+                .exchange(eq(uri), eq(HttpMethod.GET), entity.capture(), eq(List.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
     @Test
     void getRoom_test() {
         String uri = "http://localhost:8082/getRoom/".concat(String.valueOf(1));
-        when(restTemplate.getForObject(uri, Room.class))
-                .thenReturn(room1);
-        Assertions.assertThat(roomController.getRoom(1)).isEqualTo(room1);
-        verify(restTemplate, times(1)).getForObject(uri, Room.class);
+
+        ResponseEntity<Room> res = new ResponseEntity<>(room1, HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),
+                entity.capture(), eq(Room.class)))
+                .thenReturn(res);
+
+        Assertions.assertThat(roomController.getRoom(1, token)).isEqualTo(room1);
+        verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.GET),
+                entity.capture(), eq(Room.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
     @Test
     void postRoom_test() {
         String uri = "http://localhost:8082/rooms";
-        Assertions.assertThat(roomController.postRoom(room1)).isTrue();
-        verify(restTemplate, times(1)).postForObject(uri, room1, void.class);
+        Assertions.assertThat(roomController.postRoom(room1, token)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.POST),
+                entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        assertEquals(room1, entity.getValue().getBody());
     }
 
     @Test
     void updateRoom_test() {
         String uri = "http://localhost:8082/rooms/".concat(String.valueOf(1));
-        Assertions.assertThat(roomController.updateRoom(room2, 1)).isTrue();
-        verify(restTemplate, times(1)).put(uri, room2);
+        ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
+                entity.capture(), eq(void.class))).thenReturn(res);
+        Assertions.assertThat(roomController.updateRoom(room2, 1, token)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.PUT),
+                entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        assertEquals(room2, entity.getValue().getBody());
     }
 
     @Test
     void deleteRoom_test() {
         String uri = "http://localhost:8082/rooms/".concat(String.valueOf(1));
-        Assertions.assertThat(roomController.deleteRoom(1)).isTrue();
-        verify(restTemplate, times(1)).delete(uri);
+        ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
+                entity.capture(), eq(void.class))).thenReturn(res);
+        Assertions.assertThat(roomController.deleteRoom(1, token)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
+                entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 }

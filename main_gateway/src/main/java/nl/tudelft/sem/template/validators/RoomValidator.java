@@ -13,6 +13,7 @@ import nl.tudelft.sem.template.objects.Booking;
 
 public class RoomValidator extends BaseValidator {
 
+    private transient String token;
     private transient BookingController bookingController;
 
     public RoomValidator(BookingController bookingController) {
@@ -44,7 +45,7 @@ public class RoomValidator extends BaseValidator {
         InvalidBookingException, BuildingNotOpenException {
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
-        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(),
+        List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
                 new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
             if (bookingsOverlap(newBooking, booking)) {
@@ -52,6 +53,11 @@ public class RoomValidator extends BaseValidator {
             }
         }
         return super.checkNext(newBooking);
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

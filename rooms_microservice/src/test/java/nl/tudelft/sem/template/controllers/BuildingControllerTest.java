@@ -1,6 +1,8 @@
 package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,6 +27,8 @@ public class BuildingControllerTest {
 
     @Mock
     private transient BuildingService buildingService;
+    @Mock
+    private transient Authorization auth;
 
     @InjectMocks
     private transient BuildingController buildingController;
@@ -32,6 +36,7 @@ public class BuildingControllerTest {
     transient List<Building> buildings;
     transient Building b0;
     transient Building b1;
+    transient String token;
 
     @BeforeEach
     void setUp() {
@@ -40,6 +45,7 @@ public class BuildingControllerTest {
         buildings = new ArrayList<>();
         buildings.add(b0);
         buildings.add(b1);
+        token = "token";
     }
 
     @Test
@@ -50,33 +56,38 @@ public class BuildingControllerTest {
     @Test
     void getAllBuildings_test() {
         when(buildingService.getAllBuildings()).thenReturn(buildings);
-        assertEquals(buildings, buildingController.getAllBuildings());
+        assertEquals(buildings, buildingController.getAllBuildings(token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void getBuilding_test() {
         when(buildingService.getBuilding(36)).thenReturn(b0);
-        assertEquals(b0, buildingController.getBuilding(36));
+        assertEquals(b0, buildingController.getBuilding(36, token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void addBuilding_test() {
         Building b2 = new Building(23, LocalTime.of(8, 0), LocalTime.of(20, 0), "CEG");
-        buildingController.addBuilding(b2);
+        buildingController.addBuilding(b2, token);
         verify(buildingService, times(1)).addBuilding(b2);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
     void updateBuilding_test() {
         Building b2 = new Building(36, LocalTime.of(8, 0), LocalTime.of(21, 0), "EWI");
-        buildingController.updateBuilding(b2, 36);
+        buildingController.updateBuilding(b2, 36, token);
         verify(buildingService, times(1)).updateBuilding(36, b2);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
     void deleteBuilding_test() {
-        buildingController.deleteBuilding(36);
+        buildingController.deleteBuilding(36, token);
         verify(buildingService, times(1)).deleteBuilding(36);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
 
