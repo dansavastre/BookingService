@@ -42,7 +42,7 @@ public class Authorization {
      * @param username      username that should match the username in the token
      */
     public void authorizeWithUsername(String role, String token, String username) {
-        String uri = "http://localhost:8081/" + role + "authorizeWithUsername";
+        String uri = "http://localhost:8081/" + role + "/authorizeWithUsername";
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
