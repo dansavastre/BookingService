@@ -108,7 +108,7 @@ public class BookingController {
     @ResponseBody
     public void deleteBooking(@PathVariable("id") Long id,
                               @RequestHeader(authorization) String token) {
-        auth.authorize(Authorization.EMPLOYEE, token);
+        auth.authorize(Authorization.ADMIN, token);
         bookingService.deleteBooking(id);
     }
 
@@ -116,7 +116,7 @@ public class BookingController {
     @ResponseBody
     public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId,
                                               @RequestHeader(authorization) String token) {
-        auth.authorize(Authorization.EMPLOYEE, token);
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
         return bookingService.getBookingsForUser(userId, new DefaultSortStrategy());
     }
 
@@ -124,7 +124,7 @@ public class BookingController {
     @ResponseBody
     public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId,
                                              @RequestHeader(authorization) String token) {
-        auth.authorize(Authorization.EMPLOYEE, token);
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
         return bookingService.getBookingsForUser(userId, new ChronologicalSortStrategy());
     }
 
@@ -132,7 +132,7 @@ public class BookingController {
     @ResponseBody
     public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId,
                                                @RequestHeader(authorization) String token) {
-        auth.authorize(Authorization.EMPLOYEE, token);
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
         return bookingService.getBookingsForUser(userId, new LocationStrategy());
     }
 }
