@@ -61,7 +61,6 @@ public class RoleServiceTest {
     @Test
     void updateRole_test() {
         roleService.updateRole(1L, r1);
-        verify(roleRepository, times(1)).deleteById(1L);
         verify(roleRepository, times(1)).save(r1);
     }
 
