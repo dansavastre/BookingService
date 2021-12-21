@@ -122,14 +122,14 @@ public class BookingControllerTest {
 
     @Test
     void updateBooking_test() {
-        String uri = "http://localhost:8081/bookings/".concat(String.valueOf(1L));
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(1L));
         Assertions.assertThat(bookingController.updateBooking(b2, String.valueOf(1L))).isTrue();
         verify(restTemplate, times(1)).put(uri, b2);
     }
 
     @Test
     void deleteBooking_test() {
-        String uri = "http://localhost:8081/bookings/".concat(String.valueOf(1L));
+        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(1L));
         Assertions.assertThat(bookingController.deleteBooking(String.valueOf(1L))).isTrue();
         verify(restTemplate, times(1)).delete(uri);
     }
