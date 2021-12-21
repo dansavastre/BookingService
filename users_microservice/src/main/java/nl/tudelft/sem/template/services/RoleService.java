@@ -34,7 +34,6 @@ public class RoleService {
     }
 
     public void updateRole(Long id, Role role) {
-        roleRepository.deleteById(id);
         roleRepository.save(role);
     }
 

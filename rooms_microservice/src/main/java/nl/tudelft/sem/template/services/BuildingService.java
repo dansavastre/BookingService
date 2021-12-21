@@ -32,7 +32,6 @@ public class BuildingService {
     }
 
     public void updateBuilding(int id, Building building) {
-        buildingRepository.deleteById(id);
         buildingRepository.save(building);
     }
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -91,6 +92,8 @@ public class RoleController {
             String uri = "http://localhost:8081/roles/".concat(String.valueOf(id));
             restTemplate.delete(uri);
             return true;
+        } catch (HttpClientErrorException exception) {
+            return exception.getRawStatusCode() == 404;
         } catch (Exception e) {
             return false;
         }
