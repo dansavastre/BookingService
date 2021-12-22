@@ -29,11 +29,12 @@ public class RoomValidator extends BaseValidator {
      */
     public boolean bookingsOverlap(Booking booking, Booking other) {
         if (booking.getRoom() == other.getRoom()
-            && booking.getDate().equals(other.getDate())) {
-            if ((booking.getEndTime().compareTo(other.getStartTime()) >= 0
-                && booking.getEndTime().compareTo(other.getEndTime()) > 0)
-                || (booking.getStartTime().compareTo(other.getStartTime()) >= 0
-                && booking.getStartTime().compareTo(other.getEndTime()) < 0)) {
+                && booking.getBuilding() == other.getBuilding()
+                && booking.getDate().equals(other.getDate())) {
+            if ((other.getStartTime().compareTo(booking.getStartTime()) >= 0
+                    && other.getStartTime().compareTo(booking.getEndTime()) < 0)
+                    || (other.getEndTime().compareTo(booking.getStartTime()) > 0
+                    && other.getEndTime().compareTo(booking.getEndTime()) <= 0)) {
                 return true;
             }
         }
