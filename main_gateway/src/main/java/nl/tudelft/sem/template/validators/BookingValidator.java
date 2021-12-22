@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
@@ -22,6 +23,7 @@ public class BookingValidator extends BaseValidator {
     private transient BookingController bookingController;
 
     private transient String token;
+    private transient int period = 14;
 
     /** Constructor for BookingValidator.
      *
@@ -37,15 +39,20 @@ public class BookingValidator extends BaseValidator {
         this.bookingController = bookingController;
     }
 
+    /**
+     * Method for checking if the owner of the new booking has other bookings at the same time.
+     *
+     * @param newBooking the new booking
+     * @return true if there are no overlapping bookings, false otherwise
+     */
     private boolean checkOtherBookings(Booking newBooking) {
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
         List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
                 new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
-            //Check if building and room are the same
-            if (booking.getBuilding() == newBooking.getBuilding()
-                    && booking.getRoom() == newBooking.getRoom()) {
+            //Check if booking owner is the same
+            if (booking.getBookingOwner().equals(newBooking.getBookingOwner())) {
                 //Check if date is the same
                 if (booking.getDate().equals(newBooking.getDate())) {
                     //Check if times overlap
@@ -79,6 +86,8 @@ public class BookingValidator extends BaseValidator {
             throw new InvalidBookingException("Start time is after end time");
         } else if (!checkOtherBookings(booking)) {
             throw new InvalidBookingException("Booking overlaps with another booking");
+        } else if (ChronoUnit.DAYS.between(LocalDate.now(), booking.getDate()) > period) {
+            throw new InvalidBookingException("Cannot make a booking more than 2 weeks in advance");
         }
 
         return super.checkNext(booking);
