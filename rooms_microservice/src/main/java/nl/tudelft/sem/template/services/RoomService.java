@@ -28,7 +28,7 @@ public class RoomService {
         return r;
     }
 
-    public Room getRoom(int id) {
+    public Room getRoom(String id) {
         return roomRepository.findById(id).get();
     }
 
@@ -36,11 +36,11 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    public void updateRoom(int id, Room room) {
+    public void updateRoom(String id, Room room) {
         roomRepository.save(room);
     }
 
-    public void deleteRoom(int id) {
+    public void deleteRoom(String id) {
         roomRepository.deleteById(id);
     }
 }

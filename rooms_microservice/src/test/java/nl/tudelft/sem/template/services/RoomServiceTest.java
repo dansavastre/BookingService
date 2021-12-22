@@ -66,8 +66,8 @@ public class RoomServiceTest {
 
     @Test
     void getRoom_test() {
-        when(roomRepository.findById(12)).thenReturn(java.util.Optional.ofNullable(r0));
-        assertEquals(r0, roomService.getRoom(12));
+        when(roomRepository.findById("1236")).thenReturn(java.util.Optional.ofNullable(r0));
+        assertEquals(r0, roomService.getRoom("1236"));
     }
 
     @Test
@@ -78,13 +78,13 @@ public class RoomServiceTest {
 
     @Test
     void updateRoom_test() {
-        roomService.updateRoom(11, r2);
+        roomService.updateRoom("1136", r2);
         verify(roomRepository, times(1)).save(r2);
     }
 
     @Test
     void deleteRoom_test() {
-        roomService.deleteRoom(11);
-        verify(roomRepository, times(1)).deleteById(11);
+        roomService.deleteRoom("1136");
+        verify(roomRepository, times(1)).deleteById("1136");
     }
 }

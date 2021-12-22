@@ -62,9 +62,9 @@ public class RoomController {
      */
     @GetMapping("/getRoom/{id}")
     @ResponseBody
-    public Room getRoom(@PathVariable("id") int id,
+    public Room getRoom(@PathVariable("id") String id,
                         @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8082/getRoom/".concat(String.valueOf(id));
+        String uri = "http://localhost:8082/getRoom/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
@@ -116,10 +116,10 @@ public class RoomController {
      */
     @PutMapping("/putRoom/{id}")
     @ResponseBody
-    public boolean updateRoom(@RequestBody Room room, @PathVariable("id") int id,
+    public boolean updateRoom(@RequestBody Room room, @PathVariable("id") String id,
                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 
-        String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
+        String uri = "http://localhost:8082/rooms/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<Room> entity = new HttpEntity<>(room, headers);
@@ -143,9 +143,9 @@ public class RoomController {
      */
     @DeleteMapping("/deleteRoom/{id}")
     @ResponseBody
-    public boolean deleteRoom(@PathVariable("id") int id,
+    public boolean deleteRoom(@PathVariable("id") String id,
                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
+        String uri = "http://localhost:8082/rooms/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);

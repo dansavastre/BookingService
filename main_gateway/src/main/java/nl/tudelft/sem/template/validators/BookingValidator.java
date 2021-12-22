@@ -67,7 +67,7 @@ public class BookingValidator extends BaseValidator {
             throw  new InvalidBookingException("Booking start time is before current time");
         } else if (buildingController.getBuilding(booking.getBuilding(), token) == null) {
             throw new InvalidBookingException("Building does not exist");
-        } else if (roomController.getRoom(booking.getRoom(), token) == null) {
+        } else if (roomController.getRoom(Integer.toString(booking.getRoom()) + Integer.toString(booking.getBuilding()), token) == null) {
             throw new InvalidBookingException("Room does not exist");
         } else if (booking.getStartTime().compareTo(booking.getEndTime()) >= 0) {
             throw new InvalidBookingException("Start time is after end time");

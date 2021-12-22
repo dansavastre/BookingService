@@ -79,8 +79,8 @@ public class RoomControllerTest {
 
     @Test
     void getRoom_test() {
-        when(roomService.getRoom(12)).thenReturn(r0);
-        assertEquals(r0, roomController.getRoom(12, token));
+        when(roomService.getRoom("12")).thenReturn(r0);
+        assertEquals(r0, roomController.getRoom("12", token));
         verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
 
     }
@@ -94,15 +94,15 @@ public class RoomControllerTest {
 
     @Test
     void updateRoom_test() {
-        roomController.updateRoom(r2, 11, token);
-        verify(roomService, times(1)).updateRoom(11, r2);
+        roomController.updateRoom(r2, "11", token);
+        verify(roomService, times(1)).updateRoom("11", r2);
         verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
     void deleteRoom_test() {
-        roomController.deleteRoom(11, token);
-        verify(roomService, times(1)).deleteRoom(11);
+        roomController.deleteRoom("11", token);
+        verify(roomService, times(1)).deleteRoom("11");
         verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 }
