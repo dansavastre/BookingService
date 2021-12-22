@@ -27,6 +27,12 @@ public class RoomController {
     @Autowired
     private transient RestTemplate restTemplate;
 
+    /**
+     * Endpoint which connects to the room microservice and retrieves all rooms in the db.
+     *
+     * @param token Authorizes user
+     * @return list of rooms
+     */
     @GetMapping("/getRooms")
     @ResponseBody
     public List getRooms(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
@@ -50,8 +56,8 @@ public class RoomController {
     /**
      * Returns a specific room with respect to its id.
      *
-     * @param id the id of the room we want.
-     * @param token     the token of the user
+     * @param id    the id of the room we want.
+     * @param token the token of the user
      * @return the room we are searching for.
      */
     @GetMapping("/getRoom/{id}")
@@ -77,8 +83,8 @@ public class RoomController {
     /**
      * Adds a room to the system.
      *
-     * @param room the room we want to add.
-     * @param token     the token of the user
+     * @param room  the room we want to add.
+     * @param token the token of the user
      * @return true if its successfully added, else false.
      */
     @PostMapping("/postRoom")
@@ -103,9 +109,9 @@ public class RoomController {
     /**
      * Update a room.
      *
-     * @param room the new room.
-     * @param id   the id of the room to update.
-     * @param token     the token of the user
+     * @param room  the new room.
+     * @param id    the id of the room to update.
+     * @param token the token of the user
      * @return true if successfully updated, else false.
      */
     @PutMapping("/putRoom/{id}")
@@ -131,8 +137,8 @@ public class RoomController {
     /**
      * Deletes a room from the system.
      *
-     * @param id the id of the room to delete.
-     * @param token     the token of the user
+     * @param id    the id of the room to delete.
+     * @param token the token of the user
      * @return true if successfully deleted, else false.
      */
     @DeleteMapping("/deleteRoom/{id}")

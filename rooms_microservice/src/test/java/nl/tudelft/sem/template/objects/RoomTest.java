@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 public class RoomTest {
 
@@ -28,8 +27,10 @@ public class RoomTest {
         equipmentMap = new HashMap<>();
         equipmentMap.put("projector", trueS);
         equipmentMap.put("smartBoard", trueS);
-        building1 = new Building(36, LocalTime.of(8,30), LocalTime.of(18,00),"name1");
-        building2 = new Building(24,LocalTime.of(10,30), LocalTime.of(17,30),"name2");
+        building1 = new Building(36, LocalTime.of(8, 30),
+                LocalTime.of(18, 00), "name1");
+        building2 = new Building(24, LocalTime.of(10, 30),
+                LocalTime.of(17, 30), "name2");
         r0 = new Room(12, "Europe", 12, equipmentMap, "yes", building1);
         r1 = new Room(11, "Australia", 6, equipmentMap, "no", building1);
         r2 = new Room(11, "Australia", 6, equipmentMap, "no", building1);
@@ -96,7 +97,9 @@ public class RoomTest {
     @Test
     void toString_test() {
         String expected = "Room{id=11, name='Australia', capacity=6, "
-                + "equipment={projector=True, smartBoard=True}, available='no', building=Building{id=36, openingTime=08:30, closingTime=18:00, name='name1'}}";
+                + "equipment={projector=True, smartBoard=True}, available='no',"
+                + " building=Building{id=36, openingTime=08:30,"
+                + " closingTime=18:00, name='name1'}}";
         assertEquals(expected, r1.toString());
 
     }

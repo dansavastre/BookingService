@@ -31,8 +31,10 @@ public class RoomApplication {
             Map<String, String> equipmentMap2 = new HashMap<>();
             equipmentMap2.put("Extra Chairs", t);
             equipmentMap2.put("Debate Stands", t);
-            Building building1 = new Building(36,LocalTime.of(8,30), LocalTime.of(18,00),"name1");
-            Building building2 = new Building(24,LocalTime.of(10,30), LocalTime.of(17,30),"name2");
+            Building building1 = new Building(36, LocalTime.of(8, 30),
+                    LocalTime.of(18, 00), "name1");
+            Building building2 = new Building(24, LocalTime.of(10, 30),
+                    LocalTime.of(17, 30), "name2");
 
             roomService.addRoom(new Room(0, "Europe", 12, equipmentMap, "yes", building1));
             roomService.addRoom(new Room(1, "Australia", 6, equipmentMap, "yes", building2));

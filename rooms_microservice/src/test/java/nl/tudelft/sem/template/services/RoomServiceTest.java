@@ -46,8 +46,10 @@ public class RoomServiceTest {
         equipmentMap = new HashMap<>();
         equipmentMap.put("projector", "True");
         equipmentMap.put("smartBoard", "True");
-        building1 = new Building(36, LocalTime.of(8,30), LocalTime.of(18,00),"name1");
-        building2 = new Building(24,LocalTime.of(10,30), LocalTime.of(17,30),"name2");
+        building1 = new Building(36, LocalTime.of(8, 30),
+                LocalTime.of(18, 00), "name1");
+        building2 = new Building(24, LocalTime.of(10, 30),
+                LocalTime.of(17, 30), "name2");
         r0 = new Room(12, "Europe", 12, equipmentMap, "yes", building1);
         r1 = new Room(11, "Australia", 6, equipmentMap, "no", building1);
         r2 = new Room(11, "Australia", 6, equipmentMap, "yes", building1);

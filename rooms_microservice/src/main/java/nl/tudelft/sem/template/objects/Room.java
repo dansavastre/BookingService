@@ -49,7 +49,7 @@ public class Room {
      * @param capacity       Capacity of the room
      * @param equipment      Equipment present in the room
      * @param available      Availability of the room (whether it is under maintenance or not)
-     * @param buildingNumber The building Id of the building this room is in
+     * @param building      The building object that the room is in
      */
     public Room(int id,
                 String name,
