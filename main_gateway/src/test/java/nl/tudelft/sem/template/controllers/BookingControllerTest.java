@@ -76,15 +76,15 @@ public class BookingControllerTest {
         room1 = new Room(1, "Nice room", 4,
                 new HashMap<>(), "yes", 1);
         b1 = new Booking(1L, "Mike", 1, 1,
-                LocalDate.of(2025, 12, 4),
-                LocalTime.of(11, 10),
-                LocalTime.of(15, 45),
+                LocalDate.now(),
+                LocalTime.now().plusHours(1),
+                LocalTime.now().plusHours(3),
                 "Group study session",
                 List.of("user0", "user1"));
         b2 = new Booking(2L, "Mike", 1, 1,
-                LocalDate.of(2025, 12, 5),
-                LocalTime.of(10, 30),
-                LocalTime.of(16, 0),
+                LocalDate.now().plusDays(3),
+                LocalTime.now().plusHours(1),
+                LocalTime.now().plusHours(2),
                 "Project room",
                 List.of("user2", "user3"));
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
@@ -22,6 +23,7 @@ public class BookingValidator extends BaseValidator {
     private transient BookingController bookingController;
 
     private transient String token;
+    private transient int period = 14;
 
     /** Constructor for BookingValidator.
      *
@@ -73,6 +75,8 @@ public class BookingValidator extends BaseValidator {
             throw new InvalidBookingException("Start time is after end time");
         } else if (!checkOtherBookings(booking)) {
             throw new InvalidBookingException("Booking overlaps with another booking");
+        } else if (ChronoUnit.DAYS.between(LocalDate.now(), booking.getDate()) > period) {
+            throw new InvalidBookingException("Cannot make a booking more than 2 weeks in advance");
         }
 
         return super.checkNext(booking);
