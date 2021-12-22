@@ -18,7 +18,10 @@ public class Room {
 
     @Id
     @Column(name = "ID", nullable = true)
-    private int id;
+    private String id;
+
+    @Column(name = "ROOMNUMBER")
+    private int roomNumber;
 
     @Column(name = "NAME", nullable = true, length = 255)
     private String name;
@@ -44,33 +47,42 @@ public class Room {
     /**
      * Parameterised constructor for the Room class.
      *
-     * @param id             Id of the room
+     * @param roomNumber     ID of the room
      * @param name           Name of the room
      * @param capacity       Capacity of the room
      * @param equipment      Equipment present in the room
      * @param available      Availability of the room (whether it is under maintenance or not)
      * @param building      The building object that the room is in
      */
-    public Room(int id,
+    public Room(int roomNumber,
                 String name,
                 int capacity,
                 Map<String, String> equipment,
                 String available,
                 Building building) {
         super();
-        this.id = id;
+        this.roomNumber = roomNumber;
         this.name = name;
         this.capacity = capacity;
         this.equipment = equipment;
         this.available = available;
         this.building = building;
+        this.id = Integer.toString(roomNumber) + Integer.toString(building.getId());
     }
 
-    public int getId() {
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -135,7 +147,7 @@ public class Room {
             return false;
         }
         Room room = (Room) o;
-        return id == room.id
+        return id.equals(room.id)
                 && capacity == room.capacity
                 && building == room.building
                 && Objects.equals(name, room.name)

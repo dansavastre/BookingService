@@ -96,7 +96,7 @@ public class RoomTest {
 
     @Test
     void toString_test() {
-        String expected = "Room{id=11, name='Australia', capacity=6, "
+        String expected = "Room{id=1136, name='Australia', capacity=6, "
                 + "equipment={projector=True, smartBoard=True}, available='no',"
                 + " building=Building{id=36, openingTime=08:30,"
                 + " closingTime=18:00, name='name1'}}";
