@@ -39,15 +39,20 @@ public class BookingValidator extends BaseValidator {
         this.bookingController = bookingController;
     }
 
+    /**
+     * Method for checking if the owner of the new booking has other bookings at the same time.
+     *
+     * @param newBooking the new booking
+     * @return true if there are no overlapping bookings, false otherwise
+     */
     private boolean checkOtherBookings(Booking newBooking) {
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
         List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
                 new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
-            //Check if building and room are the same
-            if (booking.getBuilding() == newBooking.getBuilding()
-                    && booking.getRoom() == newBooking.getRoom()) {
+            //Check if booking owner is the same
+            if (booking.getBookingOwner().equals(newBooking.getBookingOwner())) {
                 //Check if date is the same
                 if (booking.getDate().equals(newBooking.getDate())) {
                     //Check if times overlap
