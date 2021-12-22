@@ -27,12 +27,6 @@ public class RoomController {
     @Autowired
     private transient RestTemplate restTemplate;
 
-
-    /** Returns all the rooms in the system.
-     *
-     * @param token     the token of the user
-     * @return list of rooms.
-     */
     @GetMapping("/getRooms")
     @ResponseBody
     public List getRooms(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
