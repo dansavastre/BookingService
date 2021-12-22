@@ -149,7 +149,8 @@ public class BookingControllerTest {
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(Integer.toString(b1.getRoom()) + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getRoom())
+                + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq("http://localhost:8083/allbookings"),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
         Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
