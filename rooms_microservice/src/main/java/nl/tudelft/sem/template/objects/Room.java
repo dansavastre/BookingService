@@ -35,8 +35,7 @@ public class Room {
 
     @Column(name = "AVAILABLE", nullable = true, length = 50)
     private String available;
-
-
+    
     @ManyToOne(cascade = CascadeType.ALL)
     private Building building;
 

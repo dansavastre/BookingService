@@ -140,8 +140,7 @@ public class BookingControllerTest {
 
     //TODO: fix this test
     @Test
-    void postBooking_test() throws InvalidBookingException,
-            InvalidRoomException, BuildingNotOpenException {
+    void postBooking_test() {
         String uri = "http://localhost:8083/bookings";
         ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
         ResponseEntity<Void> res1 = new ResponseEntity<>(HttpStatus.OK);
