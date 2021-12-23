@@ -65,6 +65,7 @@ public class BookingControllerTest {
     private transient Building building1;
     private transient List<Booking> bookings;
     private final transient String token = "token";
+    private final transient String user1 = "Mike";
 
     @BeforeEach
     void setup() {
@@ -75,20 +76,20 @@ public class BookingControllerTest {
                 LocalTime.of(22, 0), "Building 1");
         room1 = new Room(1, "Nice room", 4,
                 new HashMap<>(), "yes", 1);
-        b1 = new Booking(1L, "Mike", 1, 1,
+        b1 = new Booking(1L, user1, 1, 1,
                 LocalDate.now(),
                 LocalTime.now().plusHours(1),
                 LocalTime.now().plusHours(3),
                 "Group study session",
                 List.of("user0", "user1"));
-        b2 = new Booking(2L, "Mike", 1, 1,
+        b2 = new Booking(2L, user1, 1, 1,
                 LocalDate.now().plusDays(3),
                 LocalTime.now().plusHours(1),
                 LocalTime.now().plusHours(2),
                 "Project room",
                 List.of("user2", "user3"));
 
-        b3 = new Booking(2L, "Mike", 1, 36,
+        b3 = new Booking(2L, user1, 1, 36,
                 LocalDate.of(2021, 12, 15),
                 LocalTime.of(9, 30),
                 LocalTime.of(12, 0),
@@ -181,12 +182,37 @@ public class BookingControllerTest {
     }
 
     @Test
+    void updateMyBooking_test() {
+        String uri = "http://localhost:8083/myBookings/".concat("Mike/" + String.valueOf(1L));
+        ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
+            entity.capture(), eq(void.class))).thenReturn(res);
+        Assertions.assertThat(bookingController.updateBooking(b1, user1, 1L, token)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.PUT),
+            entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        assertEquals(b1, entity.getValue().getBody());
+    }
+
+    @Test
     void deleteBooking_test() {
         String uri = "http://localhost:8083/bookings/".concat(String.valueOf(1L));
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
             entity.capture(), eq(void.class))).thenReturn(res);
         Assertions.assertThat(bookingController.deleteBooking(1L, token)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
+            entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+    }
+
+    @Test
+    void deleteMyBooking_test() {
+        String uri = "http://localhost:8083/myBookings/".concat("Mike/" + String.valueOf(1L));
+        ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
+            entity.capture(), eq(void.class))).thenReturn(res);
+        Assertions.assertThat(bookingController.deleteBooking(user1, 1L, token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
             entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
