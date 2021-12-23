@@ -41,8 +41,34 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
+    /**
+     * Method that allows a user to edit their own bookings.
+     *
+     * @param userId the id of the user
+     * @param id the id of the booking
+     * @param booking the booking to be edited
+     */
+    public void updateMyBooking(String userId, Long id, Booking booking) {
+        if (booking.getBookingOwner().equals(userId)) {
+            bookingRepository.save(booking);
+        }
+    }
+
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
+    }
+
+    /**
+     * Method that allows a user to delete their own bookings.
+     *
+     * @param userId the id of the user
+     * @param id the id of the booking
+     */
+    public void deleteMyBooking(String userId, Long id) {
+        Booking booking = getBooking(id);
+        if (booking.getBookingOwner().equals(userId)) {
+            bookingRepository.deleteById(id);
+        }
     }
 
     /** get the schedule for the user using the specified sorting strategy.
