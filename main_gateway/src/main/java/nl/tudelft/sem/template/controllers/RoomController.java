@@ -27,11 +27,11 @@ public class RoomController {
     @Autowired
     private transient RestTemplate restTemplate;
 
-
-    /** Returns all the rooms in the system.
+    /**
+     * Endpoint which connects to the room microservice and retrieves all rooms in the db.
      *
-     * @param token     the token of the user
-     * @return list of rooms.
+     * @param token Authorizes user
+     * @return list of rooms
      */
     @GetMapping("/getRooms")
     @ResponseBody
@@ -56,15 +56,15 @@ public class RoomController {
     /**
      * Returns a specific room with respect to its id.
      *
-     * @param id the id of the room we want.
-     * @param token     the token of the user
+     * @param id    the id of the room we want.
+     * @param token the token of the user
      * @return the room we are searching for.
      */
     @GetMapping("/getRoom/{id}")
     @ResponseBody
-    public Room getRoom(@PathVariable("id") int id,
+    public Room getRoom(@PathVariable("id") String id,
                         @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8082/getRoom/".concat(String.valueOf(id));
+        String uri = "http://localhost:8082/getRoom/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
@@ -83,8 +83,8 @@ public class RoomController {
     /**
      * Adds a room to the system.
      *
-     * @param room the room we want to add.
-     * @param token     the token of the user
+     * @param room  the room we want to add.
+     * @param token the token of the user
      * @return true if its successfully added, else false.
      */
     @PostMapping("/postRoom")
@@ -109,17 +109,17 @@ public class RoomController {
     /**
      * Update a room.
      *
-     * @param room the new room.
-     * @param id   the id of the room to update.
-     * @param token     the token of the user
+     * @param room  the new room.
+     * @param id    the id of the room to update.
+     * @param token the token of the user
      * @return true if successfully updated, else false.
      */
     @PutMapping("/putRoom/{id}")
     @ResponseBody
-    public boolean updateRoom(@RequestBody Room room, @PathVariable("id") int id,
+    public boolean updateRoom(@RequestBody Room room, @PathVariable("id") String id,
                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 
-        String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
+        String uri = "http://localhost:8082/rooms/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<Room> entity = new HttpEntity<>(room, headers);
@@ -137,15 +137,15 @@ public class RoomController {
     /**
      * Deletes a room from the system.
      *
-     * @param id the id of the room to delete.
-     * @param token     the token of the user
+     * @param id    the id of the room to delete.
+     * @param token the token of the user
      * @return true if successfully deleted, else false.
      */
     @DeleteMapping("/deleteRoom/{id}")
     @ResponseBody
-    public boolean deleteRoom(@PathVariable("id") int id,
+    public boolean deleteRoom(@PathVariable("id") String id,
                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8082/rooms/".concat(String.valueOf(id));
+        String uri = "http://localhost:8082/rooms/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);

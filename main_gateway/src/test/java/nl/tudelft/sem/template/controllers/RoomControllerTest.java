@@ -79,7 +79,7 @@ public class RoomControllerTest {
                 entity.capture(), eq(Room.class)))
                 .thenReturn(res);
 
-        Assertions.assertThat(roomController.getRoom(1, token)).isEqualTo(room1);
+        Assertions.assertThat(roomController.getRoom("1", token)).isEqualTo(room1);
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.GET),
                 entity.capture(), eq(Room.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -101,7 +101,7 @@ public class RoomControllerTest {
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
                 entity.capture(), eq(void.class))).thenReturn(res);
-        Assertions.assertThat(roomController.updateRoom(room2, 1, token)).isTrue();
+        Assertions.assertThat(roomController.updateRoom(room2, "1", token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.PUT),
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -114,7 +114,7 @@ public class RoomControllerTest {
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
                 entity.capture(), eq(void.class))).thenReturn(res);
-        Assertions.assertThat(roomController.deleteRoom(1, token)).isTrue();
+        Assertions.assertThat(roomController.deleteRoom("1", token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
