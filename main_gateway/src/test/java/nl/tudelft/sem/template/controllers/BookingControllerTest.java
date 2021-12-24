@@ -74,7 +74,7 @@ public class BookingControllerTest {
         building1 = new Building(1, LocalTime.of(8, 0),
                 LocalTime.of(22, 0), "Building 1");
         room1 = new Room(1, "Nice room", 4,
-                new HashMap<>(), "yes", 1);
+                new HashMap<>(), "yes", building1);
         b1 = new Booking(1L, "Mike", 1, 1,
                 LocalDate.now(),
                 LocalTime.now().plusHours(1),

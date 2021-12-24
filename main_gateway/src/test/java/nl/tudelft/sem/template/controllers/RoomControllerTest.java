@@ -6,10 +6,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +42,7 @@ public class RoomControllerTest {
 
     private transient Room room1;
     private transient Room room2;
+    private transient Building building;
     private final transient String token = "token";
     private transient List<Room> rooms;
 
@@ -50,8 +54,10 @@ public class RoomControllerTest {
         equipmentMap.put("wifi", "True");
         equipmentMap.put("projector", "True");
         equipmentMap.put("smart board", "True");
-        room1 = new Room(1, "Steve Jobs Room", 4, equipmentMap, "available", 36);
-        room2 = new Room(1, "Marie Currie Room", 8, equipmentMap, "available", 36);
+        building = new Building(36, LocalTime.of(8, 0),
+                LocalTime.of(22, 0), "Building 1");
+        room1 = new Room(1, "Steve Jobs Room", 4, equipmentMap, "available", building);
+        room2 = new Room(1, "Marie Currie Room", 8, equipmentMap, "available", building);
         rooms.add(room1);
         rooms.add(room2);
     }
