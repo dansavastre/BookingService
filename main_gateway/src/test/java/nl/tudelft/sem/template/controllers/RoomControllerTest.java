@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
 import org.assertj.core.api.Assertions;
