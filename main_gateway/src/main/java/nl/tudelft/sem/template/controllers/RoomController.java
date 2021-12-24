@@ -189,13 +189,14 @@ public class RoomController {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        LocalDate realDate = LocalDate.parse(date);
+
         LocalTime realStartTime = LocalTime.parse(startTime);
         LocalTime realEndTime = LocalTime.parse(endTime);
         if (realEndTime.isBefore(realStartTime)) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "End time is before start time");
         }
+        LocalDate realDate = LocalDate.parse(date);
         if (realDate.isBefore(LocalDate.now())) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Date is in the past");
@@ -214,8 +215,9 @@ public class RoomController {
         allRooms.removeIf(r -> !r.getAvailable().equals("yes"));
         allRooms.removeIf(r -> realStartTime.compareTo(r.getBuilding().getOpeningTime()) < 0
                 || realEndTime.compareTo(r.getBuilding().getClosingTime()) > 0);
-        List<Room> placeholder = new ArrayList<>(allRooms);
+
         for (Booking b : allBookings) {
+            List<Room> placeholder = new ArrayList<>(allRooms);
             for (Room r : placeholder) {
                 if (b.getRoom() == r.getRoomNumber()
                         && b.getBuilding() == r.getBuilding().getId()) {
@@ -286,8 +288,8 @@ public class RoomController {
         if (equipment != null) {
             List<Room> placeholder = new ArrayList<>(allRooms);
             for (Room r : placeholder) {
-                Map<String, String> equipmentList = r.getEquipment();
                 for (String e : equipment) {
+                    Map<String, String> equipmentList = r.getEquipment();
                     if (!equipmentList.containsKey(e) || equipmentList.get(e).equals("False")) {
                         allRooms.remove(r);
                         break;

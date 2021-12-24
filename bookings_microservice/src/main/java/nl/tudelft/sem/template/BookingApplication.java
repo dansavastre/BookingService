@@ -20,6 +20,7 @@ public class BookingApplication {
 
     private transient String name1 = "npietnoczko";
     private transient String name2 = "bserbanescu";
+    private transient String future = "Studying in the future";
 
     @Bean
     CommandLineRunner run(BookingService bookingService) {
@@ -43,23 +44,23 @@ public class BookingApplication {
             bookingService.addBooking(new Booking(name2, 1, 24,
                     LocalDate.of(2022, 2, 4),
                     LocalTime.of(11, 0),
-                    LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
+                    LocalTime.of(12, 30), future, List.of(name1)));
             bookingService.addBooking(new Booking(name2, 1, 24,
                     LocalDate.of(2022, 12, 4),
                     LocalTime.of(11, 01),
-                    LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
+                    LocalTime.of(12, 30), future, List.of(name1)));
             bookingService.addBooking(new Booking(name2, 1, 24,
                     LocalDate.of(2021, 12, 31),
                     LocalTime.of(11, 01),
-                    LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
+                    LocalTime.of(12, 30), future, List.of(name1)));
             bookingService.addBooking(new Booking(name2, 1, 24,
                     LocalDate.of(2022, 7, 9),
                     LocalTime.of(10, 30),
-                    LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
+                    LocalTime.of(12, 30), future, List.of(name1)));
             bookingService.addBooking(new Booking(name2, 1, 24,
                     LocalDate.of(2022, 7, 10),
                     LocalTime.of(10, 00),
-                    LocalTime.of(12, 30), "Studying in the future", List.of(name1)));
+                    LocalTime.of(12, 30), future, List.of(name1)));
         };
 
 
