@@ -201,7 +201,7 @@ public class Booking {
                 + ", startTime=" + startTime
                 + ", endTime=" + endTime
                 + ", purpose='" + purpose + '\''
-                + ", participants=" + participants.toString() + '\''
+                + ", participants=" + participants.toString()
                 + ", status=" + status
                 + '}';
     }
