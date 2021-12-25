@@ -51,17 +51,21 @@ public class BookingValidator extends BaseValidator {
         List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
                 new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
-            //Check if booking owner is the same
-            if (booking.getBookingOwner().equals(newBooking.getBookingOwner())) {
-                //Check if date is the same
-                if (booking.getDate().equals(newBooking.getDate())) {
-                    //Check if times overlap
-                    if ((newBooking.getStartTime().compareTo(booking.getStartTime()) >= 0
-                            && newBooking.getStartTime().compareTo(booking.getEndTime()) < 0)
-                            || (newBooking.getEndTime().compareTo(booking.getStartTime()) > 0
-                            && newBooking.getEndTime().compareTo(booking.getEndTime()) <= 0)) {
-                        // Bookings overlap
-                        return false;
+            if (!booking.getId().equals(newBooking.getId())) {
+                if (!booking.getStatus().startsWith("cancelled")) {
+                    //Check if booking owner is the same
+                    if (booking.getBookingOwner().equals(newBooking.getBookingOwner())) {
+                        //Check if date is the same
+                        if (booking.getDate().equals(newBooking.getDate())) {
+                            //Check if times overlap
+                            if ((newBooking.getStartTime().compareTo(booking.getStartTime()) >= 0
+                                && newBooking.getStartTime().compareTo(booking.getEndTime()) < 0)
+                                || (newBooking.getEndTime().compareTo(booking.getStartTime()) > 0
+                                && newBooking.getEndTime().compareTo(booking.getEndTime()) <= 0)) {
+                                // Bookings overlap
+                                return false;
+                            }
+                        }
                     }
                 }
             }

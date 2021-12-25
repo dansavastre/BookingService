@@ -30,7 +30,9 @@ public class RoomValidator extends BaseValidator {
     public boolean bookingsOverlap(Booking booking, Booking other) {
         if (booking.getRoom() == other.getRoom()
                 && booking.getBuilding() == other.getBuilding()
-                && booking.getDate().equals(other.getDate())) {
+                && booking.getDate().equals(other.getDate())
+                && !other.getStatus().startsWith("cancelled")
+                && !booking.getId().equals(other.getId())) {
             if ((other.getStartTime().compareTo(booking.getStartTime()) >= 0
                     && other.getStartTime().compareTo(booking.getEndTime()) < 0)
                     || (other.getEndTime().compareTo(booking.getStartTime()) > 0

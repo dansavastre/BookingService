@@ -128,6 +128,7 @@ public class BookingController {
     public boolean postBooking(@RequestBody Booking booking,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
+            booking.setStatus("valid");
             Validator handler = validatorCreator(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
@@ -158,14 +159,21 @@ public class BookingController {
     @ResponseBody
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+
 
         try {
-            restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
-            return true;
+            Validator handler = validatorCreator(token);
+            boolean isValid = handler.handle(booking);
+            if (isValid) {
+                String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.AUTHORIZATION, token);
+                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+                restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+                return true;
+            }
+            return false;
+
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
@@ -186,38 +194,20 @@ public class BookingController {
                                  @PathVariable(userIdPath) String userId,
                                  @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
 
         try {
-            restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
-            return true;
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.toString());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
-        }
-    }
+            Validator handler = validatorCreator(token);
+            boolean isValid = handler.handle(booking);
+            if (isValid && !booking.getStatus().startsWith("cancelled")) {
+                String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.AUTHORIZATION, token);
+                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+                restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+                return true;
+            }
+            return false;
 
-    /**
-     * Deletes any booking from the system as an admin.
-     *
-     * @param id the id of the booking to delete.
-     * @return true if successfully deleted, else false.
-     */
-    @DeleteMapping("/deleteBooking/{id}")
-    @ResponseBody
-    public boolean deleteBooking(@PathVariable("id") Long id,
-                                 @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
-        try {
-            restTemplate.exchange(uri, HttpMethod.DELETE, entity, void.class);
-            return true;
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {

@@ -115,13 +115,6 @@ public class BookingController {
         bookingService.updateMyBooking(userId, id, booking);
     }
 
-    @DeleteMapping("/bookings/{id}")
-    @ResponseBody
-    public void deleteBooking(@PathVariable("id") Long id,
-                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        auth.authorize(Authorization.ADMIN, token);
-        bookingService.deleteBooking(id);
-    }
 
     @DeleteMapping("/myBookings/{userId}/{id}")
     @ResponseBody

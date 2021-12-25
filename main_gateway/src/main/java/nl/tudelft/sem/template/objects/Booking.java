@@ -16,6 +16,7 @@ public class Booking {
     private transient LocalTime endTime;
     private transient String purpose;
     private transient List<String> participants;
+    private transient String status;
 
     /** Constructor for Booking.
      *
@@ -39,6 +40,7 @@ public class Booking {
         this.endTime = endTime;
         this.purpose = purpose;
         this.participants = participants;
+        this.status = "valid";
     }
 
     /** Empty constructor.
@@ -216,6 +218,14 @@ public class Booking {
             .append(room).append('\'').append(", date=").append(date).append(", startTime=")
             .append(startTime).append(", endTime=").append(endTime).append(", purpose='")
             .append(purpose).append('\'').append('}').toString();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

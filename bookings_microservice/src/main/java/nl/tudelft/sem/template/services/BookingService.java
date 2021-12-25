@@ -54,10 +54,6 @@ public class BookingService {
         }
     }
 
-    public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
-    }
-
     /**
      * Method that allows a user to delete their own bookings.
      *

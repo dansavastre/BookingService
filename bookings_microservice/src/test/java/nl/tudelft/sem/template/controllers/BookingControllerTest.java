@@ -125,13 +125,6 @@ public class BookingControllerTest {
     }
 
     @Test
-    void deleteBooking_test() {
-        bookingController.deleteBooking(1L, token);
-        verify(bookingService, times(1)).deleteBooking(1L);
-        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
-    }
-
-    @Test
     void deleteMyBooking_test() {
         bookingController.deleteBooking("A", 1L, token);
         verify(bookingService, times(1)).deleteMyBooking("A", 1L);

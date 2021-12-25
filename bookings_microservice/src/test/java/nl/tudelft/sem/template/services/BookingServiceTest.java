@@ -83,12 +83,6 @@ public class BookingServiceTest {
     }
 
     @Test
-    void deleteBooking_test() {
-        bookingService.deleteBooking(1L);
-        verify(bookingRepository, times(1)).deleteById(1L);
-    }
-
-    @Test
     void getFutureBookings_test() {
         List<Booking> bookings = new ArrayList<>();
         bookings.add(b1);
