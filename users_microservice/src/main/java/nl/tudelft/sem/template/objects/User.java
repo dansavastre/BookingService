@@ -57,6 +57,8 @@ public class User {
         this.roles = new ArrayList<>();
     }
 
+
+
     /**
      * Getter to get users id.
      *
@@ -211,5 +213,9 @@ public class User {
      */
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }
