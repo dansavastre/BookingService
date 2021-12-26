@@ -31,7 +31,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 @Controller
-public class RoomController {
+public class MainRoomController {
 
     @Autowired
     private transient RestTemplate restTemplate;
@@ -221,7 +221,7 @@ public class RoomController {
             for (Room r : placeholder) {
                 if (b.getRoom() == r.getRoomNumber()
                         && b.getBuilding() == r.getBuilding().getId()) {
-                    if ((realStartTime.compareTo(b.getStartTime()) >= 0
+                    if (b.getDate() == realDate && (realStartTime.compareTo(b.getStartTime()) >= 0
                             && realStartTime.compareTo(b.getEndTime()) < 0)
                             || (realEndTime.compareTo(b.getStartTime()) > 0
                             && realEndTime.compareTo(b.getEndTime()) <= 0)) {

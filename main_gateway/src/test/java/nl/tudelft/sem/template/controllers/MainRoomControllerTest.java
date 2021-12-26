@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import nl.tudelft.sem.template.objects.Booking;
@@ -36,7 +35,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 
-public class RoomControllerTest {
+public class MainRoomControllerTest {
 
     @Mock
     private transient RestTemplate restTemplate;
@@ -44,9 +43,9 @@ public class RoomControllerTest {
     private transient ArgumentCaptor<HttpEntity> entity;
 
     @InjectMocks
-    private transient RoomController roomController;
+    private transient MainRoomController mainRoomController;
 
-    @InjectMocks
+    @Mock
     private transient BookingController bookingController;
 
     private transient Room room1;
@@ -73,20 +72,20 @@ public class RoomControllerTest {
         equipmentMap.put("smart board", "True");
         building = new Building(36, LocalTime.of(8, 0),
                 LocalTime.of(22, 0), "Building 1");
-        room1 = new Room(1, "Steve Jobs Room", 4, equipmentMap, "available", building);
-        room2 = new Room(1, "Marie Currie Room", 8, equipmentMap, "available", building);
+        room1 = new Room(1, "Steve Jobs Room", 4, equipmentMap, "yes", building);
+        room2 = new Room(1, "Marie Currie Room", 8, equipmentMap, "yes", building);
         rooms.add(room1);
         rooms.add(room2);
         b1 = new Booking(1L, "Mike", 1, 1,
-                LocalDate.now(),
-                LocalTime.now().plusHours(1),
-                LocalTime.now().plusHours(3),
+                LocalDate.of(2022, 1, 21),
+                LocalTime.of(10, 30),
+                LocalTime.of(18, 0),
                 "Group study session",
                 List.of("user0", "user1"));
         b2 = new Booking(2L, "Mike", 1, 1,
-                LocalDate.now().plusDays(3),
-                LocalTime.now().plusHours(1),
-                LocalTime.now().plusHours(2),
+                LocalDate.of(2022, 2, 12),
+                LocalTime.of(9, 30),
+                LocalTime.of(12, 0),
                 "Project room",
                 List.of("user2", "user3"));
 
@@ -107,7 +106,7 @@ public class RoomControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET), entity.capture(), eq(List.class)))
                 .thenReturn(res);
 
-        Assertions.assertThat(roomController.getRooms(token)).isEqualTo(rooms);
+        Assertions.assertThat(mainRoomController.getRooms(token)).isEqualTo(rooms);
         verify(restTemplate, times(1))
                 .exchange(eq(uri), eq(HttpMethod.GET), entity.capture(), eq(List.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -122,7 +121,7 @@ public class RoomControllerTest {
                 entity.capture(), eq(Room.class)))
                 .thenReturn(res);
 
-        Assertions.assertThat(roomController.getRoom("1", token)).isEqualTo(room1);
+        Assertions.assertThat(mainRoomController.getRoom("1", token)).isEqualTo(room1);
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.GET),
                 entity.capture(), eq(Room.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -131,7 +130,7 @@ public class RoomControllerTest {
     @Test
     void postRoom_test() {
         String uri = "http://localhost:8082/rooms";
-        Assertions.assertThat(roomController.postRoom(room1, token)).isTrue();
+        Assertions.assertThat(mainRoomController.postRoom(room1, token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -144,7 +143,7 @@ public class RoomControllerTest {
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
                 entity.capture(), eq(void.class))).thenReturn(res);
-        Assertions.assertThat(roomController.updateRoom(room2, "1", token)).isTrue();
+        Assertions.assertThat(mainRoomController.updateRoom(room2, "1", token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.PUT),
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -157,7 +156,7 @@ public class RoomControllerTest {
         ResponseEntity<Void> res = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.DELETE),
                 entity.capture(), eq(void.class))).thenReturn(res);
-        Assertions.assertThat(roomController.deleteRoom("1", token)).isTrue();
+        Assertions.assertThat(mainRoomController.deleteRoom("1", token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -165,12 +164,13 @@ public class RoomControllerTest {
 
     @Test
     void availableRoom_test() {
-        RoomController spyRoomController = Mockito.spy(roomController);
+        MainRoomController spyMainRoomController = Mockito.spy(mainRoomController);
         List<Room> result = new ArrayList<>();
         result.add(room1);
         result.add(room2);
-        Mockito.doReturn(rooms).when(spyRoomController).getRooms(token);
+        Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
-        assertEquals(roomController.availableRooms("2022-12-31", "10:00:00", "18:30:00", token),result);
+        assertEquals(result, spyMainRoomController.availableRooms("2022-01-02", "10:00:00", "14:30:00", token));
+
     }
 }

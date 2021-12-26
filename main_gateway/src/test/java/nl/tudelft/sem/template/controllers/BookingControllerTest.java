@@ -2,10 +2,8 @@ package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,9 +13,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
-import nl.tudelft.sem.template.exceptions.InvalidBookingException;
-import nl.tudelft.sem.template.exceptions.InvalidRoomException;
+
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
@@ -28,7 +24,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -52,7 +47,7 @@ public class BookingControllerTest {
     @Mock
     private transient BookingController bookingControllerMock;
     @Mock
-    private transient RoomController roomController;
+    private transient MainRoomController mainRoomController;
 
     @InjectMocks
     private transient BookingController bookingController;
@@ -148,7 +143,7 @@ public class BookingControllerTest {
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(Integer.toString(b1.getRoom())
+        when(mainRoomController.getRoom(Integer.toString(b1.getRoom())
                 + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq("http://localhost:8083/allbookings"),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
