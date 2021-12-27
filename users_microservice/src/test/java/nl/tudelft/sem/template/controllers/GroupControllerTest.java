@@ -1,5 +1,9 @@
 package nl.tudelft.sem.template.controllers;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Group;
@@ -12,8 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.*;
-
 public class GroupControllerTest {
 
     @Mock
@@ -22,8 +24,12 @@ public class GroupControllerTest {
     @InjectMocks
     private transient GroupController groupController;
 
-    transient User user1, user2, user3, user4;
-    transient Group group1, group2;
+    transient User user1;
+    transient User user2;
+    transient User user3;
+    transient User user4;
+    transient Group group1;
+    transient Group group2;
     transient List<Group> groups;
 
     @BeforeEach

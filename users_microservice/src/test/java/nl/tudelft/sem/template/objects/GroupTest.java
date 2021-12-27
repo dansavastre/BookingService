@@ -1,14 +1,16 @@
 package nl.tudelft.sem.template.objects;
 
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 public class GroupTest {
 
-    transient User user1, user2, user3, user4;
+    transient User user1;
+    transient User user2;
+    transient User user3;
+    transient User user4;
     transient Group group;
 
     @BeforeEach
@@ -55,12 +57,14 @@ public class GroupTest {
 
     @Test
     void equalsTestTrue() {
-        Assertions.assertThat(group.equals(new Group("1", "TestGroup", List.of(user1, user2)))).isTrue();
+        Group g = new Group("1", "TestGroup", List.of(user1, user2));
+        Assertions.assertThat(group.equals(g)).isTrue();
     }
 
     @Test
     void equalsTestFalse() {
-        Assertions.assertThat(group.equals(new Group("2", "DifferentGroup", List.of(user1, user2)))).isFalse();
+        Group g = new Group("2", "DifferentGroup", List.of(user1, user2));
+        Assertions.assertThat(group.equals(g)).isFalse();
 
     }
 }
