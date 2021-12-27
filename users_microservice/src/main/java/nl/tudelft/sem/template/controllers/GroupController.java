@@ -27,13 +27,19 @@ public class GroupController {
 
     @GetMapping("admin/groups")
     @ResponseBody
-    public List<Group> getAllUsers() {
+    public List<Group> getAllGroups() {
         return groupService.getAllGroups();
     }
 
     @GetMapping("admin/getGroup/{id}")
     @ResponseBody
-    public Group getUser(@PathVariable("id") String id) {
+    public Group getGroup(@PathVariable("id") String id) {
+        return groupService.getGroup(id);
+    }
+
+    @GetMapping("secretary/getGroup/{id}")
+    @ResponseBody
+    public Group getMyGroup(@PathVariable("id") String id) {
         return groupService.getGroup(id);
     }
 

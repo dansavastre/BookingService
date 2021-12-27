@@ -21,9 +21,12 @@ public class Group {
     @Column(name = "GROUP_NAME", nullable = true, length = 255)
     private String goupName;
 
-    @Column(name = "USERS", nullable = true, length = 50)
+    @Column(name = "SECRETARY", nullable = true)
+    private String secretary;
+
+    @Column(name = "MEMBERS", nullable = true, length = 50)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<User> users;
+    private List<User> members;
 
     /**
      * Generic Group constructor with no parameters.
@@ -37,12 +40,12 @@ public class Group {
      *
      * @param id        - ID attribute used to identify groups as a String
      * @param goupName  - The name of the group as a String
-     * @param users     - A list of User objects that are part of the group
+     * @param members     - A list of User objects that are part of the group
      */
-    public Group(String id, String goupName, List<User> users) {
+    public Group(String id, String goupName, List<User> members) {
         this.id = id;
         this.goupName = goupName;
-        this.users = users;
+        this.members = members;
     }
 
     /**
@@ -68,8 +71,8 @@ public class Group {
      *
      * @return list of Users that are part of the group
      */
-    public List<User> getUsers() {
-        return users;
+    public List<User> getMembers() {
+        return members;
     }
 
     /**
@@ -95,8 +98,8 @@ public class Group {
      *
      * @param users - List of User objects to be set as the new users
      */
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setMembers(List<User> users) {
+        this.members = users;
     }
 
 
@@ -117,7 +120,7 @@ public class Group {
         Group group = (Group) o;
         return Objects.equals(this.id, group.id)
                 && Objects.equals(this.goupName, group.goupName)
-                && this.users.equals(group.users);
+                && this.members.equals(group.members);
     }
 
     /**
@@ -127,7 +130,7 @@ public class Group {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, goupName, users);
+        return Objects.hash(id, goupName, members);
     }
 
     @Override
@@ -139,7 +142,7 @@ public class Group {
                 + goupName
                 + '\''
                 + ", users="
-                + users
+                + members
                 + '}';
     }
 }
