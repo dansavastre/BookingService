@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
 import java.util.Optional;
-
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;

@@ -181,7 +181,8 @@ public class Booking {
                 && Objects.equals(startTime, booking.startTime)
                 && Objects.equals(endTime, booking.endTime)
                 && Objects.equals(purpose, booking.purpose)
-                && participants.equals(booking.participants);
+                && participants.equals(booking.participants)
+                && Objects.equals(status, booking.status);
     }
 
     @Override

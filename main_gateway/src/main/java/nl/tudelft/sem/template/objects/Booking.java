@@ -195,7 +195,8 @@ public class Booking {
         return Objects.equals(id, booking.id) && Objects.equals(bookingOwner, booking.bookingOwner)
             && Objects.equals(room, booking.room) && Objects.equals(date, booking.date)
             && Objects.equals(startTime, booking.startTime)
-            && Objects.equals(endTime, booking.endTime) && Objects.equals(purpose, booking.purpose);
+            && Objects.equals(endTime, booking.endTime) && Objects.equals(purpose, booking.purpose)
+            && Objects.equals(status, booking.status);
     }
 
     /** Generates a hash for the booking.
@@ -217,7 +218,8 @@ public class Booking {
             .append(", bookingOwner='").append(bookingOwner).append('\'').append(", room='")
             .append(room).append('\'').append(", date=").append(date).append(", startTime=")
             .append(startTime).append(", endTime=").append(endTime).append(", purpose='")
-            .append(purpose).append('\'').append('}').toString();
+            .append(purpose).append('\'').append(", status='")
+            .append(status).append('\'').append('}').toString();
     }
 
     public String getStatus() {

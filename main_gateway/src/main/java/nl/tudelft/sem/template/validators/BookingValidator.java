@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.controllers.RoomController;
