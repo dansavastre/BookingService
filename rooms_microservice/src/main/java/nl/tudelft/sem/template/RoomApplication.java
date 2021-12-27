@@ -7,6 +7,7 @@ import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.services.BuildingService;
 import nl.tudelft.sem.template.services.RoomService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,10 +31,15 @@ public class RoomApplication {
             Map<String, String> equipmentMap2 = new HashMap<>();
             equipmentMap2.put("Extra Chairs", t);
             equipmentMap2.put("Debate Stands", t);
-            roomService.addRoom(new Room(0, "Europe", 12, equipmentMap, "yes", 36));
-            roomService.addRoom(new Room(1, "Australia", 6, equipmentMap, "yes", 36));
-            roomService.addRoom(new Room(2, "Africa", 8, equipmentMap, "maintenance", 36));
-            roomService.addRoom(new Room(1, "Steve Jobs", 12, equipmentMap2, "yes", 24));
+            Building building1 = new Building(36, LocalTime.of(8, 30),
+                    LocalTime.of(18, 00), "name1");
+            Building building2 = new Building(24, LocalTime.of(10, 30),
+                    LocalTime.of(17, 30), "name2");
+
+            roomService.addRoom(new Room(0, "Europe", 12, equipmentMap, "yes", building1));
+            roomService.addRoom(new Room(1, "Australia", 6, equipmentMap, "yes", building2));
+            roomService.addRoom(new Room(2, "Africa", 8, equipmentMap, "maintenance", building1));
+            roomService.addRoom(new Room(1, "Steve Jobs", 12, equipmentMap2, "yes", building2));
         };
     }
 

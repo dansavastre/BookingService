@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
+import java.util.Optional;
+
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
@@ -32,7 +34,7 @@ public class RoomValidator extends BaseValidator {
                 && booking.getBuilding() == other.getBuilding()
                 && booking.getDate().equals(other.getDate())
                 && !other.getStatus().startsWith("cancelled")
-                && !booking.getId().equals(other.getId())) {
+                && !other.getId().equals(Optional.ofNullable(booking.getId()).orElse(0L))) {
             if ((other.getStartTime().compareTo(booking.getStartTime()) >= 0
                     && other.getStartTime().compareTo(booking.getEndTime()) < 0)
                     || (other.getEndTime().compareTo(booking.getStartTime()) > 0

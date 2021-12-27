@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
+
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
 import nl.tudelft.sem.template.controllers.RoomController;
@@ -51,7 +53,12 @@ public class BookingValidator extends BaseValidator {
         List<Booking> bookings = om.convertValue(bookingController.getAllBookings(token),
                 new TypeReference<List<Booking>>() {});
         for (Booking booking : bookings) {
-            if (!booking.getId().equals(newBooking.getId())) {
+            //check if user is trying to modify a cancelled booking
+            if (booking.getId().equals(Optional.ofNullable(newBooking.getId()).orElse(0L))
+                && booking.getStatus().startsWith("cancelled")) {
+                return false;
+            }
+            if (!booking.getId().equals(Optional.ofNullable(newBooking.getId()).orElse(0L))) {
                 if (!booking.getStatus().startsWith("cancelled")) {
                     //Check if booking owner is the same
                     if (booking.getBookingOwner().equals(newBooking.getBookingOwner())) {
@@ -84,7 +91,8 @@ public class BookingValidator extends BaseValidator {
             throw  new InvalidBookingException("Booking start time is before current time");
         } else if (buildingController.getBuilding(booking.getBuilding(), token) == null) {
             throw new InvalidBookingException("Building does not exist");
-        } else if (roomController.getRoom(booking.getRoom(), token) == null) {
+        } else if (roomController.getRoom(Integer.toString(booking.getRoom())
+                + Integer.toString(booking.getBuilding()), token) == null) {
             throw new InvalidBookingException("Room does not exist");
         } else if (booking.getStartTime().compareTo(booking.getEndTime()) >= 0) {
             throw new InvalidBookingException("Start time is after end time");

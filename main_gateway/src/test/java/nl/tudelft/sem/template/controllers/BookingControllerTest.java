@@ -142,8 +142,7 @@ public class BookingControllerTest {
 
     //TODO: fix this test
     @Test
-    void postBooking_test() throws InvalidBookingException,
-            InvalidRoomException, BuildingNotOpenException {
+    void postBooking_test() {
         String uri = "http://localhost:8083/bookings";
         ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
         ResponseEntity<Void> res1 = new ResponseEntity<>(HttpStatus.OK);
@@ -151,7 +150,8 @@ public class BookingControllerTest {
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(b1.getRoom(), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getRoom())
+                + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
         Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
@@ -178,7 +178,8 @@ public class BookingControllerTest {
             entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(b1.getRoom(), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getRoom())
+            + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
             eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
 
@@ -198,7 +199,8 @@ public class BookingControllerTest {
             entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(b1.getRoom(), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getRoom())
+            + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
             eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
 
