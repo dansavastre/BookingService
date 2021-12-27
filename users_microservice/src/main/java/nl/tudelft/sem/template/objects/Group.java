@@ -1,8 +1,14 @@
 package nl.tudelft.sem.template.objects;
 
-import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity(name = "Group")
 @Table(name = "group")
@@ -20,13 +26,15 @@ public class Group {
     private List<User> users;
 
     /**
-     * Generic Group constructor with no parameters
+     * Generic Group constructor with no parameters.
+     *
      */
     public Group() {
     }
 
     /**
-     * Group constructor with all group attributes as parameters
+     * Group constructor with all group attributes as parameters.
+     *
      * @param id        - ID attribute used to identify groups as a String
      * @param goupName  - The name of the group as a String
      * @param users     - A list of User objects that are part of the group
@@ -38,7 +46,7 @@ public class Group {
     }
 
     /**
-     * Getter for the group ID
+     * Getter for the group ID.
      *
      * @return group ID as a String
      */
@@ -47,7 +55,7 @@ public class Group {
     }
 
     /**
-     * Getter for the group name
+     * Getter for the group name.
      *
      * @return group name as a String
      */
@@ -56,7 +64,7 @@ public class Group {
     }
 
     /**
-     * Getter for the list of users that are part of the group
+     * Getter for the list of users that are part of the group.
      *
      * @return list of Users that are part of the group
      */
@@ -65,7 +73,7 @@ public class Group {
     }
 
     /**
-     * Setter for the group ID
+     * Setter for the group ID.
      *
      * @param id    - String to set as new ID
      */
@@ -74,7 +82,7 @@ public class Group {
     }
 
     /**
-     * Setter for thr group name
+     * Setter for thr group name.
      *
      * @param goupName  - String to be set as new group name
      */
@@ -83,7 +91,7 @@ public class Group {
     }
 
     /**
-     * Setter for the list of users
+     * Setter for the list of users.
      *
      * @param users - List of User objects to be set as the new users
      */
@@ -93,23 +101,27 @@ public class Group {
 
 
     /**
-     * Equals method that checks whether 2 groups are equivalent based on their attributes
+     * Equals method that checks whether 2 groups are equivalent based on their attributes.
      *
      * @param o - The group to be compared with
      * @return  - True if the users are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Group group = (Group) o;
-        return Objects.equals(this.id, group.id) &&
-                Objects.equals(this.goupName, group.goupName) &&
-                this.users.equals(group.users);
+        return Objects.equals(this.id, group.id)
+                && Objects.equals(this.goupName, group.goupName)
+                && this.users.equals(group.users);
     }
 
     /**
-     * HashCode method to hash group
+     * HashCode method to hash group.
      *
      * @return  - hased value of group as integer
      */
@@ -120,10 +132,14 @@ public class Group {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "id='" + id + '\'' +
-                ", name='" + goupName + '\'' +
-                ", users=" + users +
-                '}';
+        return "Group{"
+                + "id='"
+                + id + '\''
+                + ", name='"
+                + goupName
+                + '\''
+                + ", users="
+                + users
+                + '}';
     }
 }
