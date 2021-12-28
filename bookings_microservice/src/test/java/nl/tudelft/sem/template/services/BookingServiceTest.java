@@ -71,9 +71,15 @@ public class BookingServiceTest {
     }
 
     @Test
-    void deleteBooking_test() {
-        bookingService.deleteBooking(1L);
-        verify(bookingRepository, times(1)).deleteById(1L);
+    void updateMyBooking_test() {
+        bookingService.updateMyBooking("A", 1L, b1);
+        verify(bookingRepository, times(1)).save(b1);
+    }
+
+    @Test
+    void updateNotMyBooking_test() {
+        bookingService.updateMyBooking("B", 1L, b1);
+        verify(bookingRepository, times(0)).save(b1);
     }
 
     @Test

@@ -43,6 +43,8 @@ public class BookingController {
         return new RestTemplate();
     }
 
+    private static final String userIdPath = "userId";
+
 
 
     /**
@@ -126,6 +128,7 @@ public class BookingController {
     public boolean postBooking(@RequestBody Booking booking,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
+            booking.setStatus("valid");
             Validator handler = validatorCreator(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
@@ -146,7 +149,7 @@ public class BookingController {
 
 
     /**
-     * Update a booking.
+     * Update any booking as an admin.
      *
      * @param booking the new booking.
      * @param id      the id of the booking to update.
@@ -156,14 +159,21 @@ public class BookingController {
     @ResponseBody
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+
 
         try {
-            restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
-            return true;
+            Validator handler = validatorCreator(token);
+            boolean isValid = handler.handle(booking);
+            if (isValid) {
+                String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.AUTHORIZATION, token);
+                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+                restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+                return true;
+            }
+            return false;
+
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
@@ -172,16 +182,51 @@ public class BookingController {
     }
 
     /**
-     * Deletes a booking from the system.
+     * Update your booking as an employee.
+     *
+     * @param booking the new booking.
+     * @param id      the id of the booking to update.
+     * @return true if successfully updated, else false.
+     */
+    @PutMapping("/putBooking/{userId}/{id}")
+    @ResponseBody
+    public boolean updateBooking(@RequestBody Booking booking,
+                                 @PathVariable(userIdPath) String userId,
+                                 @PathVariable("id") Long id,
+                                 @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+
+        try {
+            Validator handler = validatorCreator(token);
+            boolean isValid = handler.handle(booking);
+            if (isValid && !booking.getStatus().startsWith("cancelled")) {
+                String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.AUTHORIZATION, token);
+                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+                restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+                return true;
+            }
+            return false;
+
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
+    }
+
+    /**
+     * Deletes your booking from the system as an employee.
      *
      * @param id the id of the booking to delete.
      * @return true if successfully deleted, else false.
      */
-    @DeleteMapping("/deleteBooking/{id}")
+    @DeleteMapping("/deleteBooking/{userId}/{id}")
     @ResponseBody
-    public boolean deleteBooking(@PathVariable("id") Long id,
+    public boolean deleteBooking(@PathVariable(userIdPath) String userId,
+                                 @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
+        String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("", headers);
@@ -197,7 +242,7 @@ public class BookingController {
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List getMyBookingsDefault(@PathVariable("userId") String userId,
+    public List getMyBookingsDefault(@PathVariable(userIdPath) String userId,
                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/default/" + userId;
         return getList(token, uri);
@@ -205,7 +250,7 @@ public class BookingController {
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List getMyBookingsChrono(@PathVariable("userId") String userId,
+    public List getMyBookingsChrono(@PathVariable(userIdPath) String userId,
                                     @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/chrono/" + userId;
         return getList(token, uri);
@@ -213,7 +258,7 @@ public class BookingController {
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List getMyBookingsLocation(@PathVariable("userId") String userId,
+    public List getMyBookingsLocation(@PathVariable(userIdPath) String userId,
                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/location/" + userId;
         return getList(token, uri);
