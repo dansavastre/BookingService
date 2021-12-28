@@ -183,8 +183,7 @@ public class MainRoomControllerTest {
         Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
 
-        assertEquals(new ArrayList<Room>(), spyMainRoomController.availableRooms("2022-01-02", "10:00:00", "08:30:00", token));
-        assertThrows(ResponseStatusException.class,
+        assertThrows(ResponseStatusException.class, () ->
                 spyMainRoomController.availableRooms("2022-01-02", "10:00:00", "08:30:00", token));
     }
 
@@ -195,6 +194,7 @@ public class MainRoomControllerTest {
         Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
 
-        assertEquals(new ArrayList<Room>(), spyMainRoomController.availableRooms("2020-01-02", "10:00:00", "08:30:00", token));
+        assertThrows(ResponseStatusException.class, () ->
+                spyMainRoomController.availableRooms("2020-01-02", "08:00:00", "10:30:00", token));
     }
 }
