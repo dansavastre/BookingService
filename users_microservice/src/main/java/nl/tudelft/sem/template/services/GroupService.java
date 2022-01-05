@@ -19,9 +19,7 @@ public class GroupService {
      * @return  - List of type group
      */
     public List<Group> getAllGroups() {
-        List<Group> groups = new ArrayList<>();
-        groupRepository.findAll().forEach(groups::add);
-        return groups;
+        return new ArrayList<>(groupRepository.findAll());
     }
 
     /**

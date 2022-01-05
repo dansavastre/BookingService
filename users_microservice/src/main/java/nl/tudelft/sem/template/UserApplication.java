@@ -43,29 +43,40 @@ public class UserApplication {
     @Bean
     CommandLineRunner run(UserService userService) {
         return args -> {
-            List<Role> roles = new ArrayList<Role>(Arrays.asList(new Role(employee)));
-            List<Role> roles2 = new ArrayList<Role>(Arrays.asList(new Role(employee),
+            List<Role> rolesVeena = new ArrayList<Role>(Arrays.asList(new Role(employee),
                     new Role("secretary")));
-            List<Role> roles3 = new ArrayList<Role>(Arrays.asList(new Role(employee),
+            List<Role> rolesKeshav = new ArrayList<Role>(Arrays.asList(new Role(employee),
                     new Role("secretary"), new Role("admin")));
+
             User u1 = new User("ltwubben", "MTIzNA==", "Luuk", "Wubben");
-            u1.setRoles(roles);
+            u1.addRole(new Role(employee));
+
             User u2 = new User("vmadhu", "NTY3OA==", "Veena", "Madhu");
-            u2.setRoles(roles2);
+            for (Role r : rolesVeena) {
+                u2.addRole(r);
+            }
+
             User u3 = new User("keshavnair", "OTEyMw==", "Keshav", "Nair");
-            u3.setRoles(roles3);
+            for (Role r : rolesKeshav) {
+                u3.addRole(r);
+            }
+
             User u4 = new User("npietnoczko", "NDU2Nw==", "Natalia", "Pietnoczko");
-            u4.setRoles(Arrays.asList(new Role(employee)));
+            u4.addRole(new Role(employee));
+
             User u5 = new User("bserbanescu", "ODkxMg==", "Bianca", "Serbanescu");
-            u5.setRoles(Arrays.asList(new Role(employee)));
+            u5.addRole(new Role(employee));
+
             User u6 = new User("dsavastre", "MzQ1Ng==", "Dan", "Savastre");
-            u6.setRoles(Arrays.asList(new Role(employee)));
+            u6.addRole(new Role(employee));
+
             userService.addUser(u1);
             userService.addUser(u2);
             userService.addUser(u3);
             userService.addUser(u4);
             userService.addUser(u5);
             userService.addUser(u6);
+
             group = new ArrayList<>();
             group.add(u1);
             group.add(u2);
@@ -76,13 +87,13 @@ public class UserApplication {
         };
     }
 
-    //@Bean
-    //CommandLineRunner run3(GroupService groupService) {
-    //  return args -> {
-    //      Group group1 = new Group("vmadhu",
-    //              "M.R.B.S. Research Group",
-    //              group);
-    //      groupService.addGroup(group1);
-    //    };
-    //}
+    @Bean
+    CommandLineRunner run3(GroupService groupService) {
+        return args -> {
+            Group group1 = new Group("vmadhu",
+                  "M.R.B.S. Research Group",
+                  group);
+            groupService.addGroup(group1);
+        };
+    }
 }

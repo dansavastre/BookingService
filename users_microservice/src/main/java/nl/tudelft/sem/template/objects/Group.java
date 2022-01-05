@@ -4,13 +4,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,24 +27,17 @@ public class Group {
             generator = "group_sequence"
     )
     @Column(name = "ID")
-    private transient Long id;
+    private Long id;
 
     @Column(name = "GROUP_NAME")
     private String groupName;
 
     @Column(name = "SECRETARY")
-    private transient String secretary;
+    private String secretary;
 
     @Column(name = "MEMBERS", length = 50)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany
     private List<User> members;
-
-    /**
-     * Generic Group constructor with no parameters.
-     *
-     */
-    public Group() {
-    }
 
     /**
      * Group constructor with all group attributes as parameters.
@@ -59,6 +50,13 @@ public class Group {
         this.secretary = secretary;
         this.groupName = groupName;
         this.members = members;
+    }
+
+    /**
+     * Generic Group constructor with no parameters.
+     *
+     */
+    public Group() {
     }
 
     /**
@@ -94,6 +92,18 @@ public class Group {
         return groupName;
     }
 
+    public String getSecretary() {
+        return secretary;
+    }
+
+    public boolean addMember(User user) {
+        return members.add(user);
+    }
+
+    public boolean removeMember(User user) {
+        return members.remove(user);
+    }
+
     /**
      * Getter for the list of users that are part of the group.
      *
@@ -110,15 +120,6 @@ public class Group {
      */
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    /**
-     * Setter for the list of users.
-     *
-     * @param users - List of User objects to be set as the new users
-     */
-    public void setMembers(List<User> users) {
-        this.members = users;
     }
 
 
@@ -161,5 +162,17 @@ public class Group {
                 + ", secretary='" + secretary + '\''
                 + ", members=" + members
                 + '}';
+    }
+
+    private void setId(Long id) {
+        this.id = id;
+    }
+
+    private void setSecretary(String secretary) {
+        this.secretary = secretary;
+    }
+
+    private void setMembers(List<User> members) {
+        this.members = members;
     }
 }

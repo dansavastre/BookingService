@@ -43,11 +43,6 @@ public class GroupTest {
         Assertions.assertThat(group.getGroupName()).isEqualTo("NewGroupName");
     }
 
-    @Test
-    void setMembersTest() {
-        group.setMembers(List.of(user1, user2, user3, user4));
-        Assertions.assertThat(group.getMembers()).isEqualTo(List.of(user1, user2, user3, user4));
-    }
 
     @Test
     void equalsTestTrue() {

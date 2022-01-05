@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,10 +33,6 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> roles;
 
-    //@Column(name = "GROUPS", nullable = true, length = 50)
-    //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    //private List<Group> groups;
-
 
 
     /**
@@ -59,7 +56,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.roles = new ArrayList<>();
-        //this.groups = new ArrayList<>();
     }
 
 
@@ -71,15 +67,6 @@ public class User {
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Setter to set/change the users id.
-     *
-     * @param id - String to set as new id
-     */
-    public void setId(String id) {
-        this.id = id;
     }
 
     /**
@@ -212,29 +199,24 @@ public class User {
     }
 
     /**
-     * Setter for setting the roles.
+     * Add a role to the roles of this user.
      *
-     * @param roles a list of roles for the user
+     * @param role the role to add to the user
      */
-    public void setRoles(List<Role> roles) {
+    public boolean addRole(Role role) {
+        return roles.add(role);
+    }
+
+    public boolean removeRole(Role role) {
+        return roles.remove(role);
+    }
+
+    private void setId(String id) {
+        this.id = id;
+    }
+
+    private void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
-    ///**
-    //* Getter for the list of groups the user is part of.
-    //*
-    //* @return List of type Group
-    //*/
-    //public List<Group> getGroups() {
-    //    return groups;
-    //}
-
-    ///**
-    //* Setter for the list of groups the user is part of.
-    //*
-    //* @param groups The list of groups the user is part of
-    //*/
-    //public void setGroups(List<Group> groups) {
-    //    this.groups = groups;
-    //}
 }
