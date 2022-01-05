@@ -1,12 +1,13 @@
 package nl.tudelft.sem.template;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import nl.tudelft.sem.template.objects.Group;
 import nl.tudelft.sem.template.objects.Role;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.security.NoEncoding;
+import nl.tudelft.sem.template.services.GroupService;
 import nl.tudelft.sem.template.services.RoleService;
 import nl.tudelft.sem.template.services.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +18,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class UserApplication {
 
-    private transient String employee = "employee";
+    private final transient String employee = "employee";
+    private transient List<User> group;
 
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
@@ -64,6 +66,23 @@ public class UserApplication {
             userService.addUser(u4);
             userService.addUser(u5);
             userService.addUser(u6);
+            group = new ArrayList<>();
+            group.add(u1);
+            group.add(u2);
+            group.add(u3);
+            group.add(u4);
+            group.add(u5);
+            group.add(u6);
         };
     }
+
+    //@Bean
+    //CommandLineRunner run3(GroupService groupService) {
+    //  return args -> {
+    //      Group group1 = new Group("vmadhu",
+    //              "M.R.B.S. Research Group",
+    //              group);
+    //      groupService.addGroup(group1);
+    //    };
+    //}
 }

@@ -32,9 +32,9 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> roles;
 
-    @Column(name = "GROUPS", nullable = true, length = 50)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Group> groups;
+    //@Column(name = "GROUPS", nullable = true, length = 50)
+    //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //private List<Group> groups;
 
 
 
@@ -59,7 +59,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.roles = new ArrayList<>();
-        this.groups = new ArrayList<>();
+        //this.groups = new ArrayList<>();
     }
 
 
@@ -220,21 +220,21 @@ public class User {
         this.roles = roles;
     }
 
-    /**
-     * Getter for the list of groups the user is part of.
-     *
-     * @return List of type Group
-     */
-    public List<Group> getGroups() {
-        return groups;
-    }
+    ///**
+    //* Getter for the list of groups the user is part of.
+    //*
+    //* @return List of type Group
+    //*/
+    //public List<Group> getGroups() {
+    //    return groups;
+    //}
 
-    /**
-     * Setter for the list of groups the user is part of.
-     *
-     * @param groups The list of groups the user is part of
-     */
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
+    ///**
+    //* Setter for the list of groups the user is part of.
+    //*
+    //* @param groups The list of groups the user is part of
+    //*/
+    //public void setGroups(List<Group> groups) {
+    //    this.groups = groups;
+    //}
 }

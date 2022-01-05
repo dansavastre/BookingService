@@ -33,13 +33,13 @@ public class GroupController {
 
     @GetMapping("admin/getGroup/{id}")
     @ResponseBody
-    public Group getGroup(@PathVariable("id") String id) {
+    public Group getGroup(@PathVariable("id") Long id) {
         return groupService.getGroup(id);
     }
 
     @GetMapping("secretary/getGroup/{id}")
     @ResponseBody
-    public Group getMyGroup(@PathVariable("id") String id) {
+    public Group getMyGroup(@PathVariable("id") Long id) {
         return groupService.getGroup(id);
     }
 
@@ -51,12 +51,12 @@ public class GroupController {
 
     @PutMapping("admin/groups/{id}")
     @ResponseBody
-    public void updateGroup(@RequestBody Group group, @PathVariable("id") String id) {
+    public void updateGroup(@RequestBody Group group, @PathVariable("id") Long id) {
         groupService.updateGroup(id, group);
     }
 
     @DeleteMapping("admin/groups/{id}")
-    public void deleteGroup(@PathVariable("id") String id) {
+    public void deleteGroup(@PathVariable("id") Long id) {
         groupService.deleteGroup(id);
     }
 }

@@ -19,17 +19,17 @@ public class GroupTest {
         user2 = new User("2", "password2", "FirstName2", "LastName2");
         user3 = new User("3", "password3", "FirstName3", "LastName3");
         user4 = new User("4", "password4", "FirstName4", "LastName4");
-        group = new Group("1", "TestGroup", List.of(user1, user2));
+        group = new Group(1L, "1", "TestGroup", List.of(user1, user2));
     }
 
     @Test
     void getIdTest() {
-        Assertions.assertThat(group.getId()).isEqualTo("1");
+        Assertions.assertThat(group.getId()).isEqualTo(1L);
     }
 
     @Test
     void getGroupNameTest() {
-        Assertions.assertThat(group.getGoupName()).isEqualTo("TestGroup");
+        Assertions.assertThat(group.getGroupName()).isEqualTo("TestGroup");
     }
 
     @Test
@@ -38,15 +38,9 @@ public class GroupTest {
     }
 
     @Test
-    void setIdTest() {
-        group.setId("2");
-        Assertions.assertThat(group.getId()).isEqualTo("2");
-    }
-
-    @Test
     void setGroupNameTest() {
-        group.setGoupName("NewGroupName");
-        Assertions.assertThat(group.getGoupName()).isEqualTo("NewGroupName");
+        group.setGroupName("NewGroupName");
+        Assertions.assertThat(group.getGroupName()).isEqualTo("NewGroupName");
     }
 
     @Test
@@ -57,13 +51,13 @@ public class GroupTest {
 
     @Test
     void equalsTestTrue() {
-        Group g = new Group("1", "TestGroup", List.of(user1, user2));
+        Group g = new Group(1L, "1", "TestGroup", List.of(user1, user2));
         Assertions.assertThat(group.equals(g)).isTrue();
     }
 
     @Test
     void equalsTestFalse() {
-        Group g = new Group("2", "DifferentGroup", List.of(user1, user2));
+        Group g = new Group(1L, "2", "DifferentGroup", List.of(user1, user2));
         Assertions.assertThat(group.equals(g)).isFalse();
 
     }

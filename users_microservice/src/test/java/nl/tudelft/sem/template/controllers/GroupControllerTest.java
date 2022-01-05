@@ -39,12 +39,8 @@ public class GroupControllerTest {
         user2 = new User("2", "password2", "FirstName2", "LastName2");
         user3 = new User("3", "password3", "FirstName3", "LastName3");
         user4 = new User("4", "password4", "FirstName4", "LastName4");
-        group1 = new Group("1", "TestGroup", List.of(user1, user2));
-        group2 = new Group("2", "Second Group", List.of(user2, user3, user4));
-        user1.setGroups(List.of(group1));
-        user2.setGroups(List.of(group1, group2));
-        user3.setGroups(List.of(group2));
-        user4.setGroups(List.of(group2));
+        group1 = new Group(1L, "1", "TestGroup", List.of(user1, user2));
+        group2 = new Group(2L, "2", "Second Group", List.of(user2, user3, user4));
         groups = new ArrayList<>();
         groups.add(group1);
         groups.add(group2);
@@ -63,14 +59,14 @@ public class GroupControllerTest {
 
     @Test
     void getGroupTest() {
-        when(groupService.getGroup("1")).thenReturn(group1);
-        Assertions.assertThat(groupController.getGroup("1")).isEqualTo(group1);
+        when(groupService.getGroup(1L)).thenReturn(group1);
+        Assertions.assertThat(groupController.getGroup(1L)).isEqualTo(group1);
     }
 
     @Test
     void getMyGroupTest() {
-        when(groupService.getGroup("1")).thenReturn(group1);
-        Assertions.assertThat(groupController.getGroup("1")).isEqualTo(group1);
+        when(groupService.getGroup(1L)).thenReturn(group1);
+        Assertions.assertThat(groupController.getGroup(1L)).isEqualTo(group1);
     }
 
     @Test
@@ -82,13 +78,13 @@ public class GroupControllerTest {
     @Test
     void updateGroupTest() {
         Group newGroup1 = new Group("1", "First Group", List.of(user1, user2, user3));
-        groupController.updateGroup(newGroup1, "1");
-        verify(groupService, times(1)).updateGroup("1", newGroup1);
+        groupController.updateGroup(newGroup1, 1L);
+        verify(groupService, times(1)).updateGroup(1L, newGroup1);
     }
 
     @Test
     void deleteGroupTest() {
-        groupController.deleteGroup("1");
-        verify(groupService, times(1)).deleteGroup("1");
+        groupController.deleteGroup(1L);
+        verify(groupService, times(1)).deleteGroup(1L);
     }
 }

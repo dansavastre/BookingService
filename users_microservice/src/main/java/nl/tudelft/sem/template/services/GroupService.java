@@ -30,7 +30,7 @@ public class GroupService {
      * @param id    - The id of the group
      * @return      - Group object
      */
-    public Group getGroup(String id) {
+    public Group getGroup(Long id) {
         return groupRepository.findById(id).get();
     }
 
@@ -49,8 +49,7 @@ public class GroupService {
      * @param id    - The id of the group to be updated
      * @param group - The new attributes of the group
      */
-    public void updateGroup(String id, Group group) {
-        groupRepository.deleteById(id);
+    public void updateGroup(Long id, Group group) {
         groupRepository.save(group);
     }
 
@@ -59,7 +58,7 @@ public class GroupService {
      *
      * @param id    - The id of the group to be deleted
      */
-    public void deleteGroup(String id) {
+    public void deleteGroup(Long id) {
         groupRepository.deleteById(id);
     }
 }

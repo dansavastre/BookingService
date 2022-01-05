@@ -1,13 +1,17 @@
 package nl.tudelft.sem.template.objects;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity(name = "Group")
@@ -15,16 +19,25 @@ import javax.persistence.Table;
 public class Group {
 
     @Id
-    @Column(name = "ID", nullable = true, length = 50)
-    private String id;
+    @SequenceGenerator(
+            name = "group_sequence",
+            sequenceName = "group_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = IDENTITY,
+            generator = "group_sequence"
+    )
+    @Column(name = "ID")
+    private transient Long id;
 
-    @Column(name = "GROUP_NAME", nullable = true, length = 255)
-    private String goupName;
+    @Column(name = "GROUP_NAME")
+    private String groupName;
 
-    @Column(name = "SECRETARY", nullable = true)
-    private String secretary;
+    @Column(name = "SECRETARY")
+    private transient String secretary;
 
-    @Column(name = "MEMBERS", nullable = true, length = 50)
+    @Column(name = "MEMBERS", length = 50)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> members;
 
@@ -38,13 +51,28 @@ public class Group {
     /**
      * Group constructor with all group attributes as parameters.
      *
-     * @param id        - ID attribute used to identify groups as a String
-     * @param goupName  - The name of the group as a String
+     * @param secretary   - NetID of the Secretary in charge of this group
+     * @param groupName   - The name of the group as a String
      * @param members     - A list of User objects that are part of the group
      */
-    public Group(String id, String goupName, List<User> members) {
+    public Group(String secretary, String groupName, List<User> members) {
+        this.secretary = secretary;
+        this.groupName = groupName;
+        this.members = members;
+    }
+
+    /**
+     * Group constructor with all parameters for testing purposes.
+     *
+     * @param id          - ID of the group
+     * @param secretary   - NetID of the Secretary in charge of this group
+     * @param groupName   - The name of the group as a String
+     * @param members     - A list of User objects that are part of the group
+     */
+    public Group(Long id, String secretary, String groupName, List<User> members) {
         this.id = id;
-        this.goupName = goupName;
+        this.secretary = secretary;
+        this.groupName = groupName;
         this.members = members;
     }
 
@@ -53,7 +81,7 @@ public class Group {
      *
      * @return group ID as a String
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -62,8 +90,8 @@ public class Group {
      *
      * @return group name as a String
      */
-    public String getGoupName() {
-        return goupName;
+    public String getGroupName() {
+        return groupName;
     }
 
     /**
@@ -76,21 +104,12 @@ public class Group {
     }
 
     /**
-     * Setter for the group ID.
+     * Setter for the group name.
      *
-     * @param id    - String to set as new ID
+     * @param groupName  - String to be set as new group name
      */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Setter for thr group name.
-     *
-     * @param goupName  - String to be set as new group name
-     */
-    public void setGoupName(String goupName) {
-        this.goupName = goupName;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     /**
@@ -118,31 +137,29 @@ public class Group {
             return false;
         }
         Group group = (Group) o;
-        return Objects.equals(this.id, group.id)
-                && Objects.equals(this.goupName, group.goupName)
-                && this.members.equals(group.members);
+        return Objects.equals(id, group.id)
+                && Objects.equals(groupName, group.groupName)
+                && Objects.equals(secretary, group.secretary)
+                && Objects.equals(members, group.members);
     }
 
     /**
      * HashCode method to hash group.
      *
-     * @return  - hased value of group as integer
+     * @return  - hashed value of group as integer
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, goupName, members);
+        return Objects.hash(id, groupName, secretary, members);
     }
 
     @Override
     public String toString() {
         return "Group{"
-                + "id='"
-                + id + '\''
-                + ", name='"
-                + goupName
-                + '\''
-                + ", users="
-                + members
+                + "id=" + id
+                + ", groupName='" + groupName + '\''
+                + ", secretary='" + secretary + '\''
+                + ", members=" + members
                 + '}';
     }
 }
