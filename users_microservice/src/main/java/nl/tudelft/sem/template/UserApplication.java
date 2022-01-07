@@ -19,6 +19,9 @@ import org.springframework.context.annotation.Bean;
 public class UserApplication {
 
     private final transient String employee = "employee";
+    private final transient String secretary = "secretary";
+    private final transient String admin = "admin";
+
     private transient List<User> group;
 
     public static void main(String[] args) {
@@ -34,8 +37,8 @@ public class UserApplication {
     CommandLineRunner run2(RoleService roleService) {
         return args -> {
             roleService.addRole(new Role(employee));
-            roleService.addRole(new Role("secretary"));
-            roleService.addRole(new Role("admin"));
+            roleService.addRole(new Role(secretary));
+            roleService.addRole(new Role(admin));
 
         };
     }
@@ -43,10 +46,10 @@ public class UserApplication {
     @Bean
     CommandLineRunner run(UserService userService) {
         return args -> {
-            List<Role> rolesVeena = new ArrayList<Role>(Arrays.asList(new Role(employee),
-                    new Role("secretary")));
-            List<Role> rolesKeshav = new ArrayList<Role>(Arrays.asList(new Role(employee),
-                    new Role("secretary"), new Role("admin")));
+            List<Role> rolesVeena = new ArrayList<>(Arrays.asList(new Role(employee),
+                    new Role(secretary)));
+            List<Role> rolesKeshav = new ArrayList<>(Arrays.asList(new Role(employee),
+                    new Role(secretary), new Role(admin)));
 
             User u1 = new User("ltwubben", "MTIzNA==", "Luuk", "Wubben");
             u1.addRole(new Role(employee));
