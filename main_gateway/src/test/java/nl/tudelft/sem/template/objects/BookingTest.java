@@ -19,6 +19,7 @@ public class BookingTest {
                 LocalTime.of(15, 45),
                 "Group study session",
                 List.of("user0", "user1"));
+        booking.setStatus("cancelled");
     }
 
     @Test
@@ -61,6 +62,11 @@ public class BookingTest {
         Assertions.assertThat(booking.getParticipants()).isEqualTo(List.of("user0", "user1"));
     }
 
+    @Test
+    void getStatus_test() {
+        Assertions.assertThat(booking.getStatus()).isEqualTo("cancelled");
+    }
+
 
     @Test
     void setBookingOwner_test() {
@@ -96,6 +102,12 @@ public class BookingTest {
     void setPurpose_test() {
         booking.setPurpose("Team meeting");
         Assertions.assertThat(booking.getPurpose()).isEqualTo("Team meeting");
+    }
+
+    @Test
+    void setStatus_test() {
+        booking.setStatus("edited");
+        Assertions.assertThat(booking.getStatus()).isEqualTo("edited");
     }
 
 }

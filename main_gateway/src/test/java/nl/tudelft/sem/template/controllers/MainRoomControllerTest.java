@@ -7,15 +7,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
@@ -98,7 +97,7 @@ public class MainRoomControllerTest {
                 LocalTime.of(12, 0),
                 "Project room",
                 List.of("user2", "user3"));
-        bookings = new ArrayList<>(List.of(b1, b2,b3));
+        bookings = new ArrayList<>(List.of(b1, b2, b3));
     }
 
     @Test
@@ -165,6 +164,8 @@ public class MainRoomControllerTest {
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
+    private transient String tenTime = "10:00:00";
+
     @Test
     void availableRoom_validTest() {
         MainRoomController spyMainRoomController = Mockito.spy(mainRoomController);
@@ -173,7 +174,8 @@ public class MainRoomControllerTest {
         result.add(room2);
         Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
-        assertEquals(result, spyMainRoomController.availableRooms("2022-01-02", "10:00:00", "14:30:00", token));
+        assertEquals(result, spyMainRoomController.availableRooms("2023-01-02",
+                tenTime, "14:30:00", token));
     }
 
     @Test
@@ -183,9 +185,10 @@ public class MainRoomControllerTest {
         Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
 
-        assertEquals(new ArrayList<Room>(), spyMainRoomController.availableRooms("2022-01-02", "10:00:00", "08:30:00", token));
-        assertThrows(ResponseStatusException.class,
-                spyMainRoomController.availableRooms("2022-01-02", "10:00:00", "08:30:00", token));
+        assertThrows(ResponseStatusException.class, () -> {
+            spyMainRoomController.availableRooms("2022-01-02",
+                    tenTime, "08:30:00", token);
+        });
     }
 
     @Test
@@ -195,6 +198,47 @@ public class MainRoomControllerTest {
         Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
 
-        assertEquals(new ArrayList<Room>(), spyMainRoomController.availableRooms("2020-01-02", "10:00:00", "08:30:00", token));
+        assertThrows(ResponseStatusException.class, () -> {
+            spyMainRoomController.availableRooms("2020-01-02",
+                    "08:30:00", tenTime,  token);
+        });
+    }
+
+    @Test
+    void availableRoom_pastTimeTest() {
+        MainRoomController spyMainRoomController = Mockito.spy(mainRoomController);
+
+        Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
+        when(bookingController.getFutureBookings(token)).thenReturn(bookings);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            spyMainRoomController.availableRooms(LocalDate.now().toString(),
+                    "08:30:00", tenTime,  token);
+        });
+    }
+
+    @Test
+    void searchRoom_dateNull() {
+        MainRoomController spyMainRoomController = Mockito.spy(mainRoomController);
+        List<Room> result = new ArrayList<>();
+        result.add(room1);
+        Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
+        when(bookingController.getFutureBookings(token)).thenReturn(bookings);
+        String[] arr = {"projector", "wifi"};
+        assertEquals(result, spyMainRoomController.searchRooms(null, null,
+                null, "1", "36",
+                "Steve Jobs Room", "4", arr, token));
+    }
+
+    @Test
+    void searchRoom_dateNotNull() {
+        MainRoomController spyMainRoomController = Mockito.spy(mainRoomController);
+        List<Room> result = new ArrayList<>();
+        Mockito.doReturn(rooms).when(spyMainRoomController).getRooms(token);
+        when(bookingController.getFutureBookings(token)).thenReturn(bookings);
+        String[] arr = {"projector", "wifi", "table"};
+        assertEquals(result, spyMainRoomController.searchRooms("2023-01-02",
+                tenTime, "14:30:00", null,
+                null, null, null, arr, token));
     }
 }

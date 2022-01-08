@@ -114,14 +114,21 @@ public class BookingControllerTest {
     void updateBooking_Test() {
         bookingController.updateBooking(b1, 1L, token);
         verify(bookingService, times(1)).updateBooking(1L, b1);
-        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
-    void deleteBooking_test() {
-        bookingController.deleteBooking(1L, token);
-        verify(bookingService, times(1)).deleteBooking(1L);
-        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
+    void updateMyBooking_Test() {
+        bookingController.updateMyBooking(b1, "A", 1L, token);
+        verify(bookingService, times(1)).updateMyBooking("A", 1L, b1);
+        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
+    }
+
+    @Test
+    void deleteMyBooking_test() {
+        bookingController.deleteBooking("A", 1L, token);
+        verify(bookingService, times(1)).deleteMyBooking("A", 1L);
+        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
     }
 
     @Test
