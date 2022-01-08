@@ -66,7 +66,7 @@ public class Room {
         this.equipment = equipment;
         this.available = available;
         this.building = building;
-        this.id = Integer.toString(roomNumber) + Integer.toString(building.getId());
+        this.id = Integer.toString(building.getId()) + "-" + Integer.toString(roomNumber);
     }
 
     public int getRoomNumber() {
