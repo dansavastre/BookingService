@@ -33,7 +33,7 @@ public class RoomTest {
 
     @Test
     void getId_test() {
-        Assertions.assertThat(room.getId()).isEqualTo("136");
+        Assertions.assertThat(room.getId()).isEqualTo("36-1");
     }
 
     @Test
