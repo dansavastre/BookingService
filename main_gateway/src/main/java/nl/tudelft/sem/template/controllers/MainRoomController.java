@@ -114,7 +114,7 @@ public class MainRoomController {
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 

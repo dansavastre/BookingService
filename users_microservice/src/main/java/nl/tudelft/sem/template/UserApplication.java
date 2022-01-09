@@ -1,12 +1,13 @@
 package nl.tudelft.sem.template;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import nl.tudelft.sem.template.objects.Group;
 import nl.tudelft.sem.template.objects.Role;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.security.NoEncoding;
+import nl.tudelft.sem.template.services.GroupService;
 import nl.tudelft.sem.template.services.RoleService;
 import nl.tudelft.sem.template.services.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +18,11 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class UserApplication {
 
-    private transient String employee = "employee";
+    private final transient String employee = "employee";
+    private final transient String secretary = "secretary";
+    private final transient String admin = "admin";
+
+    private transient List<User> groupMembers;
 
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
@@ -32,8 +37,8 @@ public class UserApplication {
     CommandLineRunner run2(RoleService roleService) {
         return args -> {
             roleService.addRole(new Role(employee));
-            roleService.addRole(new Role("secretary"));
-            roleService.addRole(new Role("admin"));
+            roleService.addRole(new Role(secretary));
+            roleService.addRole(new Role(admin));
 
         };
     }
@@ -41,29 +46,57 @@ public class UserApplication {
     @Bean
     CommandLineRunner run(UserService userService) {
         return args -> {
-            List<Role> roles = new ArrayList<Role>(Arrays.asList(new Role(employee)));
-            List<Role> roles2 = new ArrayList<Role>(Arrays.asList(new Role(employee),
-                    new Role("secretary")));
-            List<Role> roles3 = new ArrayList<Role>(Arrays.asList(new Role(employee),
-                    new Role("secretary"), new Role("admin")));
+            List<Role> rolesVeena = new ArrayList<>(Arrays.asList(new Role(employee),
+                    new Role(secretary)));
+            List<Role> rolesKeshav = new ArrayList<>(Arrays.asList(new Role(employee),
+                    new Role(secretary), new Role(admin)));
+
             User u1 = new User("ltwubben", "MTIzNA==", "Luuk", "Wubben");
-            u1.setRoles(roles);
+            u1.addRole(new Role(employee));
+
             User u2 = new User("vmadhu", "NTY3OA==", "Veena", "Madhu");
-            u2.setRoles(roles2);
+            for (Role r : rolesVeena) {
+                u2.addRole(r);
+            }
+
             User u3 = new User("keshavnair", "OTEyMw==", "Keshav", "Nair");
-            u3.setRoles(roles3);
+            for (Role r : rolesKeshav) {
+                u3.addRole(r);
+            }
+
             User u4 = new User("npietnoczko", "NDU2Nw==", "Natalia", "Pietnoczko");
-            u4.setRoles(Arrays.asList(new Role(employee)));
+            u4.addRole(new Role(employee));
+
             User u5 = new User("bserbanescu", "ODkxMg==", "Bianca", "Serbanescu");
-            u5.setRoles(Arrays.asList(new Role(employee)));
+            u5.addRole(new Role(employee));
+
             User u6 = new User("dsavastre", "MzQ1Ng==", "Dan", "Savastre");
-            u6.setRoles(Arrays.asList(new Role(employee)));
+            u6.addRole(new Role(employee));
+
             userService.addUser(u1);
             userService.addUser(u2);
             userService.addUser(u3);
             userService.addUser(u4);
             userService.addUser(u5);
             userService.addUser(u6);
+
+            groupMembers = new ArrayList<>();
+            groupMembers.add(u1);
+            groupMembers.add(u2);
+            groupMembers.add(u3);
+            groupMembers.add(u4);
+            groupMembers.add(u5);
+            groupMembers.add(u6);
+        };
+    }
+
+    @Bean
+    CommandLineRunner run3(GroupService groupService) {
+        return args -> {
+            Group group = new Group("vmadhu",
+                  "M.R.B.S. Research Group",
+                  groupMembers);
+            groupService.addGroup(group);
         };
     }
 }

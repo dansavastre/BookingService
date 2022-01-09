@@ -1,8 +1,7 @@
 package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
-import java.util.Map;
-import nl.tudelft.sem.template.objects.User;
+import nl.tudelft.sem.template.objects.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,56 +22,29 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 @Controller
-public class UserController {
+public class GroupController {
 
     @Autowired
     private transient RestTemplate restTemplate;
 
-    private static final int notFoundErrorCode = 404;
-
-
-    /** Sends the request to user for authentication of the user.
+    /**
+     * Function to get all groups.
      *
-     * @param password      encrypted user password
-     * @param username      username of the user
-     * @return Map of tokens received form the user microservice
+     * @param token Security token for authentication
+     * @return A list of groups
      */
-    @PostMapping("/login")
+    @GetMapping("/getGroups")
     @ResponseBody
-    public Map loginUser(@RequestHeader("Authentication") String password,
-                                         @RequestHeader("Username") String username) {
-        String uri = "http://localhost:8081/login";
+    public List getGroups(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/groups";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, password);
-        headers.add("Username", username);
+        headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
         try {
-            ResponseEntity<Map> res = restTemplate
-                    .exchange(uri, HttpMethod.POST, entity, Map.class);
-            return res.getBody();
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "");
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /** Returns all the users in the system.
-     *
-     * @return list of users.
-     */
-    @GetMapping("/getUsers")
-    @ResponseBody
-    public List getUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/admin/users";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
-        try {
-            ResponseEntity<List> res = restTemplate.exchange(uri,
-                    HttpMethod.GET, entity, List.class);
+            ResponseEntity<List> res = restTemplate
+                    .exchange(uri, HttpMethod.GET, entity, List.class);
             return res.getBody();
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
@@ -81,22 +53,24 @@ public class UserController {
         }
     }
 
-    /** Returns a specific user with respect to its id.
+    /**
+     * Get a specific group by their ID.
      *
-     * @param id the id of the user we want.
-     * @return the user we are searching for.
+     * @param id    ID of the group
+     * @param token The security token for authentication
+     * @return The group, if it exists
      */
-    @GetMapping("/getUser/{id}")
+    @GetMapping("/getGroup/{id}")
     @ResponseBody
-    public User getUser(@PathVariable("id") String id,
-                        @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/admin/getUser/".concat(id);
+    public Group getGroup(@PathVariable("id") Long id,
+                          @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/getGroup/".concat(id.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("", headers);
         try {
-            ResponseEntity<User> res = restTemplate.exchange(uri,
-                    HttpMethod.GET, entity, User.class);
+            ResponseEntity<Group> res = restTemplate.exchange(uri,
+                    HttpMethod.GET, entity, Group.class);
             return res.getBody();
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
@@ -105,19 +79,50 @@ public class UserController {
         }
     }
 
-    /** Adds a user to the system.
+    /**
+     * Getter for a specific group to be used by secretaries to find their group.
      *
-     * @param user the user we want to add.
-     * @return true if its successfully added, else false.
+     * @param id    ID of the secretary
+     * @param token Security token for authentication
+     * @return The group of the secretary
      */
-    @PostMapping("/postUser")
+    @GetMapping("/getMyGroup/{id}/{secretaryId}")
     @ResponseBody
-    public boolean postUser(@RequestBody User user,
+    public Group getMyGroup(@PathVariable("id") Long id,
+                            @PathVariable("secretaryId") String secretaryId,
                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/admin/users";
+        String uri = "http://localhost:8081/secretary/getMyGroup/"
+                    + id.toString() + "/"
+                    + secretaryId;
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<User> entity = new HttpEntity<>(user, headers);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        try {
+            ResponseEntity<Group> res = restTemplate.exchange(uri,
+                    HttpMethod.GET, entity, Group.class);
+            return res.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+        }
+    }
+
+    /**
+     * Post a new group to the database.
+     *
+     * @param group The group to be posted
+     * @param token Security token for authentication
+     * @return boolean indicating success or failure
+     */
+    @PostMapping("/postGroup")
+    @ResponseBody
+    public boolean postGroup(@RequestBody Group group,
+                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/group";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<Group> entity = new HttpEntity<>(group, headers);
         try {
             restTemplate.exchange(uri,
                     HttpMethod.POST, entity, void.class);
@@ -129,20 +134,22 @@ public class UserController {
         }
     }
 
-    /** Update a user.
+    /**
+     * Update a group in the database.
      *
-     * @param user the new user.
-     * @param id the id of the user to update.
-     * @return true if successfully updated, else false.
+     * @param group The group to be updated, with updated elements
+     * @param id    The ID of the group to be updated
+     * @param token Security token for authentication
+     * @return Boolean indicating success or failure
      */
-    @PutMapping("/putUser/{id}")
+    @PutMapping("/putGroup/{id}")
     @ResponseBody
-    public boolean updateUser(@RequestBody User user, @PathVariable("id") String id,
-                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/admin/users/".concat(id);
+    public boolean updateGroup(@RequestBody Group group, @PathVariable("id") String id,
+                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/groups/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<User> entity = new HttpEntity<>(user, headers);
+        HttpEntity<Group> entity = new HttpEntity<>(group, headers);
         try {
             restTemplate.exchange(uri,
                     HttpMethod.PUT, entity, void.class);
@@ -154,16 +161,18 @@ public class UserController {
         }
     }
 
-    /** Deletes a user from the system.
+    /**
+     * Method to delete an existing group.
      *
-     * @param id the id of the user to delete.
-     * @return true if successfully deleted, else false.
+     * @param id    ID of the group to be deleted
+     * @param token Security token for authentication
+     * @return Boolean indicating success or failure
      */
-    @DeleteMapping("/deleteUser/{id}")
+    @DeleteMapping("/deleteGroup/{id}")
     @ResponseBody
-    public boolean deleteUser(@PathVariable("id") String id,
-                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/admin/users/".concat(id);
+    public boolean deleteGroup(@PathVariable("id") String id,
+                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/admin/groups/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
@@ -172,9 +181,6 @@ public class UserController {
                     HttpMethod.DELETE, entity, void.class);
             return true;
         } catch (HttpClientErrorException e) {
-            if (e.getRawStatusCode() == notFoundErrorCode) {
-                return true;
-            }
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             return false;

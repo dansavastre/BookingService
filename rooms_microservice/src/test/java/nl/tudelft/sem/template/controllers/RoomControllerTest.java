@@ -94,6 +94,8 @@ public class RoomControllerTest {
 
     @Test
     void updateRoom_test() {
+        when(roomService.getRoom("11"))
+                .thenReturn(r2);
         roomController.updateRoom(r2, "11", token);
         verify(roomService, times(1)).updateRoom("11", r2);
         verify(auth, times(1)).authorize(Authorization.ADMIN, token);
