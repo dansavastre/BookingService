@@ -28,6 +28,8 @@ public class UserController {
     @Autowired
     private transient RestTemplate restTemplate;
 
+    private static final int notFoundErrorCode = 404;
+
 
     /** Sends the request to user for authentication of the user.
      *
@@ -170,6 +172,9 @@ public class UserController {
                     HttpMethod.DELETE, entity, void.class);
             return true;
         } catch (HttpClientErrorException e) {
+            if (e.getRawStatusCode() == notFoundErrorCode) {
+                return true;
+            }
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             return false;
