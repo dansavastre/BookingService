@@ -1,6 +1,8 @@
 package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import nl.tudelft.sem.template.objects.Group;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.services.GroupService;
@@ -63,14 +65,13 @@ public class GroupController {
     public boolean checkGroup(@PathVariable("groupId") Long groupId,
                               @PathVariable("secretaryId") String secretaryId,
                               @PathVariable("bookingOwnerId") String bookingOwnerId) {
-        boolean hasSecretary = groupService.getGroup(groupId).getSecretary().equals(secretaryId);
-        boolean hasBoolingOwner = false;
-        for(User user : groupService.getGroup(groupId).getMembers()) {
-            if(user.getId().equals(bookingOwnerId)) {
-                hasBoolingOwner = true;
-            }
+        if(!groupService.getGroup(groupId).getSecretary().equals(secretaryId)) {
+            return false;
         }
-        return hasSecretary && hasBoolingOwner;
+        List<String> membersIds = groupService.getGroup(groupId).getMembers().stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
+        return membersIds.contains(bookingOwnerId);
     }
 
 }

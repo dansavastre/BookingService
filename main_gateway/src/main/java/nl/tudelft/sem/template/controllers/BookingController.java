@@ -165,8 +165,7 @@ public class BookingController {
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         try {
-            ResponseEntity<Boolean> res = restTemplate
-                    .exchange(uri, HttpMethod.GET, entity, Boolean.class);
+            restTemplate.exchange(uri, HttpMethod.GET, entity, Boolean.class);
             postBooking(booking, token);
             return true;
         } catch (HttpClientErrorException e) {

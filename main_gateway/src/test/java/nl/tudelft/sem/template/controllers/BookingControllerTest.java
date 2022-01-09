@@ -211,7 +211,6 @@ public class BookingControllerTest {
         String uri = "http://localhost:8083/bookings";
         ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
         ResponseEntity<Void> res1 = new ResponseEntity<>(HttpStatus.OK);
-        ResponseEntity<Boolean> res2 = new ResponseEntity<>(true, HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
