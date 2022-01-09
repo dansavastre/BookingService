@@ -41,12 +41,20 @@ public class GroupController {
         return groupService.getGroup(id);
     }
 
+    /**
+     * Get the group for a certain secretary.
+     *
+     * @param id          ID of the group
+     * @param secretaryId ID of the secretary who made the request
+     * @param token       Security token for authentication purposes
+     * @return The requested group, if it exists and is being requested by its secretary
+     */
     @GetMapping("secretary/getMyGroup/{id}/{secretaryId}")
     @ResponseBody
     public Group getMyGroup(@PathVariable("id") Long id,
                             @PathVariable("secretaryId") String secretaryId,
                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        if(groupService.getGroup(id).getSecretary().equals(secretaryId)) {
+        if (groupService.getGroup(id).getSecretary().equals(secretaryId)) {
             return groupService.getGroup(id);
         }
         return null;
