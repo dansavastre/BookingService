@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import nl.tudelft.sem.template.objects.Group;
+import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -56,4 +57,23 @@ public class GroupController {
     public void deleteGroup(@PathVariable("id") Long id) {
         groupService.deleteGroup(id);
     }
+
+    @GetMapping("secretary/checkGroup/{groupId}/{secretaryId}/{bookingOwnerId}")
+    @ResponseBody
+    public boolean checkGroup(@PathVariable("groupId") Long groupId,
+                              @PathVariable("secretaryId") String secretaryId,
+                              @PathVariable("bookingOwnerId") String bookingOwnerId) {
+        boolean hasSecretary = false;
+        boolean hasBoolingOwner = false;
+        for(User user : groupService.getGroup(groupId).getMembers()) {
+            if(user.getId().equals(secretaryId)) {
+                hasSecretary = true;
+            }
+            if(user.getId().equals(bookingOwnerId)) {
+                hasBoolingOwner = true;
+            }
+        }
+        return hasSecretary && hasBoolingOwner;
+    }
+
 }

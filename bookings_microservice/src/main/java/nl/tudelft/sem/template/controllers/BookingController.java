@@ -95,6 +95,15 @@ public class BookingController {
         bookingService.addBooking(booking);
     }
 
+    @PostMapping("/bookingsForGroup")
+    @ResponseBody
+    public void addBookingForGroup(@RequestBody Booking booking,
+                           @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorize(Authorization.SECRETARY, token);
+        //if(booking.getBookingOwner())
+        bookingService.addBooking(booking);
+    }
+
     @PutMapping("/bookings/{id}")
     @ResponseBody
     public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
