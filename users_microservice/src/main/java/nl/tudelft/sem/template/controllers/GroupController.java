@@ -2,7 +2,6 @@ package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import nl.tudelft.sem.template.objects.Group;
 import nl.tudelft.sem.template.objects.User;
 import nl.tudelft.sem.template.services.GroupService;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class GroupController {
@@ -67,12 +66,20 @@ public class GroupController {
         groupService.deleteGroup(id);
     }
 
+    /**
+     * Checks if a booking owner belongs to a certain group.
+     *
+     * @param groupId        The ID of the group to be checked
+     * @param secretaryId    The secretaryID of the secretary to be checked for verification
+     * @param bookingOwnerId The ID of the booking owner to be checked
+     * @return A boolean showing if the booking is of a group member or not
+     */
     @GetMapping("secretary/checkGroup/{groupId}/{secretaryId}/{bookingOwnerId}")
     @ResponseBody
     public boolean checkGroup(@PathVariable("groupId") Long groupId,
                               @PathVariable("secretaryId") String secretaryId,
                               @PathVariable("bookingOwnerId") String bookingOwnerId) {
-        if(!groupService.getGroup(groupId).getSecretary().equals(secretaryId)) {
+        if (!groupService.getGroup(groupId).getSecretary().equals(secretaryId)) {
             return false;
         }
         List<String> membersIds = groupService.getGroup(groupId).getMembers().stream()

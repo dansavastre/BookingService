@@ -1,15 +1,25 @@
 package nl.tudelft.sem.template.controllers;
 
+import java.util.List;
 import nl.tudelft.sem.template.objects.Group;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Controller
 public class GroupController {
@@ -17,6 +27,12 @@ public class GroupController {
     @Autowired
     private transient RestTemplate restTemplate;
 
+    /**
+     * Function to get all groups.
+     *
+     * @param token Security token for authentication
+     * @return A list of groups
+     */
     @GetMapping("/getGroups")
     @ResponseBody
     public List getGroups(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
@@ -37,10 +53,17 @@ public class GroupController {
         }
     }
 
+    /**
+     * Get a specific group by their ID.
+     *
+     * @param id    ID of the group
+     * @param token The security token for authentication
+     * @return The group, if it exists
+     */
     @GetMapping("/getGroup/{id}")
     @ResponseBody
     public Group getGroup(@PathVariable("id") Long id,
-                        @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+                          @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8081/admin/getGroup/".concat(id.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
@@ -56,10 +79,17 @@ public class GroupController {
         }
     }
 
+    /**
+     * Getter for a specific group to be used by secretaries to find their group.
+     *
+     * @param id    ID of the secretary
+     * @param token Security token for authentication
+     * @return The group of the secretary
+     */
     @GetMapping("/getMyGroup/{id}")
     @ResponseBody
     public Group getMyGroup(@PathVariable("id") Long id,
-                        @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+                            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8081/secretary/getGroup/".concat(id.toString());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
@@ -75,10 +105,17 @@ public class GroupController {
         }
     }
 
+    /**
+     * Post a new group to the database.
+     *
+     * @param group The group to be posted
+     * @param token Security token for authentication
+     * @return boolean indicating success or failure
+     */
     @PostMapping("/postGroup")
     @ResponseBody
     public boolean postGroup(@RequestBody Group group,
-                            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8081/admin/group";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
@@ -94,10 +131,18 @@ public class GroupController {
         }
     }
 
+    /**
+     * Update a group in the database.
+     *
+     * @param group The group to be updated, with updated elements
+     * @param id    The ID of the group to be updated
+     * @param token Security token for authentication
+     * @return Boolean indicating success or failure
+     */
     @PutMapping("/putGroup/{id}")
     @ResponseBody
     public boolean updateGroup(@RequestBody Group group, @PathVariable("id") String id,
-                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8081/admin/groups/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
@@ -113,10 +158,17 @@ public class GroupController {
         }
     }
 
+    /**
+     * Method to delete an existing group.
+     *
+     * @param id    ID of the group to be deleted
+     * @param token Security token for authentication
+     * @return Boolean indicating success or failure
+     */
     @DeleteMapping("/deleteGroup/{id}")
     @ResponseBody
     public boolean deleteGroup(@PathVariable("id") String id,
-                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8081/admin/groups/".concat(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);

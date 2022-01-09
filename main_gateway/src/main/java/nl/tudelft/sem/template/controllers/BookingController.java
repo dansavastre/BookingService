@@ -33,8 +33,10 @@ public class BookingController {
     private transient RestTemplate restTemplate;
     @Autowired
     private transient BuildingController buildingController;
+
     @Autowired
-    private transient BookingController bookingControllerAutowired;
+    private transient BookingController autowiredBookingController;
+
     @Autowired
     private transient MainRoomController mainRoomController;
 
@@ -55,11 +57,11 @@ public class BookingController {
     public Validator validatorCreator(String token) {
         Validator handler = new BookingValidator(buildingController,
                 mainRoomController,
-                bookingControllerAutowired);
+                autowiredBookingController);
         handler.setToken(token);
         Validator buildingValidator = new BuildingValidator(buildingController);
         buildingValidator.setToken(token);
-        Validator roomValidator = new RoomValidator(bookingControllerAutowired);
+        Validator roomValidator = new RoomValidator(autowiredBookingController);
         roomValidator.setToken(token);
         buildingValidator.setNext(roomValidator);
         handler.setNext(buildingValidator);
@@ -128,7 +130,6 @@ public class BookingController {
     public boolean postBooking(@RequestBody Booking booking,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
-            booking.setStatus("valid");
             Validator handler = validatorCreator(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
@@ -137,6 +138,7 @@ public class BookingController {
                 headers.add(HttpHeaders.AUTHORIZATION, token);
                 HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
                 restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
+                booking.setStatus("valid");
                 return true;
             }
             return false;
