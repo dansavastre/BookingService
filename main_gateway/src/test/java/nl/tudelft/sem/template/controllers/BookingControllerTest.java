@@ -81,7 +81,7 @@ public class BookingControllerTest {
                 LocalTime.of(22, 0), "Building 1");
         room1 = new Room(1, "Nice room", 4,
                 new HashMap<>(), "yes", 1);
-        b1 = new Booking(1L, "Mike", 1, 1,
+        b1 = new Booking(1L, "2", 1, 1,
                 LocalDate.of(2025, 12, 4),
                 LocalTime.of(11, 10),
                 LocalTime.of(15, 45),
@@ -221,13 +221,13 @@ public class BookingControllerTest {
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
         when(restTemplate.exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/2"), eq(HttpMethod.GET),
                 entity.capture(), eq(Void.class))).thenReturn(res1);
+        when(restTemplate.exchange(eq("http://localhost:8083/bookingForGroup"), eq(HttpMethod.POST),
+                entity.capture(), eq(Void.class))).thenReturn(res1);
 
         Assertions.assertThat(bookingController
-                .postBookingForGroup(b1, 1L, "1", "2", token)).isTrue();
+                .postBookingForGroup(b1, 1L, "1", token)).isTrue();
         verify(restTemplate, times(1))
                 .exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/2"), eq(HttpMethod.GET), entity.capture(), eq(Boolean.class));
-        //verify(restTemplate, times(1))
-        //        .exchange(eq(uri), eq(HttpMethod.POST), entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
