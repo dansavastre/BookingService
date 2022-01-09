@@ -47,7 +47,7 @@ public class BookingControllerTest {
     @Mock
     private transient BuildingController buildingController;
     @Mock
-    private transient GroupController groupController;
+    private transient BookingController bookingControllerMock;
     @Mock
     private transient RoomController roomController;
 
@@ -100,6 +100,7 @@ public class BookingControllerTest {
                 "Project room",
                 List.of("user2", "user3"));
         bookings = new ArrayList<>(List.of(b1, b2));
+
         user1 = new User("1", "password", "FirstName", "LastName");
         user2 = new User("2", "password2", "FirstName2", "LastName2");
         user3 = new User("3", "password3", "FirstName3", "LastName3");
