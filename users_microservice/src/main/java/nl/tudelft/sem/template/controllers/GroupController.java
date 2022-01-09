@@ -41,11 +41,15 @@ public class GroupController {
         return groupService.getGroup(id);
     }
 
-    @GetMapping("secretary/getGroup/{id}")
+    @GetMapping("secretary/getMyGroup/{id}/{secretaryId}")
     @ResponseBody
     public Group getMyGroup(@PathVariable("id") Long id,
+                            @PathVariable("secretaryId") String secretaryId,
                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        return groupService.getGroup(id);
+        if(groupService.getGroup(id).getSecretary().equals(secretaryId)) {
+            return groupService.getGroup(id);
+        }
+        return null;
     }
 
     @PostMapping("admin/group")

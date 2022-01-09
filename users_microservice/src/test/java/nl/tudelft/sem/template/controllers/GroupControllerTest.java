@@ -68,7 +68,7 @@ public class GroupControllerTest {
     @Test
     void getMyGroupTest() {
         when(groupService.getGroup(1L)).thenReturn(group1);
-        Assertions.assertThat(groupController.getMyGroup(1L, "1")).isEqualTo(group1);
+        Assertions.assertThat(groupController.getMyGroup(1L, "1", token)).isEqualTo(group1);
     }
 
     @Test
