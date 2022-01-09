@@ -18,9 +18,7 @@ import java.util.List;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
-import nl.tudelft.sem.template.objects.Booking;
-import nl.tudelft.sem.template.objects.Building;
-import nl.tudelft.sem.template.objects.Room;
+import nl.tudelft.sem.template.objects.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,12 +48,20 @@ public class BookingControllerTest {
     @Mock
     private transient BuildingController buildingController;
     @Mock
-    private transient BookingController bookingControllerMock;
+    private transient GroupController groupController;
     @Mock
     private transient RoomController roomController;
 
     @InjectMocks
     private transient BookingController bookingController;
+
+    transient User user1;
+    transient User user2;
+    transient User user3;
+    transient User user4;
+    transient Group group1;
+    transient Group group2;
+    transient List<Group> groups;
 
     private transient Booking b1;
     private transient Booking b2;
@@ -95,6 +101,15 @@ public class BookingControllerTest {
                 "Project room",
                 List.of("user2", "user3"));
         bookings = new ArrayList<>(List.of(b1, b2));
+        user1 = new User("1", "password", "FirstName", "LastName");
+        user2 = new User("2", "password2", "FirstName2", "LastName2");
+        user3 = new User("3", "password3", "FirstName3", "LastName3");
+        user4 = new User("4", "password4", "FirstName4", "LastName4");
+        group1 = new Group(1L, "1", "TestGroup", List.of(user1, user2));
+        group2 = new Group(2L, "2", "Second Group", List.of(user2, user3, user4));
+        groups = new ArrayList<>();
+        groups.add(group1);
+        groups.add(group2);
     }
 
     @Test
@@ -138,7 +153,6 @@ public class BookingControllerTest {
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
-    //TODO: fix this test
     @Test
     void postBooking_test() throws InvalidBookingException,
             InvalidRoomException, BuildingNotOpenException {
@@ -189,6 +203,31 @@ public class BookingControllerTest {
         Assertions.assertThat(bookingController.deleteBooking(1L, token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.DELETE),
             entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+    }
+
+    @Test
+    void postBookingForGroup_test() {
+        String uri = "http://localhost:8083/bookings";
+        ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
+        ResponseEntity<Void> res1 = new ResponseEntity<>(HttpStatus.OK);
+        ResponseEntity<Boolean> res2 = new ResponseEntity<>(true, HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
+                entity.capture(), eq(void.class))).thenReturn(res1);
+
+        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(roomController.getRoom(b1.getRoom(), token)).thenReturn(room1);
+        when(restTemplate.exchange(eq("http://localhost:8083/allbookings"),
+                eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
+        when(restTemplate.exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/2"), eq(HttpMethod.GET),
+                entity.capture(), eq(Void.class))).thenReturn(res1);
+
+        Assertions.assertThat(bookingController
+                .postBookingForGroup(b1, 1L, "1", "2", token)).isTrue();
+        verify(restTemplate, times(1))
+                .exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/2"), eq(HttpMethod.GET), entity.capture(), eq(Boolean.class));
+        //verify(restTemplate, times(1))
+        //        .exchange(eq(uri), eq(HttpMethod.POST), entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 

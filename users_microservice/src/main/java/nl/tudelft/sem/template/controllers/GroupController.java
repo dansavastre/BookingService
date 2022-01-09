@@ -63,12 +63,9 @@ public class GroupController {
     public boolean checkGroup(@PathVariable("groupId") Long groupId,
                               @PathVariable("secretaryId") String secretaryId,
                               @PathVariable("bookingOwnerId") String bookingOwnerId) {
-        boolean hasSecretary = false;
+        boolean hasSecretary = groupService.getGroup(groupId).getSecretary().equals(secretaryId);
         boolean hasBoolingOwner = false;
         for(User user : groupService.getGroup(groupId).getMembers()) {
-            if(user.getId().equals(secretaryId)) {
-                hasSecretary = true;
-            }
             if(user.getId().equals(bookingOwnerId)) {
                 hasBoolingOwner = true;
             }

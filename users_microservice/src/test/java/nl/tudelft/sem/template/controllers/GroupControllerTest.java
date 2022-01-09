@@ -89,4 +89,10 @@ public class GroupControllerTest {
         groupController.deleteGroup(1L);
         verify(groupService, times(1)).deleteGroup(1L);
     }
+
+    @Test
+    void checkGroupTest() {
+        when(groupService.getGroup(1L)).thenReturn(group1);
+        Assertions.assertThat(groupController.checkGroup(1L, "1", "2")).isTrue();
+    }
 }

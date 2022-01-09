@@ -144,7 +144,7 @@ public class BookingController {
     }
 
     /**
-     * Adds a booking to the system.
+     * Method for a secretary to add a booking for an employee in their research group
      *
      * @param booking the booking we want to add.
      * @return true if its successfully added, else false.
@@ -167,7 +167,8 @@ public class BookingController {
         try {
             ResponseEntity<Boolean> res = restTemplate
                     .exchange(uri, HttpMethod.GET, entity, Boolean.class);
-            return postBooking(booking, token);
+            postBooking(booking, token);
+            return true;
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
