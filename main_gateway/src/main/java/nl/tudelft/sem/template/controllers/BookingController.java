@@ -147,6 +147,7 @@ public class BookingController {
                 uri = "http://localhost:8083/bookingsForGroup";
                 HttpEntity<Booking> request = new HttpEntity<>(booking, headers);
                 restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
+                postBooking(booking, token);
                 return true;
             } else {
                 return false;
