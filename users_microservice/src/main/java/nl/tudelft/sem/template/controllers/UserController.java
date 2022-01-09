@@ -25,31 +25,31 @@ public class UserController {
         return "Hello from the user microservice!";
     }
 
-    @GetMapping("/users")
+    @GetMapping("admin/users")
     @ResponseBody
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/getUser/{id}")
+    @GetMapping("admin/getUser/{id}")
     @ResponseBody
     public User getUser(@PathVariable("id") String id) {
         return userService.getUser(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping("admin/users")
     @ResponseBody
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("admin/users/{id}")
     @ResponseBody
     public void updateUser(@RequestBody User user, @PathVariable("id") String id) {
         userService.updateUser(id, user);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("admin/users/{id}")
     public void deleteUser(@PathVariable("id") String id) {
         userService.deleteUser(id);
     }

@@ -56,6 +56,9 @@ public class Booking {
     @ElementCollection(targetClass = String.class)
     private List<String> participants;
 
+    @Column(name = "STATUS")
+    private String status;
+
     /**
      * Parameterised constructor for the Booking class.
      *
@@ -79,6 +82,7 @@ public class Booking {
         this.endTime = endTime;
         this.purpose = purpose;
         this.participants = participants;
+        this.status = "valid";
     }
 
     /**
@@ -177,7 +181,8 @@ public class Booking {
                 && Objects.equals(startTime, booking.startTime)
                 && Objects.equals(endTime, booking.endTime)
                 && Objects.equals(purpose, booking.purpose)
-                && participants.equals(booking.participants);
+                && participants.equals(booking.participants)
+                && Objects.equals(status, booking.status);
     }
 
     @Override
@@ -198,6 +203,15 @@ public class Booking {
                 + ", endTime=" + endTime
                 + ", purpose='" + purpose + '\''
                 + ", participants=" + participants.toString()
+                + ", status=" + status
                 + '}';
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

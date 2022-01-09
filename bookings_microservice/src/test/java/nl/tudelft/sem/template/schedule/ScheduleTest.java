@@ -1,14 +1,10 @@
-package schedule;
+package nl.tudelft.sem.template.schedule;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
-import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
-import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
-import nl.tudelft.sem.template.schedule.Schedule;
-import nl.tudelft.sem.template.schedule.SortStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

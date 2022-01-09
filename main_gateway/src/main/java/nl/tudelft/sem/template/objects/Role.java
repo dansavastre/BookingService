@@ -15,6 +15,10 @@ public class Role {
         this.type = type;
     }
 
+    public Role() {
+        super();
+    }
+
     /**
      * Getter for role id.
      *

@@ -11,4 +11,6 @@ public interface Validator {
 
     boolean handle(Booking booking) throws InvalidBookingException,
         InvalidRoomException, BuildingNotOpenException;
+
+    void setToken(String token);
 }
