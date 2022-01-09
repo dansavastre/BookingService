@@ -1,6 +1,7 @@
 package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
+import java.util.Objects;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,19 +60,21 @@ public class RoomController {
         roomService.addRoom(room);
     }
 
+    /**
+     * Update an existing room.
+     *
+     * @param room  The room to be updated with new info
+     * @param id    The ID of the room to be updated
+     * @param token Security token for authentication
+     */
     @PutMapping("/rooms/{id}")
     @ResponseBody
     public void updateRoom(@RequestBody Room room,
                            @PathVariable("id") String id,
                            @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.ADMIN, token);
-        Room toUpdate;
-        try {
-            toUpdate = roomService.getRoom(id);
-        } catch (Exception e) {
-            return;
-        }
-        if (toUpdate.getId() == room.getId()) {
+        Room toUpdate = roomService.getRoom(id);
+        if (Objects.equals(toUpdate.getId(), room.getId())) {
             roomService.updateRoom(id, room);
         }
     }
@@ -83,7 +86,6 @@ public class RoomController {
         auth.authorize(Authorization.ADMIN, token);
         roomService.deleteRoom(id);
     }
-
 
 
 }

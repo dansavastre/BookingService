@@ -3,7 +3,6 @@ package nl.tudelft.sem.template.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.repositories.BuildingRepository;
 import nl.tudelft.sem.template.repositories.RoomRepository;
@@ -38,6 +37,12 @@ public class RoomService {
         roomRepository.save(room);
     }
 
+    /**
+     * Update a room by checking if IDs match and then requesting a save from database.
+     *
+     * @param id   ID of the building
+     * @param room New updated room entity
+     */
     public void updateRoom(String id, Room room) {
         if (Objects.equals(room.getId(), id)) {
             roomRepository.save(room);

@@ -78,6 +78,8 @@ public class BuildingControllerTest {
     @Test
     void updateBuilding_test() {
         Building b2 = new Building(36, LocalTime.of(8, 0), LocalTime.of(21, 0), "EWI");
+        when(buildingService.getBuilding(36))
+                .thenReturn(new Building(36, LocalTime.of(7, 0), LocalTime.of(23, 0), "EWI"));
         buildingController.updateBuilding(b2, 36, token);
         verify(buildingService, times(1)).updateBuilding(36, b2);
         verify(auth, times(1)).authorize(Authorization.ADMIN, token);
