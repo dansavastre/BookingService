@@ -4,14 +4,9 @@ import java.util.List;
 import nl.tudelft.sem.template.objects.Group;
 import nl.tudelft.sem.template.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class GroupController {
@@ -39,7 +34,8 @@ public class GroupController {
 
     @GetMapping("secretary/getGroup/{id}")
     @ResponseBody
-    public Group getMyGroup(@PathVariable("id") Long id) {
+    public Group getMyGroup(@PathVariable("id") Long id,
+                            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return groupService.getGroup(id);
     }
 
@@ -51,7 +47,8 @@ public class GroupController {
 
     @PutMapping("admin/groups/{id}")
     @ResponseBody
-    public void updateGroup(@RequestBody Group group, @PathVariable("id") Long id) {
+    public void updateGroup(@RequestBody Group group,
+                            @PathVariable("id") Long id) {
         groupService.updateGroup(id, group);
     }
 

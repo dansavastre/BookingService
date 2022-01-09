@@ -31,6 +31,7 @@ public class GroupControllerTest {
     transient Group group1;
     transient Group group2;
     transient List<Group> groups;
+    transient String token;
 
     @BeforeEach
     void setup() {
@@ -44,6 +45,7 @@ public class GroupControllerTest {
         groups = new ArrayList<>();
         groups.add(group1);
         groups.add(group2);
+        token = "token";
     }
 
     @Test
@@ -66,7 +68,7 @@ public class GroupControllerTest {
     @Test
     void getMyGroupTest() {
         when(groupService.getGroup(1L)).thenReturn(group1);
-        Assertions.assertThat(groupController.getGroup(1L)).isEqualTo(group1);
+        Assertions.assertThat(groupController.getMyGroup(1L, "1")).isEqualTo(group1);
     }
 
     @Test
