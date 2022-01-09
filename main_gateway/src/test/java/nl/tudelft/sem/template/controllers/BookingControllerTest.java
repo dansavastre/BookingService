@@ -52,7 +52,7 @@ public class BookingControllerTest {
     @Mock
     private transient BookingController bookingControllerMock;
     @Mock
-    private transient RoomController roomController;
+    private transient MainRoomController roomController;
 
     @InjectMocks
     private transient BookingController bookingController;
@@ -76,7 +76,7 @@ public class BookingControllerTest {
         building1 = new Building(1, LocalTime.MIN,
                 LocalTime.MAX, "Building 1");
         room1 = new Room(1, "Nice room", 4,
-                new HashMap<>(), "yes", 1);
+                new HashMap<>(), "yes", building1);
         b1 = new Booking(1L, user1, 1, 1,
                 LocalDate.now(),
                 LocalTime.now().plusHours(1),
@@ -150,8 +150,8 @@ public class BookingControllerTest {
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(Integer.toString(b1.getRoom())
-                + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getBuilding()) + "-"
+                + Integer.toString(b1.getRoom()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
         Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
@@ -178,8 +178,8 @@ public class BookingControllerTest {
             entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(Integer.toString(b1.getRoom())
-            + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getBuilding()) + "-"
+                + Integer.toString(b1.getRoom()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
             eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
 
@@ -199,8 +199,8 @@ public class BookingControllerTest {
             entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(Integer.toString(b1.getRoom())
-            + Integer.toString(b1.getBuilding()), token)).thenReturn(room1);
+        when(roomController.getRoom(Integer.toString(b1.getBuilding()) + "-"
+                + Integer.toString(b1.getRoom()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
             eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
 

@@ -75,4 +75,7 @@ public class RoomController {
         auth.authorize(Authorization.ADMIN, token);
         roomService.deleteRoom(id);
     }
+
+
+
 }

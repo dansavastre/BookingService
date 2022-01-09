@@ -36,7 +36,7 @@ public class BookingController {
     @Autowired
     private transient BookingController bookingControllerAutowired;
     @Autowired
-    private transient RoomController roomController;
+    private transient MainRoomController mainRoomController;
 
     @Bean
     public RestTemplate templateCreator() {
@@ -54,7 +54,7 @@ public class BookingController {
      */
     public Validator validatorCreator(String token) {
         Validator handler = new BookingValidator(buildingController,
-                roomController,
+                mainRoomController,
                 bookingControllerAutowired);
         handler.setToken(token);
         Validator buildingValidator = new BuildingValidator(buildingController);

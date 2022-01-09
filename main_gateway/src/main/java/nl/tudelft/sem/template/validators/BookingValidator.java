@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import nl.tudelft.sem.template.controllers.BookingController;
 import nl.tudelft.sem.template.controllers.BuildingController;
-import nl.tudelft.sem.template.controllers.RoomController;
+import nl.tudelft.sem.template.controllers.MainRoomController;
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
@@ -20,7 +20,7 @@ import nl.tudelft.sem.template.objects.Booking;
 public class BookingValidator extends BaseValidator {
 
     private transient BuildingController buildingController;
-    private transient RoomController roomController;
+    private transient MainRoomController mainRoomController;
     private transient BookingController bookingController;
 
     private transient String token;
@@ -29,14 +29,14 @@ public class BookingValidator extends BaseValidator {
     /** Constructor for BookingValidator.
      *
      * @param buildingController    building Controller
-     * @param roomController        room Controller
+     * @param mainRoomController        room Controller
      * @param bookingController     booking Controller
      */
     public BookingValidator(BuildingController buildingController,
-                            RoomController roomController,
+                            MainRoomController mainRoomController,
                             BookingController bookingController) {
         this.buildingController = buildingController;
-        this.roomController = roomController;
+        this.mainRoomController = mainRoomController;
         this.bookingController = bookingController;
     }
 
@@ -90,8 +90,8 @@ public class BookingValidator extends BaseValidator {
             throw  new InvalidBookingException("Booking start time is before current time");
         } else if (buildingController.getBuilding(booking.getBuilding(), token) == null) {
             throw new InvalidBookingException("Building does not exist");
-        } else if (roomController.getRoom(Integer.toString(booking.getRoom())
-                + Integer.toString(booking.getBuilding()), token) == null) {
+        } else if (mainRoomController.getRoom(Integer.toString(booking.getBuilding()) + "-"
+                + Integer.toString(booking.getRoom()), token) == null) {
             throw new InvalidBookingException("Room does not exist");
         } else if (booking.getStartTime().compareTo(booking.getEndTime()) >= 0) {
             throw new InvalidBookingException("Start time is after end time");

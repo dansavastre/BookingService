@@ -37,7 +37,7 @@ public class RoomApplication {
                     LocalTime.of(17, 30), "name2");
 
             roomService.addRoom(new Room(0, "Europe", 12, equipmentMap, "yes", building1));
-            roomService.addRoom(new Room(1, "Australia", 6, equipmentMap, "yes", building2));
+            roomService.addRoom(new Room(0, "Australia", 6, equipmentMap, "yes", building2));
             roomService.addRoom(new Room(2, "Africa", 8, equipmentMap, "maintenance", building1));
             roomService.addRoom(new Room(1, "Steve Jobs", 12, equipmentMap2, "yes", building2));
         };

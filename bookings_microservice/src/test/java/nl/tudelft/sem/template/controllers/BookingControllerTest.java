@@ -93,7 +93,7 @@ public class BookingControllerTest {
         bookings.add(b2);
         when(bookingService.getFutureBookings()).thenReturn(bookings);
         Assertions.assertEquals(bookings, bookingController.getFutureBookings(token));
-        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
