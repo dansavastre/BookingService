@@ -22,7 +22,7 @@ public class UserApplication {
     private final transient String secretary = "secretary";
     private final transient String admin = "admin";
 
-    private transient List<User> group;
+    private transient List<User> groupMembers;
 
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
@@ -80,23 +80,23 @@ public class UserApplication {
             userService.addUser(u5);
             userService.addUser(u6);
 
-            group = new ArrayList<>();
-            group.add(u1);
-            group.add(u2);
-            group.add(u3);
-            group.add(u4);
-            group.add(u5);
-            group.add(u6);
+            groupMembers = new ArrayList<>();
+            groupMembers.add(u1);
+            groupMembers.add(u2);
+            groupMembers.add(u3);
+            groupMembers.add(u4);
+            groupMembers.add(u5);
+            groupMembers.add(u6);
         };
     }
 
     @Bean
     CommandLineRunner run3(GroupService groupService) {
         return args -> {
-            Group group1 = new Group("vmadhu",
+            Group group = new Group("vmadhu",
                   "M.R.B.S. Research Group",
-                  group);
-            groupService.addGroup(group1);
+                  groupMembers);
+            groupService.addGroup(group);
         };
     }
 }

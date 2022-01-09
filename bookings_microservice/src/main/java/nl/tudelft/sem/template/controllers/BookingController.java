@@ -100,7 +100,6 @@ public class BookingController {
     public void addBookingForGroup(@RequestBody Booking booking,
                            @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         auth.authorize(Authorization.SECRETARY, token);
-        //if(booking.getBookingOwner())
         bookingService.addBooking(booking);
     }
 
