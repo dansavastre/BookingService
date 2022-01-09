@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.assertj.core.api.Assertions;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 public class RoomTest {
 
     private transient Room room;
+    private transient Building building;
     private transient Map<String, String> equipmentMap;
     private final transient String projector = "projector";
     private final transient String trueS = "True";
@@ -24,12 +26,14 @@ public class RoomTest {
         equipmentMap.put("wifi", trueS);
         equipmentMap.put("projector", trueS);
         equipmentMap.put("smart board", trueS);
-        room = new Room(1, "Steve Jobs Room", 8, equipmentMap, "available", 36);
+        building = new Building(36, LocalTime.of(8, 0),
+                LocalTime.of(22, 0), "Building 1");
+        room = new Room(1, "Steve Jobs Room", 8, equipmentMap, "available", building);
     }
 
     @Test
     void getId_test() {
-        Assertions.assertThat(room.getId()).isEqualTo(1);
+        Assertions.assertThat(room.getId()).isEqualTo("36-1");
     }
 
     @Test
@@ -91,8 +95,8 @@ public class RoomTest {
     }
 
     @Test
-    void getBuildingNumber_test() {
-        Assertions.assertThat(room.getBuildingNumber()).isEqualTo(36);
+    void getBuilding_test() {
+        Assertions.assertThat(room.getBuilding()).isEqualTo(building);
     }
 
 }

@@ -1,4 +1,4 @@
-package schedule;
+package nl.tudelft.sem.template.schedule;
 
 import java.awt.print.Book;
 import java.time.LocalDate;
@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
-import nl.tudelft.sem.template.schedule.LocationStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

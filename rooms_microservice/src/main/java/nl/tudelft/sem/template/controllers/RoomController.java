@@ -45,7 +45,7 @@ public class RoomController {
 
     @GetMapping("/getRoom/{id}")
     @ResponseBody
-    public Room getRoom(@PathVariable("id") int id,
+    public Room getRoom(@PathVariable("id") String id,
                         @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.EMPLOYEE, token);
         return roomService.getRoom(id);
@@ -62,7 +62,7 @@ public class RoomController {
     @PutMapping("/rooms/{id}")
     @ResponseBody
     public void updateRoom(@RequestBody Room room,
-                           @PathVariable("id") int id,
+                           @PathVariable("id") String id,
                            @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.ADMIN, token);
         roomService.updateRoom(id, room);
@@ -70,9 +70,12 @@ public class RoomController {
 
     @DeleteMapping("/rooms/{id}")
     @ResponseBody
-    public void deleteRoom(@PathVariable("id") int id,
+    public void deleteRoom(@PathVariable("id") String id,
                            @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.ADMIN, token);
         roomService.deleteRoom(id);
     }
+
+
+
 }

@@ -42,6 +42,8 @@ public class BookingController {
         return new BookingService();
     }
 
+    private static final String userIdPath = "userId";
+
     @GetMapping("/sayHi")
     @ResponseBody
     public String sayHi() {
@@ -75,7 +77,7 @@ public class BookingController {
     @GetMapping("/bookings")
     @ResponseBody
     public List<Booking> getFutureBookings(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        auth.authorize(Authorization.ADMIN, token);
+        auth.authorize(Authorization.EMPLOYEE, token);
         return bookingService.getFutureBookings();
     }
 
@@ -107,21 +109,33 @@ public class BookingController {
     @ResponseBody
     public void updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        auth.authorize(Authorization.EMPLOYEE, token);
+        auth.authorize(Authorization.ADMIN, token);
         bookingService.updateBooking(id, booking);
     }
 
-    @DeleteMapping("/bookings/{id}")
+    @PutMapping("/myBookings/{userId}/{id}")
     @ResponseBody
-    public void deleteBooking(@PathVariable("id") Long id,
+    public void updateMyBooking(@RequestBody Booking booking,
+                                @PathVariable(userIdPath) String userId,
+                                @PathVariable("id") Long id,
+                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
+        bookingService.updateMyBooking(userId, id, booking);
+    }
+
+
+    @DeleteMapping("/myBookings/{userId}/{id}")
+    @ResponseBody
+    public void deleteBooking(@PathVariable(userIdPath) String userId,
+                              @PathVariable("id") Long id,
                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        auth.authorize(Authorization.ADMIN, token);
-        bookingService.deleteBooking(id);
+        auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
+        bookingService.deleteMyBooking(userId, id);
     }
 
     @GetMapping("/myBookings/default/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsDefault(@PathVariable("userId") String userId,
+    public List<Booking> getMyBookingsDefault(@PathVariable(userIdPath) String userId,
                                               @RequestHeader(HttpHeaders
                                                       .AUTHORIZATION) String token) {
         auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
@@ -130,7 +144,7 @@ public class BookingController {
 
     @GetMapping("/myBookings/chrono/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsChrono(@PathVariable("userId") String userId,
+    public List<Booking> getMyBookingsChrono(@PathVariable(userIdPath) String userId,
                                              @RequestHeader(HttpHeaders
                                                      .AUTHORIZATION) String token) {
         auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
@@ -139,7 +153,7 @@ public class BookingController {
 
     @GetMapping("/myBookings/location/{userId}")
     @ResponseBody
-    public List<Booking> getMyBookingsLocation(@PathVariable("userId") String userId,
+    public List<Booking> getMyBookingsLocation(@PathVariable(userIdPath) String userId,
                                                @RequestHeader(HttpHeaders
                                                        .AUTHORIZATION) String token) {
         auth.authorizeWithUsername(Authorization.EMPLOYEE, token, userId);
