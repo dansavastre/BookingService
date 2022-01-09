@@ -244,21 +244,22 @@ public class BookingControllerTest {
     void postBookingForGroup_test() {
         String uri = "http://localhost:8083/bookings";
         ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
+        ResponseEntity<Boolean> resBool = new ResponseEntity<>(true, HttpStatus.OK);
         ResponseEntity<Void> res1 = new ResponseEntity<>(HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(b1.getId() + "-" + Integer.toString(b1.getRoom()), token)).thenReturn(room1);
+        when(roomController.getRoom(b1.getId() + "-" + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq("http://localhost:8083/allbookings"),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
         when(restTemplate.exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/FirstName"), eq(HttpMethod.GET),
-                entity.capture(), eq(Void.class))).thenReturn(res1);
-        when(restTemplate.exchange(eq("http://localhost:8083/bookingForGroup"), eq(HttpMethod.POST),
+                entity.capture(), eq(Boolean.class))).thenReturn(resBool);
+        when(restTemplate.exchange(eq("http://localhost:8083/bookingsForGroup"), eq(HttpMethod.POST),
                 entity.capture(), eq(Void.class))).thenReturn(res1);
 
         Assertions.assertThat(bookingController
-                .postBookingForGroup(b1, 1L, "1", token)).isTrue();
+                .postBookingForGroup(1L, "1", b1, token)).isTrue();
         verify(restTemplate, times(1))
                 .exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/FirstName"), eq(HttpMethod.GET), entity.capture(), eq(Boolean.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));

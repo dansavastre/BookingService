@@ -120,6 +120,45 @@ public class BookingController {
     }
 
     /**
+     * Method for a secretary to add a booking for an employee in their research group.
+     *
+     * @param booking the booking we want to add.
+     * @return true if its successfully added, else false.
+     */
+    @PostMapping("/postBooking/{groupId}/{secretaryId}")
+    @ResponseBody
+    public boolean postBookingForGroup(@PathVariable("groupId") Long groupId,
+                                       @PathVariable("secretaryId") String secretaryId,
+                                       @RequestBody Booking booking,
+                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        String uri = "http://localhost:8081/secretary/checkGroup/"
+                + groupId + "/"
+                + secretaryId + "/"
+                + booking.getBookingOwner();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        try {
+            ResponseEntity<Boolean> res =
+                    restTemplate.exchange(uri, HttpMethod.GET, entity, Boolean.class);
+            boolean isGroupSecretary = Boolean.TRUE.equals(res.getBody());
+            if (isGroupSecretary) {
+                uri = "http://localhost:8083/bookingsForGroup";
+                HttpEntity<Booking> request = new HttpEntity<>(booking, headers);
+                restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    /**
      * Adds a booking to the system.
      *
      * @param booking the booking we want to add.
@@ -147,38 +186,6 @@ public class BookingController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
-    }
-
-    /**
-     * Method for a secretary to add a booking for an employee in their research group.
-     *
-     * @param booking the booking we want to add.
-     * @return true if its successfully added, else false.
-     */
-    @PostMapping("/postBooking/{groupId}/{secretaryId}")
-    @ResponseBody
-    public boolean postBookingForGroup(@RequestBody Booking booking,
-                               @PathVariable("groupId") Long groupId,
-                               @PathVariable("secretaryId") String secretaryId,
-                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/secretary/checkGroup/"
-                + groupId.toString() + "/"
-                + secretaryId + "/"
-                + booking.getBookingOwner();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
-
-        try {
-            restTemplate.exchange(uri, HttpMethod.GET, entity, Boolean.class);
-            uri = "http://localhost:8083/bookingForGroup";
-            restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
-            return true;
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.toString());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
-        }
     }
 
     /**
