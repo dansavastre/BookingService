@@ -80,12 +80,12 @@ public class GroupControllerTest {
 
     @Test
     void getMyGroupTest() {
-        String uri = "http://localhost:8081/secretary/getGroup/".concat(String.valueOf(1L));
+        String uri = "http://localhost:8081/secretary/getMyGroup/1/1";
         ResponseEntity<Group> res = new ResponseEntity<>(group1, HttpStatus.OK);
         when(restTemplate.exchange(eq(uri),
                 eq(HttpMethod.GET), entity.capture(), eq(Group.class)))
                 .thenReturn(res);
-        Assertions.assertThat(groupController.getMyGroup(1L, token)).isEqualTo(group1);
+        Assertions.assertThat(groupController.getMyGroup(1L, "1", token)).isEqualTo(group1);
         verify(restTemplate, times(1)).exchange(eq(uri),
                 eq(HttpMethod.GET), entity.capture(), eq(Group.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));

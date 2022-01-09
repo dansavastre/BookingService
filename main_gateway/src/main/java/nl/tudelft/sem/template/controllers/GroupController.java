@@ -86,11 +86,14 @@ public class GroupController {
      * @param token Security token for authentication
      * @return The group of the secretary
      */
-    @GetMapping("/getMyGroup/{id}")
+    @GetMapping("/getMyGroup/{id}/{secretaryId}")
     @ResponseBody
     public Group getMyGroup(@PathVariable("id") Long id,
+                            @PathVariable("secretaryId") String secretaryId,
                             @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        String uri = "http://localhost:8081/secretary/getGroup/".concat(id.toString());
+        String uri = "http://localhost:8081/secretary/getMyGroup/"
+                    + id.toString() + "/"
+                    + secretaryId;
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
         HttpEntity<String> entity = new HttpEntity<>("", headers);
