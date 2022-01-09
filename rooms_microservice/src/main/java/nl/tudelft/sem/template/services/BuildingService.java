@@ -32,7 +32,9 @@ public class BuildingService {
     }
 
     public void updateBuilding(int id, Building building) {
-        buildingRepository.save(building);
+        if (building.getId() == id) {
+            buildingRepository.save(building);
+        }
     }
 
     public void deleteBuilding(int id) {

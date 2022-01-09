@@ -59,7 +59,15 @@ public class BuildingController {
     public void updateBuilding(@RequestBody Building building, @PathVariable("id") int id,
                                @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.ADMIN, token);
-        buildingService.updateBuilding(id, building);
+        Building toUpdate;
+        try {
+            toUpdate = buildingService.getBuilding(id);
+        } catch (Exception e) {
+            return;
+        }
+        if (toUpdate.getId() == building.getId()) {
+            buildingService.updateBuilding(id, building);
+        }
     }
 
     @DeleteMapping("/buildings/{id}")

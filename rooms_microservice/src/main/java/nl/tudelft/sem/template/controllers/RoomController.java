@@ -65,7 +65,15 @@ public class RoomController {
                            @PathVariable("id") String id,
                            @RequestHeader(authorization) String token) {
         auth.authorize(Authorization.ADMIN, token);
-        roomService.updateRoom(id, room);
+        Room toUpdate;
+        try {
+            toUpdate = roomService.getRoom(id);
+        } catch (Exception e) {
+            return;
+        }
+        if (toUpdate.getId() == room.getId()) {
+            roomService.updateRoom(id, room);
+        }
     }
 
     @DeleteMapping("/rooms/{id}")
