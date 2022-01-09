@@ -144,9 +144,7 @@ public class BookingController {
                     restTemplate.exchange(uri, HttpMethod.GET, entity, Boolean.class);
             boolean isGroupSecretary = Boolean.TRUE.equals(res.getBody());
             if (isGroupSecretary) {
-                uri = "http://localhost:8083/bookingsForGroup";
-                HttpEntity<Booking> request = new HttpEntity<>(booking, headers);
-                restTemplate.exchange(uri, HttpMethod.POST, request, void.class);
+
                 postBooking(booking, token);
                 return true;
             } else {
