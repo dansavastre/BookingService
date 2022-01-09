@@ -49,7 +49,16 @@ public class RoomService {
         }
     }
 
+    /**
+     * Delete a room from the database.
+     * The setting building to null is necessary to avoid database corruption due to tied entities.
+     *
+     * @param id ID of the room to be deleted.
+     */
     public void deleteRoom(String id) {
+        Room room = roomRepository.getOne(id);
+        room.setBuilding(null);
+        roomRepository.save(room);
         roomRepository.deleteById(id);
     }
 }

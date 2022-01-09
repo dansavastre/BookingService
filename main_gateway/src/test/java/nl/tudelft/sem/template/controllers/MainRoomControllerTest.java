@@ -212,7 +212,7 @@ public class MainRoomControllerTest {
         when(bookingController.getFutureBookings(token)).thenReturn(bookings);
 
         assertThrows(ResponseStatusException.class, () -> {
-            spyMainRoomController.availableRooms(LocalDate.now().toString(),
+            spyMainRoomController.availableRooms(LocalDate.of(2019, 1, 1).toString(),
                     "08:30:00", tenTime,  token);
         });
     }

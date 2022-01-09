@@ -1,6 +1,7 @@
 package nl.tudelft.sem.template.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +41,7 @@ public class RoomServiceTest {
     transient Map<String, String> equipmentMap;
     transient Building building1;
     transient Building building2;
+    transient String r1Id = "36-11";
 
     @BeforeEach
     void setup() {
@@ -78,13 +80,17 @@ public class RoomServiceTest {
 
     @Test
     void updateRoom_test() {
-        roomService.updateRoom("36-11", r2);
+        roomService.updateRoom(r1Id, r2);
         verify(roomRepository, times(1)).save(r2);
     }
 
     @Test
     void deleteRoom_test() {
-        roomService.deleteRoom("36-11");
-        verify(roomRepository, times(1)).deleteById("36-11");
+        when(roomRepository.getOne(r1Id)).thenReturn(r1);
+        Room updated = r1;
+        updated.setBuilding(null);
+        when(roomRepository.save(any(Room.class))).thenReturn(updated);
+        roomService.deleteRoom(r1Id);
+        verify(roomRepository, times(1)).deleteById(r1Id);
     }
 }
