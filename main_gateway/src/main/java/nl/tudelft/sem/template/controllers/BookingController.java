@@ -174,9 +174,9 @@ public class BookingController {
                 String uri = "http://localhost:8083/bookings";
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.AUTHORIZATION, token);
+                booking.setStatus("valid");
                 HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
                 restTemplate.exchange(uri, HttpMethod.POST, entity, void.class);
-                booking.setStatus("valid");
                 return true;
             }
             return false;
