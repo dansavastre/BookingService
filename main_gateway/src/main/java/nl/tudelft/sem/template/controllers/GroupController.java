@@ -1,7 +1,6 @@
 package nl.tudelft.sem.template.controllers;
 
 import nl.tudelft.sem.template.objects.Group;
-import nl.tudelft.sem.template.objects.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;

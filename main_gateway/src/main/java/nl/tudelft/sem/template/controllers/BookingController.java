@@ -144,7 +144,7 @@ public class BookingController {
     }
 
     /**
-     * Method for a secretary to add a booking for an employee in their research group
+     * Method for a secretary to add a booking for an employee in their research group.
      *
      * @param booking the booking we want to add.
      * @return true if its successfully added, else false.
