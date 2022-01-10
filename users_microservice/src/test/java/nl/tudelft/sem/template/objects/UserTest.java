@@ -23,8 +23,7 @@ public class UserTest {
 
     @Test
     public void idTest() {
-        User user = new User();
-        user.setId("1234");
+        User user = new User("1234", "password", "jan", "jansen");
         Assertions.assertEquals("1234", user.getId());
     }
 

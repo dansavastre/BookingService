@@ -2,10 +2,13 @@ package nl.tudelft.sem.template.objects;
 
 import java.util.Map;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -15,7 +18,10 @@ public class Room {
 
     @Id
     @Column(name = "ID", nullable = true)
-    private int id;
+    private String id;
+
+    @Column(name = "ROOMNUMBER")
+    private int roomNumber;
 
     @Column(name = "NAME", nullable = true, length = 255)
     private String name;
@@ -29,9 +35,9 @@ public class Room {
 
     @Column(name = "AVAILABLE", nullable = true, length = 50)
     private String available;
-
-    @Column(name = "BUILDING_NUMBER", nullable = true)
-    private int buildingNumber;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Building building;
 
     public Room() {
 
@@ -40,33 +46,42 @@ public class Room {
     /**
      * Parameterised constructor for the Room class.
      *
-     * @param id             Id of the room
+     * @param roomNumber     ID of the room
      * @param name           Name of the room
      * @param capacity       Capacity of the room
      * @param equipment      Equipment present in the room
      * @param available      Availability of the room (whether it is under maintenance or not)
-     * @param buildingNumber The building Id of the building this room is in
+     * @param building      The building object that the room is in
      */
-    public Room(int id,
+    public Room(int roomNumber,
                 String name,
                 int capacity,
                 Map<String, String> equipment,
                 String available,
-                int buildingNumber) {
+                Building building) {
         super();
-        this.id = id;
+        this.roomNumber = roomNumber;
         this.name = name;
         this.capacity = capacity;
         this.equipment = equipment;
         this.available = available;
-        this.buildingNumber = buildingNumber;
+        this.building = building;
+        this.id = Integer.toString(building.getId()) + "-" + Integer.toString(roomNumber);
     }
 
-    public int getId() {
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -114,12 +129,12 @@ public class Room {
         this.available = available;
     }
 
-    public int getBuildingNumber() {
-        return buildingNumber;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuildingNumber(int buildingNumber) {
-        this.buildingNumber = buildingNumber;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     @Override
@@ -131,9 +146,9 @@ public class Room {
             return false;
         }
         Room room = (Room) o;
-        return id == room.id
+        return id.equals(room.id)
                 && capacity == room.capacity
-                && buildingNumber == room.buildingNumber
+                && building == room.building
                 && Objects.equals(name, room.name)
                 && Objects.equals(equipment, room.equipment)
                 && this.available.equals(room.available);
@@ -141,7 +156,7 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, capacity, equipment, available, buildingNumber);
+        return Objects.hash(id, name, capacity, equipment, available, building);
     }
 
     @Override
@@ -152,7 +167,7 @@ public class Room {
                 + ", capacity=" + capacity
                 + ", equipment=" + equipment
                 + ", available='" + available + '\''
-                + ", buildingNumber=" + buildingNumber
+                + ", building=" + building.toString()
                 + '}';
     }
 }

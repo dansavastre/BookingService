@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,15 +19,21 @@ public class RoomTest {
     transient Map<String, String> equipmentMap;
     private transient String projector = "projector";
     private transient String trueS = "True";
+    transient Building building1;
+    transient Building building2;
 
     @BeforeEach
     void setup() {
         equipmentMap = new HashMap<>();
         equipmentMap.put("projector", trueS);
         equipmentMap.put("smartBoard", trueS);
-        r0 = new Room(12, "Europe", 12, equipmentMap, "yes", 36);
-        r1 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
-        r2 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
+        building1 = new Building(36, LocalTime.of(8, 30),
+                LocalTime.of(18, 00), "name1");
+        building2 = new Building(24, LocalTime.of(10, 30),
+                LocalTime.of(17, 30), "name2");
+        r0 = new Room(12, "Europe", 12, equipmentMap, "yes", building1);
+        r1 = new Room(11, "Australia", 6, equipmentMap, "no", building1);
+        r2 = new Room(11, "Australia", 6, equipmentMap, "no", building1);
     }
 
     @Test
@@ -89,8 +96,10 @@ public class RoomTest {
 
     @Test
     void toString_test() {
-        String expected = "Room{id=11, name='Australia', capacity=6, "
-                + "equipment={projector=True, smartBoard=True}, available='no', buildingNumber=36}";
+        String expected = "Room{id=36-11, name='Australia', capacity=6, "
+                + "equipment={projector=True, smartBoard=True}, available='no',"
+                + " building=Building{id=36, openingTime=08:30,"
+                + " closingTime=18:00, name='name1'}}";
         assertEquals(expected, r1.toString());
 
     }

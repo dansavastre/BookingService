@@ -25,31 +25,31 @@ public class RoleController {
         return "Hello from role!";
     }
 
-    @GetMapping("/roles")
+    @GetMapping("employee/roles")
     @ResponseBody
     public List<Role> getAllRoles() {
         return roleService.getAllRoles();
     }
 
-    @GetMapping("/getRole/{id}")
+    @GetMapping("employee/getRole/{id}")
     @ResponseBody
     public Role getRole(@PathVariable("id") Long id) {
         return roleService.getRole(id);
     }
 
-    @PostMapping("/roles")
+    @PostMapping("admin/roles")
     @ResponseBody
     public void addRole(@RequestBody Role role) {
         roleService.addRole(role);
     }
 
-    @PutMapping("/roles/{id}")
+    @PutMapping("admin/roles/{id}")
     @ResponseBody
     public void updateRole(@RequestBody Role role, @PathVariable("id") Long id) {
         roleService.updateRole(id, role);
     }
 
-    @DeleteMapping("/roles/{id}")
+    @DeleteMapping("admin/roles/{id}")
     public void deleteRole(@PathVariable("id") Long id) {
         roleService.deleteRole(id);
     }

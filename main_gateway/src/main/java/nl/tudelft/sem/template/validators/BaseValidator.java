@@ -21,5 +21,9 @@ public abstract class BaseValidator implements Validator {
         return next.handle(booking);
     }
 
+    public Validator getNext() {
+        return next;
+    }
+
 
 }

@@ -31,9 +31,16 @@ public class BuildingService {
         buildingRepository.save(building);
     }
 
+    /**
+     * Update a building by checking if IDs match and then requesting a save from database.
+     *
+     * @param id       ID of the building
+     * @param building New updated building entity
+     */
     public void updateBuilding(int id, Building building) {
-        buildingRepository.deleteById(id);
-        buildingRepository.save(building);
+        if (building.getId() == id) {
+            buildingRepository.save(building);
+        }
     }
 
     public void deleteBuilding(int id) {

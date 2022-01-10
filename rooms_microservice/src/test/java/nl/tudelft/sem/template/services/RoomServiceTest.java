@@ -1,15 +1,18 @@
 package nl.tudelft.sem.template.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.sem.template.RoomApplication;
+import nl.tudelft.sem.template.objects.Building;
 import nl.tudelft.sem.template.objects.Room;
 import nl.tudelft.sem.template.repositories.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,15 +39,22 @@ public class RoomServiceTest {
     transient Room r1;
     transient Room r2;
     transient Map<String, String> equipmentMap;
+    transient Building building1;
+    transient Building building2;
+    transient String r1Id = "36-11";
 
     @BeforeEach
     void setup() {
         equipmentMap = new HashMap<>();
         equipmentMap.put("projector", "True");
         equipmentMap.put("smartBoard", "True");
-        r0 = new Room(12, "Europe", 12, equipmentMap, "yes", 36);
-        r1 = new Room(11, "Australia", 6, equipmentMap, "no", 36);
-        r2 = new Room(11, "Australia", 6, equipmentMap, "yes", 36);
+        building1 = new Building(36, LocalTime.of(8, 30),
+                LocalTime.of(18, 00), "name1");
+        building2 = new Building(24, LocalTime.of(10, 30),
+                LocalTime.of(17, 30), "name2");
+        r0 = new Room(12, "Europe", 12, equipmentMap, "yes", building1);
+        r1 = new Room(11, "Australia", 6, equipmentMap, "no", building1);
+        r2 = new Room(11, "Australia", 6, equipmentMap, "yes", building1);
     }
 
     @Test
@@ -58,8 +68,8 @@ public class RoomServiceTest {
 
     @Test
     void getRoom_test() {
-        when(roomRepository.findById(12)).thenReturn(java.util.Optional.ofNullable(r0));
-        assertEquals(r0, roomService.getRoom(12));
+        when(roomRepository.findById("36-12")).thenReturn(java.util.Optional.ofNullable(r0));
+        assertEquals(r0, roomService.getRoom("36-12"));
     }
 
     @Test
@@ -70,14 +80,17 @@ public class RoomServiceTest {
 
     @Test
     void updateRoom_test() {
-        roomService.updateRoom(11, r2);
-        verify(roomRepository, times(1)).deleteById(11);
+        roomService.updateRoom(r1Id, r2);
         verify(roomRepository, times(1)).save(r2);
     }
 
     @Test
     void deleteRoom_test() {
-        roomService.deleteRoom(11);
-        verify(roomRepository, times(1)).deleteById(11);
+        when(roomRepository.getOne(r1Id)).thenReturn(r1);
+        Room updated = r1;
+        updated.setBuilding(null);
+        when(roomRepository.save(any(Room.class))).thenReturn(updated);
+        roomService.deleteRoom(r1Id);
+        verify(roomRepository, times(1)).deleteById(r1Id);
     }
 }

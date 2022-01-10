@@ -19,4 +19,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             + "(b.date = CURRENT_DATE AND b.startTime > CURRENT_TIME)")
 
     public List<Booking> findFutureBookings();
+
+    public List<Booking> findAllByStatusIsNotLike(String status);
 }

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -57,6 +58,8 @@ public class User {
         this.roles = new ArrayList<>();
     }
 
+
+
     /**
      * Getter to get users id.
      *
@@ -64,15 +67,6 @@ public class User {
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Setter to set/change the users id.
-     *
-     * @param id - String to set as new id
-     */
-    public void setId(String id) {
-        this.id = id;
     }
 
     /**
@@ -205,11 +199,24 @@ public class User {
     }
 
     /**
-     * Setter for setting the roles.
+     * Add a role to the roles of this user.
      *
-     * @param roles a list of roles for the user
+     * @param role the role to add to the user
      */
-    public void setRoles(List<Role> roles) {
+    public boolean addRole(Role role) {
+        return roles.add(role);
+    }
+
+    public boolean removeRole(Role role) {
+        return roles.remove(role);
+    }
+
+    private void setId(String id) {
+        this.id = id;
+    }
+
+    private void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
 }

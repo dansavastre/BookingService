@@ -33,12 +33,15 @@ public class BookingControllerTest {
     private transient BookingService bookingService;
     @Mock
     private transient RestTemplate restTemplate;
+    @Mock
+    private transient Authorization auth;
 
     @InjectMocks
     private transient BookingController bookingController;
 
     transient Booking b1;
     transient Booking b2;
+    transient String token;
 
     @BeforeEach
     void setup() {
@@ -53,13 +56,8 @@ public class BookingControllerTest {
         b2 = new Booking("A", 1, 36, LocalDate.of(2020, 1, 5),
             LocalTime.of(8, 20, 0), LocalTime.of(15, 45, 0),
                 "Project meeting", p);
+        token = "token";
         b2.setId(2L);
-    }
-
-    @Test
-    void sayHi_test() {
-        Assertions.assertEquals("Hello from the bookings microservice!",
-            bookingController.sayHi());
     }
 
     @Test
@@ -74,7 +72,8 @@ public class BookingControllerTest {
     void roomConnected_test() {
         when(restTemplate.getForObject("http://localhost:8082/getConnectionStatus", String.class))
             .thenReturn("Rooms Microservice is connected!");
-        Assertions.assertEquals("Rooms Microservice is connected!", bookingController.checkIfRoomsConnected());
+        Assertions.assertEquals("Rooms Microservice is connected!",
+                bookingController.checkIfRoomsConnected());
     }
 
     @Test
@@ -83,37 +82,59 @@ public class BookingControllerTest {
         bookings.add(b1);
         bookings.add(b2);
         when(bookingService.getAllBookings()).thenReturn(bookings);
-        Assertions.assertEquals(bookings, bookingController.getAllBookings());
+        Assertions.assertEquals(bookings, bookingController.getAllBookings(token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
+    }
+
+    @Test
+    void getFutureBookings_test() {
+        List<Booking> bookings = new ArrayList<>();
+        bookings.add(b1);
+        bookings.add(b2);
+        when(bookingService.getFutureBookings()).thenReturn(bookings);
+        Assertions.assertEquals(bookings, bookingController.getFutureBookings(token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void getBooking_test() {
         when(bookingService.getBooking(1L)).thenReturn(b1);
-        Assertions.assertEquals(b1, bookingController.getBooking(1L));
+        Assertions.assertEquals(b1, bookingController.getBooking(1L, token));
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void addBooking_test() {
-        bookingController.addBooking(b1);
+        bookingController.addBooking(b1, token);
         verify(bookingService, times(1)).addBooking(b1);
+        verify(auth, times(1)).authorize(Authorization.EMPLOYEE, token);
     }
 
     @Test
     void updateBooking_Test() {
-        bookingController.updateBooking(b1, 1L);
+        bookingController.updateBooking(b1, 1L, token);
         verify(bookingService, times(1)).updateBooking(1L, b1);
+        verify(auth, times(1)).authorize(Authorization.ADMIN, token);
     }
 
     @Test
-    void deleteBooking_test() {
-        bookingController.deleteBooking(1L);
-        verify(bookingService, times(1)).deleteBooking(1L);
+    void updateMyBooking_Test() {
+        bookingController.updateMyBooking(b1, "A", 1L, token);
+        verify(bookingService, times(1)).updateMyBooking("A", 1L, b1);
+        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
+    }
+
+    @Test
+    void deleteMyBooking_test() {
+        bookingController.deleteBooking("A", 1L, token);
+        verify(bookingService, times(1)).deleteMyBooking("A", 1L);
+        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
     }
 
     @Test
     void getFutureBooking_test() {
         when(bookingService.getFutureBookings()).thenReturn(List.of(b2));
-        Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings());
+        Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings(token));
     }
 
     @Test
@@ -123,7 +144,7 @@ public class BookingControllerTest {
         bookings.add(b1);
         when(bookingService.getBookingsForUser(any(String.class), any(DefaultSortStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsDefault("A");
+        List<Booking> b = bookingController.getMyBookingsDefault("A", token);
         Assertions.assertEquals(bookings, b);
     }
 
@@ -135,7 +156,7 @@ public class BookingControllerTest {
         when(bookingService.getBookingsForUser(any(String.class),
                 any(ChronologicalSortStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsChrono("A");
+        List<Booking> b = bookingController.getMyBookingsChrono("A", token);
         Assertions.assertEquals(bookings, b);
     }
 
@@ -146,7 +167,7 @@ public class BookingControllerTest {
         bookings.add(b1);
         when(bookingService.getBookingsForUser(any(String.class), any(LocationStrategy.class)))
                 .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsLocation("A");
+        List<Booking> b = bookingController.getMyBookingsLocation("A", token);
         Assertions.assertEquals(bookings, b);
     }
 

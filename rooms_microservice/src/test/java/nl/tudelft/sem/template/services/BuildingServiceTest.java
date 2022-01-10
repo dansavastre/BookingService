@@ -66,7 +66,6 @@ public class BuildingServiceTest {
     @Test
     void updateBuilding_test() {
         buildingService.updateBuilding(36, b2);
-        verify(buildingRepository, times(1)).deleteById(36);
         verify(buildingRepository, times(1)).save(b2);
     }
 
