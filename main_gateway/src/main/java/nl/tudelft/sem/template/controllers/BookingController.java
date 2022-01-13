@@ -109,7 +109,7 @@ public class BookingController {
         return sendGetBookingRequest(headers, uri);
     }
 
-    private Booking sendGetBookingRequest(HttpHeaders headers, String uri) {
+    protected Booking sendGetBookingRequest(HttpHeaders headers, String uri) {
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         try {
@@ -123,7 +123,7 @@ public class BookingController {
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
