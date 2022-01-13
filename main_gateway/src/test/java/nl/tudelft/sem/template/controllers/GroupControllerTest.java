@@ -132,4 +132,15 @@ public class GroupControllerTest {
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
+
+    @Test
+    void getGroupRequestTest(){
+        String uri = "example uri";
+        ResponseEntity<Group> res = new ResponseEntity<>(group1, HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),
+                entity.capture(), eq(Group.class))).thenReturn(res);
+        Assertions.assertThat(groupController.getGroupRequest(token, uri).equals(group1));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+    }
+
 }
