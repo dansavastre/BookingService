@@ -125,16 +125,22 @@ public class BookingController {
         String uri = "http://localhost:8083/getBooking/".concat(String.valueOf(id));
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
+        return sendGetBookingRequest(headers, uri);
+    }
+
+    protected Booking sendGetBookingRequest(HttpHeaders headers, String uri) {
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         try {
             ResponseEntity<Booking> res = restTemplate
-                .exchange(uri, HttpMethod.GET, entity, Booking.class);
-            return res.getBody();
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.toString());
+                    .exchange(uri, HttpMethod.GET, entity, Booking.class);
+            if (res.getBody() == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            } else {
+                return res.getBody();
+            }
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
