@@ -64,7 +64,8 @@ public class GroupTest {
         Assertions.assertThat(group.getMembers())
             .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2)));
         Assertions.assertThat(group.removeMember(user2)).isTrue();
-        Assertions.assertThat(group.getMembers()).isEqualTo(new ArrayList<>(Arrays.asList(user1)));
+        Assertions.assertThat(group.getMembers())
+                .isEqualTo(new ArrayList<>(Arrays.asList(user1)));
     }
 
     @Test

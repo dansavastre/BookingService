@@ -1,6 +1,5 @@
 package nl.tudelft.sem.template.controllers;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -26,7 +25,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 
 public class GroupControllerTest {
 
@@ -128,7 +126,8 @@ public class GroupControllerTest {
             .updateGroup(group3, String.valueOf(1L), token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri),
                 eq(HttpMethod.PUT), entity.capture(), eq(void.class));
-        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        assertEquals(token, entity.getValue().getHeaders()
+                .getFirst(HttpHeaders.AUTHORIZATION));
         assertEquals(group3, entity.getValue().getBody());
     }
 
@@ -142,6 +141,17 @@ public class GroupControllerTest {
         Assertions.assertThat(groupController.deleteGroup(String.valueOf(1L), token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri),
                 eq(HttpMethod.DELETE), entity.capture(), eq(void.class));
+        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+    }
+
+
+    @Test
+    void getGroupRequestTest() {
+        String uri = "example uri";
+        ResponseEntity<Group> res = new ResponseEntity<>(group1, HttpStatus.OK);
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),
+                entity.capture(), eq(Group.class))).thenReturn(res);
+        Assertions.assertThat(groupController.getGroupRequest(token, uri).equals(group1));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
 
