@@ -198,18 +198,12 @@ public class BookingController {
     @ResponseBody
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-
-
         try {
             Validator handler = validatorCreator(token);
             boolean isValid = handler.handle(booking);
             if (isValid) {
                 String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
-                HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.AUTHORIZATION, token);
-                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
-                restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
-                return true;
+                return sendPutRequestWithBooking(booking, token, uri);
             }
             return false;
 
@@ -218,6 +212,24 @@ public class BookingController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
+    }
+
+    /**
+     * Sends a put request with a booking and the authorization token.
+     * @param booking       booking to be put
+     * @param token         users authorization token
+     * @param uri           address to send the request
+     * @return              true if everything when ok
+     * @throws HttpClientErrorException  when the response was not 200 OK
+     */
+    private boolean sendPutRequestWithBooking(@RequestBody Booking booking,
+                                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+                                              String uri) throws HttpClientErrorException{
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+        restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+        return true;
     }
 
     /**
@@ -239,11 +251,7 @@ public class BookingController {
             boolean isValid = handler.handle(booking);
             if (isValid && !booking.getStatus().startsWith("cancelled")) {
                 String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
-                HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.AUTHORIZATION, token);
-                HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
-                restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
-                return true;
+                return sendPutRequestWithBooking(booking, token, uri);
             }
             return false;
 
