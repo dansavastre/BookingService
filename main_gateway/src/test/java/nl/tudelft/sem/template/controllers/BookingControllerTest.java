@@ -2,10 +2,6 @@ package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-<<<<<<< HEAD
-=======
-import static org.junit.jupiter.api.Assertions.assertTrue;
->>>>>>> a4eebed42a4d423b10b45108d5d67d58a9e7d38b
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
