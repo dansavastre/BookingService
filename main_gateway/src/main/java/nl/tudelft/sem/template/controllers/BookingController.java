@@ -187,9 +187,7 @@ public class BookingController {
     public boolean postBooking(@RequestBody Booking booking,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
-            Validator handler = validatorCreator(token);
-            boolean isValid = handler.handle(booking);
-            if (isValid) {
+            if (validateBooking(booking, token)) {
                 String uri = "http://localhost:8083/bookings";
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.AUTHORIZATION, token);
@@ -246,9 +244,7 @@ public class BookingController {
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 
         try {
-            Validator handler = validatorCreator(token);
-            boolean isValid = handler.handle(booking);
-            if (isValid && !booking.getStatus().startsWith("cancelled")) {
+            if (validateBooking(booking, token) && !booking.getStatus().startsWith("cancelled")) {
                 String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
                 return sendPutBookingRequest(booking, token, uri);
             }
