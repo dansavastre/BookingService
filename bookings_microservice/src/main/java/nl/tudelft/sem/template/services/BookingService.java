@@ -2,7 +2,6 @@ package nl.tudelft.sem.template.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
@@ -31,7 +30,7 @@ public class BookingService {
     }
 
     public Booking getBooking(Long id) {
-       return bookingRepository.findById(id).get();
+        return bookingRepository.findById(id).get();
     }
 
     public void addBooking(Booking booking) {
@@ -45,8 +44,8 @@ public class BookingService {
     /**
      * Method that allows a user to edit their own bookings.
      *
-     * @param userId the id of the user
-     * @param id the id of the booking
+     * @param userId  the id of the user
+     * @param id      the id of the booking
      * @param booking the booking to be edited
      */
     public void updateMyBooking(String userId, Long id, Booking booking) {
@@ -59,7 +58,7 @@ public class BookingService {
      * Method that allows a user to delete their own bookings.
      *
      * @param userId the id of the user
-     * @param id the id of the booking
+     * @param id     the id of the booking
      */
     public void deleteMyBooking(String userId, Long id) {
         Booking booking = getBooking(id);
@@ -68,11 +67,12 @@ public class BookingService {
         }
     }
 
-    /** get the schedule for the user using the specified sorting strategy.
+    /**
+     * get the schedule for the user using the specified sorting strategy.
      *
-     * @param id            id of the user
-     * @param sortStrategy  sorting strategy for bookings
-     * @return              list of user's bookings in correct order
+     * @param id           id of the user
+     * @param sortStrategy sorting strategy for bookings
+     * @return list of user's bookings in correct order
      */
     public List<Booking> getBookingsForUser(String id, SortStrategy sortStrategy) {
         List<Booking> bookings = getFutureBookings();

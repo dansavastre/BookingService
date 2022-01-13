@@ -1,20 +1,29 @@
 package nl.tudelft.sem.template.controllers;
 
-import com.jayway.jsonpath.internal.filter.ValueNode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.sem.template.objects.Group;
 import nl.tudelft.sem.template.objects.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.http.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class GroupControllerTest {
 
@@ -112,10 +121,12 @@ public class GroupControllerTest {
         when(restTemplate.exchange(eq(uri),
                 eq(HttpMethod.PUT), entity.capture(), eq(void.class)))
                 .thenReturn(res);
-        Assertions.assertThat(groupController.updateGroup(group3, String.valueOf(1L), token)).isTrue();
+        Assertions.assertThat(groupController
+                .updateGroup(group3, String.valueOf(1L), token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri),
                 eq(HttpMethod.PUT), entity.capture(), eq(void.class));
-        assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        assertEquals(token, entity.getValue().getHeaders()
+                .getFirst(HttpHeaders.AUTHORIZATION));
         assertEquals(group3, entity.getValue().getBody());
     }
 
