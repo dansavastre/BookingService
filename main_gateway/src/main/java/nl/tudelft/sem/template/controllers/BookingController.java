@@ -266,17 +266,31 @@ public class BookingController {
                                  @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8083/myBookings/".concat(userId + "/" + String.valueOf(id));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
         try {
-            restTemplate.exchange(uri, HttpMethod.DELETE, entity, void.class);
-            return true;
+            return sendDeleteBookingRequest(token, uri);
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
+    }
+
+    /**
+     * Helper method for sending delete request for a booking.
+     *
+     * @param token the user's authorization token
+     * @param uri address to send the request to
+     * @return true if request is successful
+     * @throws HttpClientErrorException when response was not 200 OK
+     */
+    protected boolean sendDeleteBookingRequest(@RequestHeader(HttpHeaders.AUTHORIZATION)
+                                                   String token,
+                                                   String uri) throws HttpClientErrorException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        restTemplate.exchange(uri, HttpMethod.DELETE, entity, void.class);
+        return true;
     }
 
     @GetMapping("/myBookings/default/{userId}")

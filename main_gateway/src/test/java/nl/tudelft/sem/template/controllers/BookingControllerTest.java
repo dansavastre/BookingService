@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,6 +31,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -264,5 +266,26 @@ public class BookingControllerTest {
                 .exchange(eq("http://localhost:8081/secretary/checkGroup/1/1/FirstName"), eq(HttpMethod.GET), entity.capture(), eq(Boolean.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
+
+    @Test
+    void sendDeleteBookingRequestTest() {
+        String uri = "uri";
+        Assertions.assertThat(bookingController.sendDeleteBookingRequest(token, uri)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri),
+            eq(HttpMethod.DELETE), entity.capture(), eq(void.class));
+    }
+
+    @Test
+    void sendDeleteBookingRequestExceptionTest() {
+        String uri = "uri";
+        when(restTemplate.exchange(eq(uri),
+            eq(HttpMethod.DELETE), any(), eq(void.class)))
+            .thenThrow(HttpClientErrorException.class);
+        assertThrows(HttpClientErrorException.class, () -> {
+            bookingController.sendDeleteBookingRequest(token, uri);
+        });
+    }
+
+
 
 }
