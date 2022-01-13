@@ -1,6 +1,9 @@
 package nl.tudelft.sem.template.controllers;
 
 import java.util.List;
+import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
+import nl.tudelft.sem.template.exceptions.InvalidBookingException;
+import nl.tudelft.sem.template.exceptions.InvalidRoomException;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.validators.BookingValidator;
 import nl.tudelft.sem.template.validators.BuildingValidator;
@@ -66,6 +69,22 @@ public class BookingController {
         buildingValidator.setNext(roomValidator);
         handler.setNext(buildingValidator);
         return handler;
+    }
+
+    /**
+     * Validates the booking.
+     *
+     * @param booking   booking to be validated
+     * @param token     users authorization token
+     * @return          true if the booking is valid (can be added), false otherwise
+     * @throws InvalidBookingException      if the booking doesn't meet the requirements
+     * @throws InvalidRoomException         if the room in the booking is invalid
+     * @throws BuildingNotOpenException     if the building in the booking is invalid
+     */
+    private boolean validateBooking(Booking booking, String token)
+            throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+        Validator handler = validatorCreator(token);
+        return handler.handle(booking);
     }
 
     /**
@@ -199,9 +218,7 @@ public class BookingController {
     public boolean updateBooking(@RequestBody Booking booking, @PathVariable("id") Long id,
                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         try {
-            Validator handler = validatorCreator(token);
-            boolean isValid = handler.handle(booking);
-            if (isValid) {
+            if (validateBooking(booking, token)) {
                 String uri = "http://localhost:8083/bookings/".concat(String.valueOf(id));
                 return sendPutRequestWithBooking(booking, token, uri);
             }
