@@ -1,6 +1,8 @@
 package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -114,5 +117,26 @@ public class BuildingControllerTest {
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
     }
+
+    @Test
+    void sendGetBuildingRequestTest() {
+        String uri = "uri";
+        when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),
+            entity.capture(), eq(Building.class)))
+            .thenReturn(new ResponseEntity<>(b1, HttpStatus.OK));
+        assertEquals(b1, buildingController.sendGetBuildingRequest(token, uri));
+    }
+
+    @Test
+    void sendGetBuildingRequestExceptionTest() {
+        String uri = "uri";
+        when(restTemplate.exchange(eq(uri),
+            eq(HttpMethod.GET), any(), eq(Building.class)))
+            .thenThrow(HttpClientErrorException.class);
+        assertThrows(HttpClientErrorException.class, () -> {
+            buildingController.sendGetBuildingRequest(token, uri);
+        });
+    }
+
 
 }
