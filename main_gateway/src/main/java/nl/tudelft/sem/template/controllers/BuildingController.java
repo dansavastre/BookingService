@@ -66,20 +66,35 @@ public class BuildingController {
                                 @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String uri = "http://localhost:8082/getBuilding/".concat(String.valueOf(id));
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
         try {
-            ResponseEntity<Building> res = restTemplate
-                    .exchange(uri, HttpMethod.GET, entity, Building.class);
-            return res.getBody();
+            return sendGetBuildingRequest(token, uri);
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.toString());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
     }
+
+    /**
+     * Helper method for sending get requests for buildings.
+     *
+     * @param token the user's authorization token
+     * @param uri the address to send request to
+     * @return the building if it exists
+     * @throws HttpClientErrorException otherwise
+     */
+    protected Building sendGetBuildingRequest(@RequestHeader(HttpHeaders.AUTHORIZATION)
+                                                   String token,
+                                               String uri) throws HttpClientErrorException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+        ResponseEntity<Building> res = restTemplate
+            .exchange(uri, HttpMethod.GET, entity, Building.class);
+        return res.getBody();
+    }
+
+
 
     /** Adds a building to the system.
      *
