@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import nl.tudelft.sem.template.objects.Booking;
 import nl.tudelft.sem.template.repositories.BookingRepository;
@@ -30,7 +31,7 @@ public class BookingService {
     }
 
     public Booking getBooking(Long id) {
-        return bookingRepository.findById(id).get();
+       return bookingRepository.findById(id).get();
     }
 
     public void addBooking(Booking booking) {
