@@ -13,7 +13,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import nl.tudelft.sem.template.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.template.exceptions.InvalidBookingException;
 import nl.tudelft.sem.template.exceptions.InvalidRoomException;
@@ -303,7 +302,27 @@ public class BookingControllerTest {
     }
 
     @Test
-    void validateBookingTest() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+    void sendDeleteBookingRequestTest() {
+        String uri = "uri";
+        Assertions.assertThat(bookingController.sendDeleteBookingRequest(token, uri)).isTrue();
+        verify(restTemplate, times(1)).exchange(eq(uri),
+            eq(HttpMethod.DELETE), entity.capture(), eq(void.class));
+    }
+
+    @Test
+    void sendDeleteBookingRequestExceptionTest() {
+        String uri = "uri";
+        when(restTemplate.exchange(eq(uri),
+            eq(HttpMethod.DELETE), any(), eq(void.class)))
+            .thenThrow(HttpClientErrorException.class);
+        assertThrows(HttpClientErrorException.class, () -> {
+            bookingController.sendDeleteBookingRequest(token, uri);
+        });
+    }
+
+    @Test
+    void validateBookingTest() throws InvalidBookingException,
+        InvalidRoomException, BuildingNotOpenException {
         ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
         when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
         when(roomController.getRoom(b1.getBuilding() + "-"
@@ -332,7 +351,8 @@ public class BookingControllerTest {
     void sendPutBookingRequestExceptionTest() {
         String uri = "example uri";
         when(restTemplate.exchange(eq(uri),
-                eq(HttpMethod.PUT), any(), eq(void.class))).thenThrow(HttpClientErrorException.class);
+                eq(HttpMethod.PUT), any(), eq(void.class)))
+            .thenThrow(HttpClientErrorException.class);
         assertThrows(HttpClientErrorException.class, () -> {
             bookingController.sendPutBookingRequest(b3, token, uri);
         });

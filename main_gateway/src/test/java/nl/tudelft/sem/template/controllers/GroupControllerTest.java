@@ -1,11 +1,13 @@
 package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.jayway.jsonpath.internal.filter.ValueNode;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Group;
@@ -122,7 +124,7 @@ public class GroupControllerTest {
                 eq(HttpMethod.PUT), entity.capture(), eq(void.class)))
                 .thenReturn(res);
         Assertions.assertThat(groupController
-                .updateGroup(group3, String.valueOf(1L), token)).isTrue();
+            .updateGroup(group3, String.valueOf(1L), token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri),
                 eq(HttpMethod.PUT), entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders()
@@ -145,7 +147,7 @@ public class GroupControllerTest {
 
 
     @Test
-    void getGroupRequestTest(){
+    void getGroupRequestTest() {
         String uri = "example uri";
         ResponseEntity<Group> res = new ResponseEntity<>(group1, HttpStatus.OK);
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),

@@ -53,16 +53,16 @@ public class GroupTest {
     @Test
     void addMemberTest() {
         Assertions.assertThat(group.getMembers())
-                .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2)));
+            .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2)));
         Assertions.assertThat(group.addMember(user3)).isTrue();
         Assertions.assertThat(group.getMembers())
-                .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2, user3)));
+            .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2, user3)));
     }
 
     @Test
     void removeMemberTest() {
         Assertions.assertThat(group.getMembers())
-                .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2)));
+            .isEqualTo(new ArrayList<>(Arrays.asList(user1, user2)));
         Assertions.assertThat(group.removeMember(user2)).isTrue();
         Assertions.assertThat(group.getMembers()).isEqualTo(new ArrayList<>(Arrays.asList(user1)));
     }
