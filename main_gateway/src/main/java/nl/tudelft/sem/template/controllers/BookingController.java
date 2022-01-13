@@ -81,7 +81,7 @@ public class BookingController {
      * @throws InvalidRoomException         if the room in the booking is invalid
      * @throws BuildingNotOpenException     if the building in the booking is invalid
      */
-    private boolean validateBooking(Booking booking, String token)
+    protected boolean validateBooking(Booking booking, String token)
             throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
         Validator handler = validatorCreator(token);
         return handler.handle(booking);
@@ -336,7 +336,7 @@ public class BookingController {
      * @return              true if everything when ok
      * @throws HttpClientErrorException  when the response was not 200 OK
      */
-    private boolean sendPutBookingRequest(@RequestBody Booking booking,
+    protected boolean sendPutBookingRequest(@RequestBody Booking booking,
                                           @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
                                           String uri) throws HttpClientErrorException {
         HttpHeaders headers = new HttpHeaders();
