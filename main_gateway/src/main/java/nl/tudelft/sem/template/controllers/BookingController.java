@@ -232,24 +232,6 @@ public class BookingController {
     }
 
     /**
-     * Sends a put request with a booking and the authorization token.
-     * @param booking       booking to be put
-     * @param token         users authorization token
-     * @param uri           address to send the request
-     * @return              true if everything when ok
-     * @throws HttpClientErrorException  when the response was not 200 OK
-     */
-    private boolean sendPutBookingRequest(@RequestBody Booking booking,
-                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-                                          String uri) throws HttpClientErrorException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
-        restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
-        return true;
-    }
-
-    /**
      * Update your booking as an employee.
      *
      * @param booking the new booking.
@@ -347,6 +329,25 @@ public class BookingController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "");
         }
+    }
+
+    /**
+     * Sends a put request with a booking and the authorization token.
+     *
+     * @param booking       booking to be put
+     * @param token         users authorization token
+     * @param uri           address to send the request
+     * @return              true if everything when ok
+     * @throws HttpClientErrorException  when the response was not 200 OK
+     */
+    private boolean sendPutBookingRequest(@RequestBody Booking booking,
+                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+                                          String uri) throws HttpClientErrorException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<Booking> entity = new HttpEntity<>(booking, headers);
+        restTemplate.exchange(uri, HttpMethod.PUT, entity, void.class);
+        return true;
     }
 
 }
