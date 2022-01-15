@@ -118,57 +118,8 @@ public class BookingControllerTest {
     }
 
     @Test
-    void updateMyBooking_Test() {
-        bookingController.updateMyBooking(b1, "A", 1L, token);
-        verify(bookingService, times(1)).updateMyBooking("A", 1L, b1);
-        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
-    }
-
-    @Test
-    void deleteMyBooking_test() {
-        bookingController.deleteBooking("A", 1L, token);
-        verify(bookingService, times(1)).deleteMyBooking("A", 1L);
-        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
-    }
-
-    @Test
     void getFutureBooking_test() {
         when(bookingService.getFutureBookings()).thenReturn(List.of(b2));
         Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings(token));
     }
-
-    @Test
-    void getMyBookingsDefault_test() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(b2);
-        bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class), any(DefaultSortStrategy.class)))
-                .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsDefault("A", token);
-        Assertions.assertEquals(bookings, b);
-    }
-
-    @Test
-    void getMyBookingsChrono_test() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(b2);
-        bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class),
-                any(ChronologicalSortStrategy.class)))
-                .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsChrono("A", token);
-        Assertions.assertEquals(bookings, b);
-    }
-
-    @Test
-    void getMyBookingsLocation_test() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(b2);
-        bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class), any(LocationStrategy.class)))
-                .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsLocation("A", token);
-        Assertions.assertEquals(bookings, b);
-    }
-
 }
