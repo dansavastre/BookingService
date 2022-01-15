@@ -1,6 +1,5 @@
 package nl.tudelft.sem.template.controllers;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,19 +9,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
-import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
-import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
-import nl.tudelft.sem.template.schedule.LocationStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
