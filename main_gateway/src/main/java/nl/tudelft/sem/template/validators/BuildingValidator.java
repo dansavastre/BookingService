@@ -17,15 +17,16 @@ public class BuildingValidator extends BaseValidator {
 
     private transient SecondBuildingController secondBuildingController;
 
-    public BuildingValidator(BuildingController buildingController) {
+    public BuildingValidator(BuildingController buildingController, SecondBuildingController secondBuildingController) {
         this.buildingController = buildingController;
+        this.secondBuildingController = secondBuildingController;
     }
 
 
     @Override
     public boolean handle(Booking booking) throws BuildingNotOpenException,
         InvalidBookingException, InvalidRoomException {
-        Building building = secondBuildingController.getBuilding(booking.getBuilding(), token);
+        Building building = this.secondBuildingController.getBuilding(booking.getBuilding(), token);
         if (booking.getStartTime().compareTo(building.getOpeningTime()) < 0
             || booking.getEndTime().compareTo(building.getClosingTime()) > 0) {
             throw new BuildingNotOpenException("Building is not open during this interval");

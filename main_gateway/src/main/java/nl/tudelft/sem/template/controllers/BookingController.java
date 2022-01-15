@@ -48,6 +48,11 @@ public class BookingController {
         return new RestTemplate();
     }
 
+    @Bean
+    public SecondBuildingController controllerCreator() {
+        return new SecondBuildingController();
+    }
+
     private static final String userIdPath = "userId";
 
 
@@ -62,7 +67,7 @@ public class BookingController {
                 mainRoomController,
                 autowiredBookingController, secondBuildingController);
         handler.setToken(token);
-        Validator buildingValidator = new BuildingValidator(buildingController);
+        Validator buildingValidator = new BuildingValidator(buildingController, secondBuildingController);
         buildingValidator.setToken(token);
         Validator roomValidator = new RoomValidator(autowiredBookingController);
         roomValidator.setToken(token);
@@ -184,7 +189,6 @@ public class BookingController {
             }
             return false;
         } catch (Exception e) {
-            System.out.println(e.toString());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 

@@ -2,6 +2,7 @@ package nl.tudelft.sem.template.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -169,9 +170,9 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
-        when(secondBuildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
-        when(roomController.getRoom(Integer.toString(b1.getBuilding()) + "-"
-                + Integer.toString(b1.getRoom()), token)).thenReturn(room1);
+        when(secondBuildingController.getBuilding(any(Integer.class), any(String.class))).thenReturn(building1);
+        when(roomController.getRoom(b1.getBuilding() + "-"
+                + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);
         Assertions.assertThat(bookingController.postBooking(b1, token)).isTrue();
