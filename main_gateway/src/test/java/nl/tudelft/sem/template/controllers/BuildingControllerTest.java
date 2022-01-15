@@ -40,6 +40,9 @@ public class BuildingControllerTest {
     @InjectMocks
     private transient BuildingController buildingController;
 
+    @InjectMocks
+    private transient SecondBuildingController secondBuildingController;
+
     private transient Building b1;
     private transient Building b2;
     private final transient List<Building> buildings = new ArrayList<>();
@@ -77,7 +80,7 @@ public class BuildingControllerTest {
                 entity.capture(), eq(Building.class)))
                 .thenReturn(res);
 
-        Assertions.assertThat(buildingController.getBuilding(1, token)).isEqualTo(b1);
+        Assertions.assertThat(secondBuildingController.getBuilding(1, token)).isEqualTo(b1);
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.GET),
                 entity.capture(), eq(Building.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -86,7 +89,7 @@ public class BuildingControllerTest {
     @Test
     void postBuilding_test() {
         String uri = "http://localhost:8082/buildings";
-        Assertions.assertThat(buildingController.postBuilding(b1, token)).isTrue();
+        Assertions.assertThat(secondBuildingController.postBuilding(b1, token)).isTrue();
         verify(restTemplate, times(1)).exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class));
         assertEquals(token, entity.getValue().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
@@ -124,7 +127,7 @@ public class BuildingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),
             entity.capture(), eq(Building.class)))
             .thenReturn(new ResponseEntity<>(b1, HttpStatus.OK));
-        assertEquals(b1, buildingController.sendGetBuildingRequest(token, uri));
+        assertEquals(b1, secondBuildingController.sendGetBuildingRequest(token, uri));
     }
 
     @Test
@@ -134,7 +137,7 @@ public class BuildingControllerTest {
             eq(HttpMethod.GET), any(), eq(Building.class)))
             .thenThrow(HttpClientErrorException.class);
         assertThrows(HttpClientErrorException.class, () -> {
-            buildingController.sendGetBuildingRequest(token, uri);
+            secondBuildingController.sendGetBuildingRequest(token, uri);
         });
     }
 

@@ -79,5 +79,6 @@ public class BuildingController {
         auth.authorize(Authorization.ADMIN, token);
         buildingService.deleteBuilding(id);
     }
+
 }
 
