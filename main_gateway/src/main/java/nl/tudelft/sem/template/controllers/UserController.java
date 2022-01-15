@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public Map loginUser(@RequestHeader("Authentication") String password,
-                                         @RequestHeader("Username") String username) {
+                         @RequestHeader("Username") String username) {
         String uri = "http://localhost:8081/login";
 
         HttpHeaders headers = new HttpHeaders();
@@ -69,6 +69,10 @@ public class UserController {
         String uri = "http://localhost:8081/admin/users";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, token);
+        return getList(uri, headers, restTemplate);
+    }
+
+    private List getList(String uri, HttpHeaders headers, RestTemplate restTemplate) {
         HttpEntity<String> entity = new HttpEntity<>("", headers);
         try {
             ResponseEntity<List> res = restTemplate.exchange(uri,
