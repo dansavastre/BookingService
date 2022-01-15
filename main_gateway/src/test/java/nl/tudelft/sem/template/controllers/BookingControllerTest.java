@@ -46,6 +46,9 @@ public class BookingControllerTest {
     private transient BuildingController buildingController;
 
     @Mock
+    private transient SecondBuildingController secondBuildingController;
+
+    @Mock
     private transient BookingController bookingControllerMock;
 
 
@@ -166,7 +169,7 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
-        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(secondBuildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
         when(roomController.getRoom(Integer.toString(b1.getBuilding()) + "-"
                 + Integer.toString(b1.getRoom()), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
@@ -181,7 +184,7 @@ public class BookingControllerTest {
     @Test
     void postBookingInvalid_test() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            when(buildingController.getBuilding(36, token)).thenReturn(building);
+            when(secondBuildingController.getBuilding(36, token)).thenReturn(building);
             bookingController.postBooking(b3, token);
         });
         assertEquals(exception.getStatus(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -195,7 +198,7 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
             entity.capture(), eq(void.class))).thenReturn(res1);
 
-        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(secondBuildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
         when(roomController.getRoom(b1.getBuilding() + "-"
                 + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
@@ -216,7 +219,7 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.PUT),
             entity.capture(), eq(void.class))).thenReturn(res1);
 
-        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(secondBuildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
         when(roomController.getRoom(b1.getBuilding() + "-"
                 + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
@@ -249,7 +252,7 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
-        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(secondBuildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
         when(roomController.getRoom(b1.getId() + "-" + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq("http://localhost:8083/allbookings"),
                 eq(HttpMethod.GET), entity.capture(), eq(List.class))).thenReturn(res);

@@ -35,6 +35,9 @@ public class BookingController {
     private transient BuildingController buildingController;
 
     @Autowired
+    private transient SecondBuildingController secondBuildingController;
+
+    @Autowired
     private transient BookingController autowiredBookingController;
 
     @Autowired
@@ -57,7 +60,7 @@ public class BookingController {
     public Validator validatorCreator(String token) {
         Validator handler = new BookingValidator(buildingController,
                 mainRoomController,
-                autowiredBookingController);
+                autowiredBookingController, secondBuildingController);
         handler.setToken(token);
         Validator buildingValidator = new BuildingValidator(buildingController);
         buildingValidator.setToken(token);
