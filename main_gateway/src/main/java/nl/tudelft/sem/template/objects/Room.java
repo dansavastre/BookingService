@@ -60,10 +60,6 @@ public class Room {
         return roomNumber;
     }
 
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
     public Building getBuilding() {
         return building;
     }
@@ -76,24 +72,12 @@ public class Room {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     public Map<String, String> getEquipment() {
         return equipment;
-    }
-
-    public void setEquipment(Map<String, String> equipment) {
-        this.equipment = equipment;
     }
 
     public void addEquipment(String equipment) {
@@ -110,10 +94,6 @@ public class Room {
 
     public String getAvailable() {
         return available;
-    }
-
-    public void setAvailable(String available) {
-        this.available = available;
     }
 
     @Override
