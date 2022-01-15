@@ -17,7 +17,8 @@ public class BuildingValidator extends BaseValidator {
 
     private transient SecondBuildingController secondBuildingController;
 
-    public BuildingValidator(BuildingController buildingController, SecondBuildingController secondBuildingController) {
+    public BuildingValidator(BuildingController buildingController,
+                             SecondBuildingController secondBuildingController) {
         this.buildingController = buildingController;
         this.secondBuildingController = secondBuildingController;
     }

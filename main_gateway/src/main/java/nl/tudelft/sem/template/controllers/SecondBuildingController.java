@@ -52,6 +52,25 @@ public class SecondBuildingController {
         }
     }
 
+    /**
+     * Helper method for sending get requests for buildings.
+     *
+     * @param token the user's authorization token
+     * @param uri the address to send request to
+     * @return the building if it exists
+     * @throws HttpClientErrorException otherwise
+     */
+    protected Building sendGetBuildingRequest(@RequestHeader(HttpHeaders.AUTHORIZATION)
+                                                      String token,
+                                              String uri) throws HttpClientErrorException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpEntity<String> entity = new HttpEntity<>("body", headers);
+        ResponseEntity<Building> res = restTemplate
+                .exchange(uri, HttpMethod.GET, entity, Building.class);
+        return res.getBody();
+    }
+
     /** Adds a building to the system.
      *
      * @param token     the token of the user

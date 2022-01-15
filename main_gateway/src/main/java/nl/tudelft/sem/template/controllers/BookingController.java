@@ -70,7 +70,8 @@ public class BookingController {
                 mainRoomController,
                 autowiredBookingController, secondBuildingController);
         handler.setToken(token);
-        Validator buildingValidator = new BuildingValidator(buildingController, secondBuildingController);
+        Validator buildingValidator = new BuildingValidator(buildingController,
+                secondBuildingController);
         buildingValidator.setToken(token);
         Validator roomValidator = new RoomValidator(autowiredBookingController);
         roomValidator.setToken(token);

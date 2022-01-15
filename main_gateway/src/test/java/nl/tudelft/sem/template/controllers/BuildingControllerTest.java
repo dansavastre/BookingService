@@ -127,7 +127,7 @@ public class BuildingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET),
             entity.capture(), eq(Building.class)))
             .thenReturn(new ResponseEntity<>(b1, HttpStatus.OK));
-        assertEquals(b1, buildingController.sendGetBuildingRequest(token, uri));
+        assertEquals(b1, secondBuildingController.sendGetBuildingRequest(token, uri));
     }
 
     @Test
@@ -137,7 +137,7 @@ public class BuildingControllerTest {
             eq(HttpMethod.GET), any(), eq(Building.class)))
             .thenThrow(HttpClientErrorException.class);
         assertThrows(HttpClientErrorException.class, () -> {
-            buildingController.sendGetBuildingRequest(token, uri);
+            secondBuildingController.sendGetBuildingRequest(token, uri);
         });
     }
 

@@ -54,6 +54,7 @@ public class BuildingController {
         }
     }
 
+
     /** Update a building.
      *
      * @param building the new building.

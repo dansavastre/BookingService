@@ -327,7 +327,7 @@ public class BookingControllerTest {
     void validateBookingTest() throws InvalidBookingException,
         InvalidRoomException, BuildingNotOpenException {
         ResponseEntity<List> res = new ResponseEntity<>(bookings, HttpStatus.OK);
-        when(buildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
+        when(secondBuildingController.getBuilding(b1.getBuilding(), token)).thenReturn(building1);
         when(roomController.getRoom(b1.getBuilding() + "-"
                 + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),
