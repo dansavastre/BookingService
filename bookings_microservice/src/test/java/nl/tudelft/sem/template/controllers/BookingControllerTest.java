@@ -1,6 +1,5 @@
 package nl.tudelft.sem.template.controllers;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,19 +9,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.template.objects.Booking;
-import nl.tudelft.sem.template.schedule.ChronologicalSortStrategy;
-import nl.tudelft.sem.template.schedule.DefaultSortStrategy;
-import nl.tudelft.sem.template.schedule.LocationStrategy;
 import nl.tudelft.sem.template.services.BookingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -118,57 +111,8 @@ public class BookingControllerTest {
     }
 
     @Test
-    void updateMyBooking_Test() {
-        bookingController.updateMyBooking(b1, "A", 1L, token);
-        verify(bookingService, times(1)).updateMyBooking("A", 1L, b1);
-        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
-    }
-
-    @Test
-    void deleteMyBooking_test() {
-        bookingController.deleteBooking("A", 1L, token);
-        verify(bookingService, times(1)).deleteMyBooking("A", 1L);
-        verify(auth, times(1)).authorizeWithUsername(Authorization.EMPLOYEE, token, "A");
-    }
-
-    @Test
     void getFutureBooking_test() {
         when(bookingService.getFutureBookings()).thenReturn(List.of(b2));
         Assertions.assertEquals(List.of(b2), bookingController.getFutureBookings(token));
     }
-
-    @Test
-    void getMyBookingsDefault_test() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(b2);
-        bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class), any(DefaultSortStrategy.class)))
-                .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsDefault("A", token);
-        Assertions.assertEquals(bookings, b);
-    }
-
-    @Test
-    void getMyBookingsChrono_test() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(b2);
-        bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class),
-                any(ChronologicalSortStrategy.class)))
-                .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsChrono("A", token);
-        Assertions.assertEquals(bookings, b);
-    }
-
-    @Test
-    void getMyBookingsLocation_test() {
-        List<Booking> bookings = new ArrayList<>();
-        bookings.add(b2);
-        bookings.add(b1);
-        when(bookingService.getBookingsForUser(any(String.class), any(LocationStrategy.class)))
-                .thenReturn(bookings);
-        List<Booking> b = bookingController.getMyBookingsLocation("A", token);
-        Assertions.assertEquals(bookings, b);
-    }
-
 }
