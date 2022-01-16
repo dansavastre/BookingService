@@ -6,11 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
 import java.util.Optional;
-
-import nl.tudelft.sem.main.exceptions.InvalidBookingException;
-import nl.tudelft.sem.main.exceptions.InvalidRoomException;
 import nl.tudelft.sem.main.controllers.BookingController;
 import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
+import nl.tudelft.sem.main.exceptions.InvalidBookingException;
+import nl.tudelft.sem.main.exceptions.InvalidRoomException;
 import nl.tudelft.sem.main.objects.Booking;
 
 public class RoomValidator extends BaseValidator {

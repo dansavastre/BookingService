@@ -1,14 +1,13 @@
 package nl.tudelft.sem.main.controllers;
 
 import java.util.List;
-
+import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.main.exceptions.InvalidBookingException;
 import nl.tudelft.sem.main.exceptions.InvalidRoomException;
 import nl.tudelft.sem.main.objects.Booking;
 import nl.tudelft.sem.main.validators.BookingValidator;
 import nl.tudelft.sem.main.validators.BuildingValidator;
 import nl.tudelft.sem.main.validators.RoomValidator;
-import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.main.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,10 +51,6 @@ public class BookingController {
         return new RestTemplate();
     }
 
-    @Bean
-    public SecondBuildingController controllerCreator() {
-        return new SecondBuildingController();
-    }
 
     private static final String userIdPath = "userId";
 

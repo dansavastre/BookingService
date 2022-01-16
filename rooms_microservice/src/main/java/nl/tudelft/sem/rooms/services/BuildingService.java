@@ -2,7 +2,6 @@ package nl.tudelft.sem.rooms.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.rooms.objects.Building;
 import nl.tudelft.sem.rooms.repositories.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;

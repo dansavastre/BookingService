@@ -2,7 +2,6 @@ package nl.tudelft.sem.rooms.controllers;
 
 import java.util.List;
 import java.util.Objects;
-
 import nl.tudelft.sem.rooms.objects.Room;
 import nl.tudelft.sem.rooms.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;

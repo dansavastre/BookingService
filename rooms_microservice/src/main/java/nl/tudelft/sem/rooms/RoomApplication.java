@@ -3,7 +3,6 @@ package nl.tudelft.sem.rooms;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
-
 import nl.tudelft.sem.rooms.objects.Building;
 import nl.tudelft.sem.rooms.objects.Room;
 import nl.tudelft.sem.rooms.services.BuildingService;

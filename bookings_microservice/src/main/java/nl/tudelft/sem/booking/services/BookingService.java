@@ -3,11 +3,10 @@ package nl.tudelft.sem.booking.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import nl.tudelft.sem.booking.objects.Booking;
 import nl.tudelft.sem.booking.repositories.BookingRepository;
 import nl.tudelft.sem.booking.schedule.Schedule;
 import nl.tudelft.sem.booking.schedule.SortStrategy;
-import nl.tudelft.sem.booking.objects.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

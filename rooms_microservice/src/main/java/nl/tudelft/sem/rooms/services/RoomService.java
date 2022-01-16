@@ -3,7 +3,6 @@ package nl.tudelft.sem.rooms.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import nl.tudelft.sem.rooms.objects.Room;
 import nl.tudelft.sem.rooms.repositories.BuildingRepository;
 import nl.tudelft.sem.rooms.repositories.RoomRepository;

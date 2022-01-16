@@ -1,7 +1,6 @@
 package nl.tudelft.sem.main.controllers;
 
 import java.util.List;
-
 import nl.tudelft.sem.main.objects.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

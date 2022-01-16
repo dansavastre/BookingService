@@ -3,7 +3,6 @@ package nl.tudelft.sem.booking;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-
 import nl.tudelft.sem.booking.objects.Booking;
 import nl.tudelft.sem.booking.services.BookingService;
 import org.springframework.boot.CommandLineRunner;

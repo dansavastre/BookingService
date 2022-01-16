@@ -1,10 +1,10 @@
 package nl.tudelft.sem.main.validators;
 
-import nl.tudelft.sem.main.exceptions.InvalidRoomException;
 import nl.tudelft.sem.main.controllers.BuildingController;
 import nl.tudelft.sem.main.controllers.SecondBuildingController;
 import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.main.exceptions.InvalidBookingException;
+import nl.tudelft.sem.main.exceptions.InvalidRoomException;
 import nl.tudelft.sem.main.objects.Booking;
 import nl.tudelft.sem.main.objects.Building;
 
