@@ -10,11 +10,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RoleTest {
 
     private transient Role role;
+    private transient String employee;
 
     @BeforeEach
     void setup() {
-        role = new Role("employee");
+        employee = "employee";
+        role = new Role(employee);
         role.setId(1L);
+
     }
 
     @Test
@@ -24,7 +27,7 @@ public class RoleTest {
 
     @Test
     void getType_test() {
-        Assertions.assertThat(role.getType()).isEqualTo("employee");
+        Assertions.assertThat(role.getType()).isEqualTo(employee);
     }
 
     @Test
@@ -42,7 +45,7 @@ public class RoleTest {
     @Test
     void equalsTrue_test() {
         Role role2 = new Role();
-        role2.setType("employee");
+        role2.setType(employee);
         role2.setId(1L);
         assertTrue(role.equals(role2));
         assertTrue(role.hashCode() == role2.hashCode());
@@ -56,17 +59,13 @@ public class RoleTest {
 
     @Test
     void equalsFalse_test() {
-        Role role2 = new Role("employee");
+        Role role2 = new Role(employee);
         role2.setId(2L);
         role2.setType("admin");
         assertFalse(role.equals(role2));
         assertFalse(role.hashCode() == role2.hashCode());
     }
 
-    @Test
-    void equalsNull_test() {
-        assertFalse(role.equals(null));
-    }
     @Test
     void equalsWrongClass_test() {
         assertFalse(role.equals("1"));
