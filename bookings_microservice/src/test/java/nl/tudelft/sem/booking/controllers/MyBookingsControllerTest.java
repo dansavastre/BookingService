@@ -11,8 +11,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.tudelft.sem.booking.controllers.Authorization;
-import nl.tudelft.sem.booking.controllers.MyBookingsController;
 import nl.tudelft.sem.booking.objects.Booking;
 import nl.tudelft.sem.booking.schedule.ChronologicalSortStrategy;
 import nl.tudelft.sem.booking.schedule.DefaultSortStrategy;

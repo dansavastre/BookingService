@@ -2,7 +2,6 @@ package nl.tudelft.sem.rooms;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import nl.tudelft.sem.rooms.Example;
 import org.junit.jupiter.api.Test;
 
 public class ExampleTest {

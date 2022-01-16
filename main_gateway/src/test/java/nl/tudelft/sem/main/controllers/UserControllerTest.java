@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.tudelft.sem.main.controllers.UserController;
 import nl.tudelft.sem.main.objects.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

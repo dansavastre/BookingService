@@ -9,8 +9,6 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.tudelft.sem.rooms.objects.Building;
-import nl.tudelft.sem.rooms.objects.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

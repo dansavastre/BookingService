@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.tudelft.sem.main.controllers.BookingController;
-import nl.tudelft.sem.main.controllers.MainRoomController;
 import nl.tudelft.sem.main.objects.Booking;
 import nl.tudelft.sem.main.objects.Building;
 import nl.tudelft.sem.main.objects.Room;

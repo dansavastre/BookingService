@@ -11,7 +11,6 @@ import java.util.List;
 import nl.tudelft.sem.booking.objects.Booking;
 import nl.tudelft.sem.booking.repositories.BookingRepository;
 import nl.tudelft.sem.booking.schedule.DefaultSortStrategy;
-import nl.tudelft.sem.booking.services.BookingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

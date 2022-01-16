@@ -2,9 +2,6 @@ package nl.tudelft.sem.main.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import nl.tudelft.sem.main.controllers.BookingController;
-import nl.tudelft.sem.main.controllers.MainRoomController;
-import nl.tudelft.sem.main.controllers.SearchController;
 import nl.tudelft.sem.main.objects.Booking;
 import nl.tudelft.sem.main.objects.Building;
 import nl.tudelft.sem.main.objects.Room;

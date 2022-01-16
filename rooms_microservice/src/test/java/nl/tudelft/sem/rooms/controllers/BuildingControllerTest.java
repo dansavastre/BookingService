@@ -9,8 +9,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.sem.rooms.RoomApplication;
-import nl.tudelft.sem.rooms.controllers.Authorization;
-import nl.tudelft.sem.rooms.controllers.BuildingController;
 import nl.tudelft.sem.rooms.objects.Building;
 import nl.tudelft.sem.rooms.services.BuildingService;
 import org.junit.jupiter.api.BeforeEach;

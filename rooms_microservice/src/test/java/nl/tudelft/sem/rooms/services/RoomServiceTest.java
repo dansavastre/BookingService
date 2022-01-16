@@ -15,7 +15,6 @@ import nl.tudelft.sem.rooms.RoomApplication;
 import nl.tudelft.sem.rooms.objects.Building;
 import nl.tudelft.sem.rooms.objects.Room;
 import nl.tudelft.sem.rooms.repositories.RoomRepository;
-import nl.tudelft.sem.rooms.services.RoomService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

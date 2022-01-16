@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import nl.tudelft.sem.main.controllers.BookingController;
-import nl.tudelft.sem.main.controllers.BuildingController;
-import nl.tudelft.sem.main.controllers.MainRoomController;
-import nl.tudelft.sem.main.controllers.SecondBuildingController;
 import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.main.exceptions.InvalidBookingException;
 import nl.tudelft.sem.main.exceptions.InvalidRoomException;

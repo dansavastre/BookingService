@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.sem.rooms.RoomApplication;
-import nl.tudelft.sem.rooms.controllers.Authorization;
-import nl.tudelft.sem.rooms.controllers.RoomController;
 import nl.tudelft.sem.rooms.objects.Building;
 import nl.tudelft.sem.rooms.objects.Room;
 import nl.tudelft.sem.rooms.services.RoomService;

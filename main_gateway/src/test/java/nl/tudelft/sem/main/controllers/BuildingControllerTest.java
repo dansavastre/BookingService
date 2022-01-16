@@ -12,8 +12,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.tudelft.sem.main.controllers.BuildingController;
-import nl.tudelft.sem.main.controllers.SecondBuildingController;
 import nl.tudelft.sem.main.objects.Building;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

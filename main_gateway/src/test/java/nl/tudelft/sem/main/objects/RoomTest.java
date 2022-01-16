@@ -8,8 +8,6 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.tudelft.sem.main.objects.Building;
-import nl.tudelft.sem.main.objects.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
