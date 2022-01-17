@@ -93,7 +93,6 @@ public class UserServiceTest {
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             userService.getUser(string1);
         });
-        //Assertions.assertEquals(java.util.Optional.ofNullable(null), userService.getUser(string));
     }
 
     @Test
