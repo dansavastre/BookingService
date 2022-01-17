@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.users.objects.Role;
 import nl.tudelft.sem.users.services.RoleService;
 import org.junit.jupiter.api.Assertions;

@@ -13,7 +13,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.main.exceptions.InvalidBookingException;
 import nl.tudelft.sem.main.exceptions.InvalidRoomException;
@@ -206,7 +205,8 @@ public class BookingControllerTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.POST),
                 entity.capture(), eq(void.class))).thenReturn(res1);
 
-        when(secondBuildingController.getBuilding(any(Integer.class), any(String.class))).thenReturn(building1);
+        when(secondBuildingController.getBuilding(any(Integer.class), any(String.class)))
+            .thenReturn(building1);
         when(roomController.getRoom(b1.getBuilding() + "-"
                 + b1.getRoom(), token)).thenReturn(room1);
         when(restTemplate.exchange(eq(allBookings),

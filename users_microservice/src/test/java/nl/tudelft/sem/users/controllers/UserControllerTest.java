@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.users.objects.User;
 import nl.tudelft.sem.users.services.UserService;
 import org.junit.jupiter.api.Assertions;
