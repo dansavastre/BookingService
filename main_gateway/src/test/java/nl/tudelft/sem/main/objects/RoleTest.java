@@ -1,11 +1,11 @@
 package nl.tudelft.sem.main.objects;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RoleTest {
 
@@ -38,7 +38,7 @@ public class RoleTest {
 
     @Test
     void setId_test() {
-        role.setId(3l);
+        role.setId(3L);
         Assertions.assertThat(role.getId()).isEqualTo(3L);
     }
 

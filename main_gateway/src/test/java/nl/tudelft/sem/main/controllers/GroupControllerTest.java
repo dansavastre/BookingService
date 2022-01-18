@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.tudelft.sem.main.objects.Group;
 import nl.tudelft.sem.main.objects.User;
 import org.assertj.core.api.Assertions;

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import nl.tudelft.sem.users.objects.Role;
 import nl.tudelft.sem.users.objects.User;
 import nl.tudelft.sem.users.repositories.UserRepository;

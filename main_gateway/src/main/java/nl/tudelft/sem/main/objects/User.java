@@ -56,6 +56,10 @@ public class User {
         return roles;
     }
 
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -83,7 +87,7 @@ public class User {
         for (Role role : roles) {
             string = string + role.toString() + ", ";
         }
-        if (string.length() > 0) {
+        if (!roles.isEmpty()) {
             string = string.substring(0, string.length() - 2);
         }
         return "User{"

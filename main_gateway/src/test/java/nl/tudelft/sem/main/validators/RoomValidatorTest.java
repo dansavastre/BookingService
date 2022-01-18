@@ -1,5 +1,14 @@
 package nl.tudelft.sem.main.validators;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import nl.tudelft.sem.main.controllers.BookingController;
 import nl.tudelft.sem.main.exceptions.BuildingNotOpenException;
 import nl.tudelft.sem.main.exceptions.InvalidBookingException;
@@ -9,13 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 public class RoomValidatorTest {
 
@@ -96,20 +98,22 @@ public class RoomValidatorTest {
     void bookingsDoNotOverlapTest() {
         assertFalse(validator.bookingsOverlap(b1, b2));
         assertFalse(validator.bookingsOverlap(b2, b3));
-        assertFalse(validator.bookingsOverlap(b1,b5));
+        assertFalse(validator.bookingsOverlap(b1, b5));
         assertFalse(validator.bookingsOverlap(b3, b4));
         assertFalse(validator.bookingsOverlap(b1, b6));
         assertFalse(validator.bookingsOverlap(b6, b7));
     }
 
     @Test
-    void bookPossibleBookingTest() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+    void bookPossibleBookingTest() throws InvalidBookingException,
+        InvalidRoomException, BuildingNotOpenException {
         when(bookingController.getAllBookings(token)).thenReturn(List.of(b2));
         assertTrue(validator.handle(b1));
     }
 
     @Test
-    void bookPossibleBookingBuildingAcceptsTest() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+    void bookPossibleBookingBuildingAcceptsTest() throws InvalidBookingException,
+        InvalidRoomException, BuildingNotOpenException {
         validator.setNext(buildingValidator);
         when(bookingController.getAllBookings(token)).thenReturn(List.of(b2));
         when(buildingValidator.handle(b1)).thenReturn(true);
@@ -117,7 +121,8 @@ public class RoomValidatorTest {
     }
 
     @Test
-    void bookPossibleBookingBuildingRejectsTest() throws InvalidBookingException, InvalidRoomException, BuildingNotOpenException {
+    void bookPossibleBookingBuildingRejectsTest() throws InvalidBookingException,
+        InvalidRoomException, BuildingNotOpenException {
         validator.setNext(buildingValidator);
         when(bookingController.getAllBookings(token)).thenReturn(List.of(b2));
         when(buildingValidator.handle(b1)).thenReturn(false);
