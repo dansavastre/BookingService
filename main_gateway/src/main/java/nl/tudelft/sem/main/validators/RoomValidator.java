@@ -34,12 +34,10 @@ public class RoomValidator extends BaseValidator {
                 && booking.getDate().equals(other.getDate())
                 && !other.getStatus().startsWith("cancelled")
                 && !other.getId().equals(Optional.ofNullable(booking.getId()).orElse(0L))) {
-            if ((other.getStartTime().compareTo(booking.getStartTime()) >= 0
+            return (other.getStartTime().compareTo(booking.getStartTime()) >= 0
                     && other.getStartTime().compareTo(booking.getEndTime()) < 0)
                     || (other.getEndTime().compareTo(booking.getStartTime()) > 0
-                    && other.getEndTime().compareTo(booking.getEndTime()) <= 0)) {
-                return true;
-            }
+                    && other.getEndTime().compareTo(booking.getEndTime()) <= 0);
         }
         return false;
     }
@@ -57,6 +55,11 @@ public class RoomValidator extends BaseValidator {
             }
         }
         return super.checkNext(newBooking);
+    }
+
+    @Override
+    public String getToken() {
+        return this.token;
     }
 
     @Override
